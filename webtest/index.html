@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.link {
+  stroke: #ccc;
+}
+
+.node text {
+  pointer-events: none;
+  font: 10px sans-serif;
+}
+
+</style>
+<body>
+
+<div id="menu" style="width:250px;float:left;">
+<input type="file" id="filepicker" accept="application/xml">
+<input type="text" id="nodename"> 
+<button id="find">Find!</button>
+<table id="selected">
+</table>
+
+</div>
+
+<div id="content">
+</div>
+<script src="d3.js"></script>
+<script src="graphutils.js"></script>
+<script>
+
+//plotXML("basic.gexf");
+
+d3.select("#find").on("click", findNode);
+
+document.getElementById("filepicker").addEventListener("change", handleFileSelect, false);
+
+
+</script>
