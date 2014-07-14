@@ -1,7 +1,8 @@
 /* Note:
    D3 edges (as read from JSON) go from index to index -- i.e. {source:0,target:1} goes from the
    first node in the node list to the second node. GEXF files go by ID. How we transform:
-   * Naive way: when adding an edge, search through node list.
+   - When adding an edge, search through node list.
+   This is naive, and may not work for very large graph sizes. Solution might be to sort nodelist.
 */
 
 
@@ -26,28 +27,10 @@ function flattenEdge(tag, nodes)
 
 }
 
-
 function flattenNodeList(nl, f)
 {
-    var x = [];
-    for (i in nl) {
-	if (nl[i] instanceof Node) {
-	    x.push(f(nl[i]));
-	}
-    }
-    return x;
-}
-
-
-/* This might not still work: */
-function plotXML(xfile)
-{
-    d3.xml(xfile, function(err, xml) {
-	var nodes = flattenNodeList(xml.getElementsByTagName("node"), flattenNode);
-	function fl(e) { return flattenEdge(e, nodes) }
-	var edges = flattenEdgeList(xml.getElementsByTagName("edge"), fl);
-        plotGraph(nodes, edges);
-    });
+    var arr = Array.prototype.slice.call(nl)
+    return arr.map(f);
 }
 
 function plotXMLstr(txt)
@@ -71,7 +54,7 @@ function plotXMLstr(txt)
 
     var n = nodes.length;
     
-    /* Get rid of bad edges. Could perhaps add an error message.
+    /* Get rid of bad edges, if needed. (Commented out because not needed with 'correct' gexf)
     edges = edges.filter(function(e) {
 	var s = e.source;
 	var t = e.target;
@@ -85,14 +68,9 @@ function plotXMLstr(txt)
 
 function plotGraph(nodes, edges)
 {
-    var width = 800,
-    height = 500;
+    var svg = d3.select("svg");
+    var width = 800, height = 500; //svg.attr("width"), height = svg.attr("height");
 
-    var svg = d3.select("#content").append("svg")
-	.attr("width", width)
-	.attr("height", height);
-
-    var table = d3.select("#selected");
     var force = d3.layout.force()
 	.gravity(.05)
 	.distance(100)
