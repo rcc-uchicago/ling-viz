@@ -36,7 +36,7 @@ d3.select("#find").on("click", findNode);
 
 document.getElementById("filepicker").addEventListener("change", handleFileSelect, false);
 
-/* Zoom behavior */
+/* Uncomment this section for zoom behavior. Causes large slowdown.
 var svg = d3.select("svg")
    .attr("pointer-events", "all")
    .call(d3.behavior.zoom().on("zoom", redraw));
@@ -45,6 +45,6 @@ function redraw() {
       "translate(" + d3.event.translate + ")"
       + " scale(" + d3.event.scale + ")");
 }
-
+*/
 
 </script>

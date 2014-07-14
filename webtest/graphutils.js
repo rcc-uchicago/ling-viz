@@ -1,68 +1,42 @@
-/* Note:
+/* XML Parsing notes --
    D3 edges (as read from JSON) go from index to index -- i.e. {source:0,target:1} goes from the
    first node in the node list to the second node. GEXF files go by ID. How we transform:
    - When adding an edge, search through node list.
    This is naive, and may not work for very large graph sizes. Solution might be to sort nodelist.
+   
+   'Array.findIndex' may not be in all JS implementations. See:
+   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
 */
-
-
-function flattenNode(tag)
-{
-  return {"label": tag.getAttribute("label"), "id": parseInt(tag.getAttribute("id"))}; 
-}
-
-
-/* Note: 'Array.findIndex' may not be in all JS implementations. See:
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex */
-function flattenEdge(tag, nodes)
-{
- function attrToPos(attr) {
-     var id = parseInt(tag.getAttribute(attr));
-     var pos = nodes.findIndex(function(n) { return n.id == id });
-     if (pos == -1)
-	 throw "Invalid edge: no node " + pos
-     return pos;
- } 
-    return {"source": attrToPos("source"), "target": attrToPos("target")};
-
-}
-
-function flattenNodeList(nl, f)
-{
-    var arr = Array.prototype.slice.call(nl)
-    return arr.map(f);
-}
-
-function plotXMLstr(txt)
-{
-    /* See: http://www.w3schools.com/xml/xml_parser.asp */
-    if (window.DOMParser)
+function xmlToGraph(xmlDoc)
+{   
+    function flattenTags(name, f)
     {
-	parser=new DOMParser();
-	xmlDoc=parser.parseFromString(txt,"text/xml");
-    }
-    else // Internet Explorer
-    {
-	xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
-	xmlDoc.async=false;
-	xmlDoc.loadXML(txt);
+	var nl = xmlDoc.getElementsByTagName(name)
+	var arr = Array.prototype.slice.call(nl)
+	return arr.map(f);
     }
 
-    var nodes = flattenNodeList(xmlDoc.getElementsByTagName("node"), flattenNode);
-    var edges = flattenNodeList(xmlDoc.getElementsByTagName("edge"), function(e) { return flattenEdge(e, nodes) });
-    //console.log(nodes, edges);
+    var nodes = flattenTags("node",
+			    function(tag) {
+				return {"label": tag.getAttribute("label"), "id": parseInt(tag.getAttribute("id"))};
+			    });
 
-    var n = nodes.length;
-    
-    /* Get rid of bad edges, if needed. (Commented out because not needed with 'correct' gexf)
-    edges = edges.filter(function(e) {
-	var s = e.source;
-	var t = e.target;
-	return (s >= 0 && s < n && t >= 0 && t < n);
-    }); */
+    function flattenEdge(tag)
+    {
+	function attrToPos(attr) {
+	    var id = parseInt(tag.getAttribute(attr));
+	    var pos = nodes.findIndex(function(n) { return n.id == id });
+	    if (pos == -1)
+		throw "Invalid edge: no node " + pos
+	    return pos;
+	} 
+	return {"source": attrToPos("source"), "target": attrToPos("target")};
 
-    
-    plotGraph(nodes, edges);
+    }
+
+    var edges = flattenTags("edge", flattenEdge);
+
+    return {nodes: nodes, edges: edges};
 }
 
 
@@ -150,7 +124,10 @@ function handleFileSelect(evt) {
     for (var i = 0, f; f = files[i]; i++) {
 	var reader = new FileReader();
 	reader.onload = (function(e) {
-	    plotXMLstr(e.target.result);
+	    var	parser = new DOMParser();
+	    var	xmlDoc = parser.parseFromString(e.target.result,"text/xml");
+	    var graph = xmlToGraph(xmlDoc);
+	    plotGraph(graph.nodes, graph.edges);
 	});
 	reader.readAsText(f);
     }
