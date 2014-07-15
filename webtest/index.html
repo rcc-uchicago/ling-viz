@@ -36,15 +36,23 @@ d3.select("#find").on("click", findNode);
 
 document.getElementById("filepicker").addEventListener("change", handleFileSelect, false);
 
-/* Uncomment this section for zoom behavior. Causes large slowdown.
+/* Uncomment this section for zoom behavior. Causes large slowdown in Firefox. */
+/* From: http://stackoverflow.com/questions/7871425/is-there-a-way-to-zoom-into-a-d3-force-layout-graph */
 var svg = d3.select("svg")
    .attr("pointer-events", "all")
    .call(d3.behavior.zoom().on("zoom", redraw));
+
+var vis = svg
+    .append('svg:g')
+    .attr("id", "vis")
+    .attr("width", svg.attr("width"))
+    .attr("height", svg.attr("height"));
+
 function redraw() {
-  svg.attr("transform",
+  vis.attr("transform",
       "translate(" + d3.event.translate + ")"
       + " scale(" + d3.event.scale + ")");
 }
-*/
+
 
 </script>

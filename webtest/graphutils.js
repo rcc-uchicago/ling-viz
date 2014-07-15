@@ -2,11 +2,7 @@
    D3 edges (as read from JSON) go from index to index -- i.e. {source:0,target:1} goes from the
    first node in the node list to the second node. GEXF files go by ID. How we transform:
    - When adding an edge, search through node list.
-   This is naive, and may not work for very large graph sizes. Solution might be to sort nodelist.
-   
-   'Array.findIndex' may not be in all JS implementations. See:
-   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
-*/
+   This is naive, and may not work for very large graph sizes. Solution might be to sort nodelist. */
 function xmlToGraph(xmlDoc)
 {   
     function flattenTags(name, f)
@@ -27,7 +23,7 @@ function xmlToGraph(xmlDoc)
 	    var id = parseInt(tag.getAttribute(attr));
 	    var pos = nodes.findIndex(function(n) { return n.id == id });
 	    if (pos == -1)
-		throw "Invalid edge: no node " + pos
+		return undefined; //throw "Invalid edge: no node " + pos
 	    return pos;
 	} 
 	return {"source": attrToPos("source"), "target": attrToPos("target")};
@@ -35,15 +31,19 @@ function xmlToGraph(xmlDoc)
     }
 
     var edges = flattenTags("edge", flattenEdge);
-
+    
+    
     return {nodes: nodes, edges: edges};
 }
 
 
 function plotGraph(nodes, edges)
 {
-    var svg = d3.select("svg");
-    var width = 800, height = 500; //svg.attr("width"), height = svg.attr("height");
+
+   
+
+    var svg = d3.select("#vis");
+    var width = svg.attr("width"), height = svg.attr("height");
 
     var force = d3.layout.force()
 	.gravity(.05)
@@ -115,6 +115,7 @@ function removeNode(name) {
 }
 
 
+
 function handleFileSelect(evt) {
     
     var files = evt.target.files; // FileList object
@@ -127,8 +128,45 @@ function handleFileSelect(evt) {
 	    var	parser = new DOMParser();
 	    var	xmlDoc = parser.parseFromString(e.target.result,"text/xml");
 	    var graph = xmlToGraph(xmlDoc);
+	    d3.select("#vis").selectAll("*").remove(); // remove existing vis, if necessary
 	    plotGraph(graph.nodes, graph.edges);
 	});
 	reader.readAsText(f);
     }
+}
+
+
+
+/*
+   'Array.findIndex' may not be in all JS implementations. See:
+   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
+*/
+if (!Array.prototype.findIndex) {
+  Object.defineProperty(Array.prototype, 'findIndex', {
+    enumerable: false,
+    configurable: true,
+    writable: true,
+    value: function(predicate) {
+      if (this == null) {
+        throw new TypeError('Array.prototype.find called on null or undefined');
+      }
+      if (typeof predicate !== 'function') {
+        throw new TypeError('predicate must be a function');
+      }
+      var list = Object(this);
+      var length = list.length >>> 0;
+      var thisArg = arguments[1];
+      var value;
+
+      for (var i = 0; i < length; i++) {
+        if (i in list) {
+          value = list[i];
+          if (predicate.call(thisArg, value, i, list)) {
+            return i;
+          }
+        }
+      }
+      return -1;
+    }
+  });
 }
