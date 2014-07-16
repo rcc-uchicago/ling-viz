@@ -19,21 +19,24 @@ function xmlToGraph(xmlDoc)
 
     function flattenEdge(tag)
     {
-	function attrToPos(attr) {
-	    var id = parseInt(tag.getAttribute(attr));
-	    var pos = nodes.findIndex(function(n) { return n.id == id });
-	    if (pos == -1)
-		return undefined; //throw "Invalid edge: no node " + pos
+	function idToPos(id) {
+	    var pos = nodes.findIndex(function(n) { return n.id == id }); // -1 if no node
 	    return pos;
-	} 
-	return {"source": attrToPos("source"), "target": attrToPos("target")};
-
+	}
+	var src = +tag.getAttribute("source"), tar = +tag.getAttribute("target");
+	var s = idToPos(src), t = idToPos(tar);
+	if (t >= 0 && s >= 0)
+	    return {"source": s, "target": t};
+	else {
+	    console.log("Ignoring invalid edge (" + src + "," + tar + ")");
+	    return null;
+	}
     }
 
-    var edges = flattenTags("edge", flattenEdge);
+    var edges = flattenTags("edge", flattenEdge).filter(function(e) { return e; });
     
     
-    return {nodes: nodes, edges: edges};
+   return {nodes: nodes, edges: edges};
 }
 
 
@@ -79,30 +82,36 @@ function plotGraph(nodes, edges)
 	.attr("dy", ".35em")
 	.text(function(d) { return d.label});
 
+    var tick = tickLimit;
     force.on("tick", function() {
-	link.attr("x1", function(d) { return d.source.x; })
-	    .attr("y1", function(d) { return d.source.y; })
-	    .attr("x2", function(d) { return d.target.x; })
-	    .attr("y2", function(d) { return d.target.y; });
+	if (tick == tickLimit) {
+	    link.attr("x1", function(d) { return d.source.x; })
+		.attr("y1", function(d) { return d.source.y; })
+		.attr("x2", function(d) { return d.target.x; })
+		.attr("y2", function(d) { return d.target.y; });
 
-	node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+	    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+	    tick = 0;
+	}
+	else
+	    tick++;
     });
     
 }
 
 
-function findNode() {
+function findNode(e) {
+    var name = e.target.value;
+    var node = document.getElementById(name);
 
-  var name = document.getElementById("nodename").value;
-  var node = document.getElementById(name);
-  if (node != null) node.setAttribute("fill", "red");
-  var row = d3.select("#selected").append("tr");
-  
-  row.html(name + " ");
-  row.attr("id", "row_" + name)
-  row.append("a").html("x").attr("href", "#")
-                           .on("click", function() { removeNode(name) });
-  
+    if (node != null) node.setAttribute("fill", "red");
+    var row = d3.select("#selected").append("tr");
+    
+    row.html(name + " ");
+    row.attr("id", "row_" + name)
+    row.append("a").html("x").attr("href", "#")
+        .on("click", function() { removeNode(name) });
+    
 }
 
 function removeNode(name) {
@@ -118,6 +127,7 @@ function removeNode(name) {
 
 function handleFileSelect(evt) {
     
+   
     var files = evt.target.files; // FileList object
 
     // Loop through the FileList and render image files as thumbnails.
@@ -126,10 +136,20 @@ function handleFileSelect(evt) {
 	var reader = new FileReader();
 	reader.onload = (function(e) {
 	    var	parser = new DOMParser();
+
 	    var	xmlDoc = parser.parseFromString(e.target.result,"text/xml");
+	    
 	    var graph = xmlToGraph(xmlDoc);
+	    
 	    d3.select("#vis").selectAll("*").remove(); // remove existing vis, if necessary
-	    plotGraph(graph.nodes, graph.edges);
+	
+	    if (graph.nodes != "") {
+		cls();
+		plotGraph(graph.nodes, graph.edges);
+	    }
+	    else {
+		msg("Unable to load XML file.");
+	    }
 	});
 	reader.readAsText(f);
     }
