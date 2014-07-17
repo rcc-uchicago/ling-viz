@@ -40,13 +40,11 @@ function xmlToGraph(xmlDoc)
 }
 
 
-function plotGraph(nodes, edges)
+var tickLimit = 1; // perhaps change this to a function.
+function plotGraph(svg, nodes, edges)
 {
-
-   
-
-    var svg = d3.select("#vis");
-    var width = svg.attr("width"), height = svg.attr("height");
+    //var width = svg.attr("width"), height = svg.attr("height");
+    var width=800, height=600;
 
     var force = d3.layout.force()
 	.gravity(.05)
@@ -103,14 +101,15 @@ function plotGraph(nodes, edges)
 function findNode(e) {
     var name = e.target.value;
     var node = document.getElementById(name);
-
-    if (node != null) node.setAttribute("fill", "red");
-    var row = d3.select("#selected").append("tr");
+    if (node != null) {
+	node.setAttribute("fill", "red");
+	var row = d3.select("#selected").append("tr");
     
-    row.html(name + " ");
-    row.attr("id", "row_" + name)
-    row.append("a").html("x").attr("href", "#")
-        .on("click", function() { removeNode(name) });
+	row.html(name + " ");
+	row.attr("id", "row_" + name)
+	row.append("a").html("x").attr("href", "#")
+            .on("click", function() { removeNode(name) });
+    }
     
 }
 
@@ -145,7 +144,7 @@ function handleFileSelect(evt) {
 	
 	    if (graph.nodes != "") {
 		cls();
-		plotGraph(graph.nodes, graph.edges);
+		plotGraph(d3.select("#vis"), graph.nodes, graph.edges);
 	    }
 	    else {
 		msg("Unable to load XML file.");

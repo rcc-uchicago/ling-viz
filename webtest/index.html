@@ -32,19 +32,21 @@ a:visited {
 <body>
 
 <div id="menu" style="width:250px;float:left;">
-<input type="file" id="filepicker" accept="application/xml">
-<input type="range" id="tickLimit" value="0" min="0" max="100">
-<input type="text" id="nodename"> 
+<input type="file" id="filepicker" accept="application/xml" title="Pick a file to use" />
+<input type="range" id="tickLimit" value="0" min="0" max="100"
+       title="How often should Force-Layout update the UI" /> 
+<input type="text" id="nodename" title="Find a node in the graph." /> 
 <table id="selected">
-<div id="msg" />
+<span id="msg" />
 </table>
-
 </div>
 
 <div id="content">
-<svg width=800 height=500>
+<svg width="800" height="600">
+<rect width="800" height="600" style="fill-opacity:0;stroke:grey;stroke-width:5;" />
 </svg>
 </div>
+
 <script src="d3.js"></script>
 <script src="graphutils.js"></script>
 <script>
@@ -75,10 +77,11 @@ function redraw() {
       + " scale(" + d3.event.scale + ")");
 }
 
+
 /* Tick slider behavior */
-var tickLimit = 1;
 document.getElementById("tickLimit").onchange = function(evt) {
      tickLimit = parseInt(evt.target.value);
+    // document.getElementById("tickLabel").innerHTML = tickLimit;
 }
 
 /* Message box */
