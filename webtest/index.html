@@ -34,7 +34,7 @@ a:visited {
 <div id="menu" style="width:250px;float:left;">
 <input type="file" id="filepicker" accept="application/xml" title="Pick a file to use" />
 <input type="range" id="tickLimit" value="0" min="0" max="100"
-       title="How often should Force-Layout update the UI" /> 
+       title="How often should Force-Layout update the UI" /> <span id="tickLabel">0</span>
 <input type="text" id="nodename" title="Find a node in the graph." /> 
 <table id="selected">
 <span id="msg" />
@@ -81,7 +81,7 @@ function redraw() {
 /* Tick slider behavior */
 document.getElementById("tickLimit").onchange = function(evt) {
      tickLimit = parseInt(evt.target.value);
-    // document.getElementById("tickLabel").innerHTML = tickLimit;
+     document.getElementById("tickLabel").innerHTML = tickLimit;
 }
 
 /* Message box */

@@ -101,7 +101,7 @@ function plotGraph(svg, nodes, edges)
 function findNode(e) {
     var name = e.target.value;
     var node = document.getElementById(name);
-    if (node != null) {
+    if (node != null && document.getElementById("row_" + name) == null) {
 	node.setAttribute("fill", "red");
 	var row = d3.select("#selected").append("tr");
     
