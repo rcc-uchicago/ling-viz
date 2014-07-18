@@ -43,8 +43,8 @@ function xmlToGraph(xmlDoc)
 var tickLimit = 1; // perhaps change this to a function.
 function plotGraph(svg, nodes, edges)
 {
-    //var width = svg.attr("width"), height = svg.attr("height");
-    var width=800, height=600;
+    var width = parseInt(svg.attr("width")), height = parseInt(svg.attr("height"));
+  
 
     var force = d3.layout.force()
 	.gravity(.05)
