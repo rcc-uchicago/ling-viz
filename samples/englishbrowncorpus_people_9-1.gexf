@@ -1,0 +1,52 @@
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.2draft/viz">
+	<graph defaultedgetype="directed" idtype="string" type="static">
+		<nodes count="  1000  "> 
+			<node id ="357" label ="style">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="392" label ="march">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="304" label ="government">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="308" label ="union">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="391" label ="countries">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="309" label ="people">
+				<viz:color r="255" g="140" b="0" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="393" label ="words">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="310" label ="action">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="359" label ="movement">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+		</nodes>
+		<edges count="  0  "> 
+			<edge id ="0" source = "309" target = "357"/>
+			<edge id ="1" source = "309" target = "392"/>
+			<edge id ="2" source = "309" target = "391"/>
+			<edge id ="3" source = "309" target = "308"/>
+			<edge id ="4" source = "309" target = "304"/>
+			<edge id ="5" source = "309" target = "393"/>
+			<edge id ="6" source = "309" target = "310"/>
+			<edge id ="7" source = "309" target = "359"/>
+		</edges>
+	</graph>
+	</gexf>

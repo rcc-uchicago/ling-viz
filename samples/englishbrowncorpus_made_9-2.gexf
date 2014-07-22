@@ -1,0 +1,220 @@
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.2draft/viz">
+	<graph defaultedgetype="directed" idtype="string" type="static">
+		<nodes count="  4000  "> 
+			<node id ="2540" label ="raised">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2202" label ="followed">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2009" label ="caused">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="878" label ="moved">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="302" label ="brought">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="300" label ="held">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="842" label ="dropped">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="841" label ="reached">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="698" label ="missed">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2174" label ="assumed">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="843" label ="caught">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="701" label ="answered">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="697" label ="fought">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2250" label ="understood">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="304" label ="sent">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="303" label ="told">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="844" label ="led">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="879" label ="returned">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="877" label ="started">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="866" label ="paid">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="644" label ="met">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2325" label ="served">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="305" label ="received">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="298" label ="made">
+				<viz:color r="255" g="140" b="0" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="307" label ="kept">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1179" label ="heard">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="695" label ="studied">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2205" label ="joined">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="702" label ="urged">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="306" label ="asked">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1387" label ="placed">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="880" label ="stopped">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="299" label ="found">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="301" label ="called">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="694" label ="left">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+		</nodes>
+		<edges count="  0  "> 
+			<edge id ="0" source = "298" target = "305"/>
+			<edge id ="1" source = "298" target = "306"/>
+			<edge id ="2" source = "298" target = "302"/>
+			<edge id ="3" source = "298" target = "300"/>
+			<edge id ="4" source = "298" target = "299"/>
+			<edge id ="5" source = "298" target = "301"/>
+			<edge id ="6" source = "298" target = "304"/>
+			<edge id ="7" source = "298" target = "303"/>
+			<edge id ="8" source = "303" target = "698"/>
+			<edge id ="9" source = "303" target = "843"/>
+			<edge id ="10" source = "303" target = "301"/>
+			<edge id ="11" source = "303" target = "300"/>
+			<edge id ="12" source = "303" target = "842"/>
+			<edge id ="13" source = "303" target = "299"/>
+			<edge id ="14" source = "303" target = "841"/>
+			<edge id ="15" source = "303" target = "306"/>
+			<edge id ="16" source = "304" target = "2540"/>
+			<edge id ="17" source = "304" target = "844"/>
+			<edge id ="18" source = "304" target = "1387"/>
+			<edge id ="19" source = "304" target = "2009"/>
+			<edge id ="20" source = "304" target = "2205"/>
+			<edge id ="21" source = "304" target = "644"/>
+			<edge id ="22" source = "304" target = "300"/>
+			<edge id ="23" source = "304" target = "2202"/>
+			<edge id ="24" source = "301" target = "305"/>
+			<edge id ="25" source = "301" target = "300"/>
+			<edge id ="26" source = "301" target = "866"/>
+			<edge id ="27" source = "301" target = "644"/>
+			<edge id ="28" source = "301" target = "841"/>
+			<edge id ="29" source = "301" target = "299"/>
+			<edge id ="30" source = "301" target = "306"/>
+			<edge id ="31" source = "301" target = "303"/>
+			<edge id ="32" source = "299" target = "305"/>
+			<edge id ="33" source = "299" target = "298"/>
+			<edge id ="34" source = "299" target = "306"/>
+			<edge id ="35" source = "299" target = "302"/>
+			<edge id ="36" source = "299" target = "300"/>
+			<edge id ="37" source = "299" target = "301"/>
+			<edge id ="38" source = "299" target = "304"/>
+			<edge id ="39" source = "299" target = "303"/>
+			<edge id ="40" source = "300" target = "307"/>
+			<edge id ="41" source = "300" target = "1387"/>
+			<edge id ="42" source = "300" target = "843"/>
+			<edge id ="43" source = "300" target = "644"/>
+			<edge id ="44" source = "300" target = "299"/>
+			<edge id ="45" source = "300" target = "301"/>
+			<edge id ="46" source = "300" target = "304"/>
+			<edge id ="47" source = "300" target = "303"/>
+			<edge id ="48" source = "302" target = "298"/>
+			<edge id ="49" source = "302" target = "307"/>
+			<edge id ="50" source = "302" target = "300"/>
+			<edge id ="51" source = "302" target = "1179"/>
+			<edge id ="52" source = "302" target = "842"/>
+			<edge id ="53" source = "302" target = "299"/>
+			<edge id ="54" source = "302" target = "304"/>
+			<edge id ="55" source = "302" target = "303"/>
+			<edge id ="56" source = "306" target = "879"/>
+			<edge id ="57" source = "306" target = "877"/>
+			<edge id ="58" source = "306" target = "878"/>
+			<edge id ="59" source = "306" target = "701"/>
+			<edge id ="60" source = "306" target = "880"/>
+			<edge id ="61" source = "306" target = "841"/>
+			<edge id ="62" source = "306" target = "301"/>
+			<edge id ="63" source = "306" target = "303"/>
+			<edge id ="64" source = "305" target = "2174"/>
+			<edge id ="65" source = "305" target = "695"/>
+			<edge id ="66" source = "305" target = "702"/>
+			<edge id ="67" source = "305" target = "2250"/>
+			<edge id ="68" source = "305" target = "697"/>
+			<edge id ="69" source = "305" target = "866"/>
+			<edge id ="70" source = "305" target = "2325"/>
+			<edge id ="71" source = "305" target = "694"/>
+		</edges>
+	</graph>
+	</gexf>

@@ -1,0 +1,52 @@
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.2draft/viz">
+	<graph defaultedgetype="directed" idtype="string" type="static">
+		<nodes count="  4000  "> 
+			<node id ="305" label ="received">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="298" label ="made">
+				<viz:color r="255" g="140" b="0" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="301" label ="called">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="302" label ="brought">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="300" label ="held">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="299" label ="found">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="306" label ="asked">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="304" label ="sent">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="303" label ="told">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+		</nodes>
+		<edges count="  0  "> 
+			<edge id ="0" source = "298" target = "305"/>
+			<edge id ="1" source = "298" target = "306"/>
+			<edge id ="2" source = "298" target = "302"/>
+			<edge id ="3" source = "298" target = "300"/>
+			<edge id ="4" source = "298" target = "299"/>
+			<edge id ="5" source = "298" target = "301"/>
+			<edge id ="6" source = "298" target = "304"/>
+			<edge id ="7" source = "298" target = "303"/>
+		</edges>
+	</graph>
+	</gexf>

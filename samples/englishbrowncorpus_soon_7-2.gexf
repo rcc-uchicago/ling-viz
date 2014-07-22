@@ -1,0 +1,216 @@
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.2draft/viz">
+	<graph defaultedgetype="directed" idtype="string" type="static">
+		<nodes count="  4000  "> 
+			<node id ="2429" label ="concluded">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="310" label ="sometimes">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="272" label ="often">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="665" label ="suddenly">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="273" label ="soon">
+				<viz:color r="255" g="140" b="0" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1214" label ="tonight">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="354" label ="simply">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3392" label ="invariably">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="270" label ="actually">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="83" label ="still">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1012" label ="hoping">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="418" label ="certainly">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2112" label ="necessarily">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="380" label ="rather">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1015" label ="generally">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1862" label ="tend">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2426" label ="accordingly">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1861" label ="deliberately">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="664" label ="therefore">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2866" label ="widely">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="309" label ="probably">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="308" label ="ever">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1969" label ="recently">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3393" label ="dependent">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3737" label ="brings">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2428" label ="gradually">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1788" label ="somehow">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1392" label ="possibly">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2711" label ="properly">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1013" label ="personally">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2430" label ="immediately">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="995" label ="easily">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1357" label ="frequently">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2712" label ="publicly">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="82" label ="always">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1014" label ="barely">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="810" label ="obviously">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="744" label ="maybe">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+		</nodes>
+		<edges count="  0  "> 
+			<edge id ="0" source = "273" target = "418"/>
+			<edge id ="1" source = "273" target = "272"/>
+			<edge id ="2" source = "273" target = "665"/>
+			<edge id ="3" source = "273" target = "1015"/>
+			<edge id ="4" source = "273" target = "1862"/>
+			<edge id ="5" source = "273" target = "1861"/>
+			<edge id ="6" source = "273" target = "83"/>
+			<edge id ="7" source = "83" target = "418"/>
+			<edge id ="8" source = "83" target = "272"/>
+			<edge id ="9" source = "83" target = "380"/>
+			<edge id ="10" source = "83" target = "82"/>
+			<edge id ="11" source = "83" target = "273"/>
+			<edge id ="12" source = "83" target = "309"/>
+			<edge id ="13" source = "83" target = "308"/>
+			<edge id ="14" source = "1861" target = "995"/>
+			<edge id ="15" source = "1861" target = "1013"/>
+			<edge id ="16" source = "1861" target = "1969"/>
+			<edge id ="17" source = "1861" target = "2712"/>
+			<edge id ="18" source = "1861" target = "1014"/>
+			<edge id ="19" source = "1861" target = "2866"/>
+			<edge id ="20" source = "1861" target = "3392"/>
+			<edge id ="21" source = "1862" target = "2112"/>
+			<edge id ="22" source = "1862" target = "3393"/>
+			<edge id ="23" source = "1862" target = "3737"/>
+			<edge id ="24" source = "1862" target = "1014"/>
+			<edge id ="25" source = "1862" target = "1392"/>
+			<edge id ="26" source = "1862" target = "1861"/>
+			<edge id ="27" source = "1862" target = "3392"/>
+			<edge id ="28" source = "1015" target = "995"/>
+			<edge id ="29" source = "1015" target = "2712"/>
+			<edge id ="30" source = "1015" target = "665"/>
+			<edge id ="31" source = "1015" target = "810"/>
+			<edge id ="32" source = "1015" target = "2711"/>
+			<edge id ="33" source = "1015" target = "2430"/>
+			<edge id ="34" source = "1015" target = "1357"/>
+			<edge id ="35" source = "665" target = "2429"/>
+			<edge id ="36" source = "665" target = "2428"/>
+			<edge id ="37" source = "665" target = "1015"/>
+			<edge id ="38" source = "665" target = "1788"/>
+			<edge id ="39" source = "665" target = "810"/>
+			<edge id ="40" source = "665" target = "1214"/>
+			<edge id ="41" source = "665" target = "2426"/>
+			<edge id ="42" source = "272" target = "995"/>
+			<edge id ="43" source = "272" target = "1012"/>
+			<edge id ="44" source = "272" target = "1014"/>
+			<edge id ="45" source = "272" target = "273"/>
+			<edge id ="46" source = "272" target = "270"/>
+			<edge id ="47" source = "272" target = "354"/>
+			<edge id ="48" source = "272" target = "1013"/>
+			<edge id ="49" source = "418" target = "2428"/>
+			<edge id ="50" source = "418" target = "665"/>
+			<edge id ="51" source = "418" target = "744"/>
+			<edge id ="52" source = "418" target = "310"/>
+			<edge id ="53" source = "418" target = "1788"/>
+			<edge id ="54" source = "418" target = "273"/>
+			<edge id ="55" source = "418" target = "664"/>
+		</edges>
+	</graph>
+	</gexf>

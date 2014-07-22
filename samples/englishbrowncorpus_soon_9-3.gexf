@@ -1,0 +1,1064 @@
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.2draft/viz">
+	<graph defaultedgetype="directed" idtype="string" type="static">
+		<nodes count="  4000  "> 
+			<node id ="811" label ="saying">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1833" label ="cried">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1002" label ="-">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1965" label ="unhappy">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="273" label ="soon">
+				<viz:color r="255" g="140" b="0" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3594" label ="leads">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1834" label ="ended">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3382" label ="farther">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3392" label ="invariably">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2714" label ="carefully">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1786" label ="smiling">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="83" label ="still">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="188" label ="yet">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="418" label ="certainly">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3873" label ="specifically">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="81" label ="just">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="80" label ="also">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3640" label ="somewhere">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="798" label ="interesting">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3840" label ="stained">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="400" label ="except">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3468" label ="thursday">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="270" label ="actually">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2589" label ="presents">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="353" label ="eager">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="666" label ="finally">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1861" label ="deliberately">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2758" label ="attractive">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="993" label ="pretty">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="610" label ="indeed">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1785" label ="thompson">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="454" label ="sorry">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1982" label ="presently">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3393" label ="dependent">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1641" label ="continues">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1392" label ="possibly">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3032" label ="listening">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2546" label ="altogether">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2430" label ="immediately">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="361" label ="nor">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2681" label ="alexander">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="995" label ="easily">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1172" label ="louis">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1355" label ="seldom">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3075" label ="normally">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="472" label ="calling">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="82" label ="always">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="170" label ="reasonably">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1968" label ="sewage">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2578" label ="democrats">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2429" label ="concluded">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="272" label ="often">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1674" label ="tired">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="449" label ="hard">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1788" label ="somehow">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3453" label ="argued">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2792" label ="quietly">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2544" label ="eating">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3503" label ="peter">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="84" label ="really">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2428" label ="gradually">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3628" label ="expert">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="883" label ="literally">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3136" label ="currently">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1673" label ="definite">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1862" label ="tend">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3454" label ="emerged">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="309" label ="probably">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2880" label ="falling">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="308" label ="ever">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1831" label ="shows">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1969" label ="recently">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3450" label ="missing">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3224" label ="gathered">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3832" label ="promptly">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="997" label ="pleasant">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="996" label ="completely">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="223" label ="surely">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3471" label ="cousin">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="328" label =",500">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3031" label ="essentially">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3618" label ="extending">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3934" label ="healthy">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="734" label ="involved">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1014" label ="barely">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1356" label ="according">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3508" label ="previously">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3940" label ="prior">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2108" label ="dinner">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3449" label ="allied">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3470" label ="hence">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3469" label ="consequently">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2881" label ="automatically">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2427" label ="otherwise">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1212" label ="presumably">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="311" label ="already">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="665" label ="suddenly">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="354" label ="simply">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2347" label ="controls">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3402" label ="rarely">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2713" label ="expensive">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3634" label ="upstairs">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3545" label ="passes">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2092" label ="unusual">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2112" label ="necessarily">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3871" label ="fallen">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="888" label ="similarly">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1672" label ="distinct">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3395" label ="constantly">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="884" label ="threatening">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1084" label ="least">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3576" label ="fully">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2426" label ="accordingly">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1382" label ="slowly">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="664" label ="therefore">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2682" label ="tom">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3970" label ="resulted">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2680" label ="andy">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1082" label ="hardly">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3904" label ="calm">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="741" label ="partly">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3737" label ="brings">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3778" label ="becoming">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="862" label ="dave">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2711" label ="properly">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3671" label ="uncle">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="327" label ="sharply">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1013" label ="personally">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3135" label ="careful">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3456" label ="absent">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2712" label ="publicly">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2628" label ="believes">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3842" label ="v">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3515" label ="crazy">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="310" label ="sometimes">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2094" label ="false">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1012" label ="hoping">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="663" label ="thus">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3611" label ="sleeping">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1214" label ="tonight">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3380" label ="arise">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="745" label ="apparently">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2278" label ="clearly">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1787" label ="sir">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2793" label ="compared">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3613" label ="dying">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="380" label ="rather">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3339" label ="dressed">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1211" label ="whereas">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1015" label ="generally">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2865" label ="tight">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3831" label ="occasionally">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2866" label ="widely">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="994" label ="nice">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2279" label ="badly">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3816" label ="francisco">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1213" label ="yesterday">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="286" label ="usually">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1357" label ="frequently">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3394" label ="approved">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="1221" label ="especially">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="860" label ="susan">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="744" label ="maybe">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="882" label ="later">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3679" label ="anybody">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="810" label ="obviously">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="189" label ="perhaps">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="2759" label ="deeply">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="3830" label ="requires">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="258" label ="once">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+		</nodes>
+		<edges count="  0  "> 
+			<edge id ="0" source = "273" target = "418"/>
+			<edge id ="1" source = "273" target = "272"/>
+			<edge id ="2" source = "273" target = "665"/>
+			<edge id ="3" source = "273" target = "1015"/>
+			<edge id ="4" source = "273" target = "1862"/>
+			<edge id ="5" source = "273" target = "1861"/>
+			<edge id ="6" source = "273" target = "83"/>
+			<edge id ="7" source = "273" target = "258"/>
+			<edge id ="8" source = "258" target = "418"/>
+			<edge id ="9" source = "258" target = "189"/>
+			<edge id ="10" source = "258" target = "310"/>
+			<edge id ="11" source = "258" target = "663"/>
+			<edge id ="12" source = "258" target = "665"/>
+			<edge id ="13" source = "258" target = "664"/>
+			<edge id ="14" source = "258" target = "286"/>
+			<edge id ="15" source = "258" target = "188"/>
+			<edge id ="16" source = "83" target = "418"/>
+			<edge id ="17" source = "83" target = "272"/>
+			<edge id ="18" source = "83" target = "380"/>
+			<edge id ="19" source = "83" target = "82"/>
+			<edge id ="20" source = "83" target = "273"/>
+			<edge id ="21" source = "83" target = "309"/>
+			<edge id ="22" source = "83" target = "308"/>
+			<edge id ="23" source = "83" target = "84"/>
+			<edge id ="24" source = "1861" target = "995"/>
+			<edge id ="25" source = "1861" target = "1013"/>
+			<edge id ="26" source = "1861" target = "1969"/>
+			<edge id ="27" source = "1861" target = "2712"/>
+			<edge id ="28" source = "1861" target = "1014"/>
+			<edge id ="29" source = "1861" target = "2866"/>
+			<edge id ="30" source = "1861" target = "3392"/>
+			<edge id ="31" source = "1861" target = "2714"/>
+			<edge id ="32" source = "1862" target = "2112"/>
+			<edge id ="33" source = "1862" target = "3393"/>
+			<edge id ="34" source = "1862" target = "3737"/>
+			<edge id ="35" source = "1862" target = "1014"/>
+			<edge id ="36" source = "1862" target = "1392"/>
+			<edge id ="37" source = "1862" target = "1861"/>
+			<edge id ="38" source = "1862" target = "3392"/>
+			<edge id ="39" source = "1862" target = "1357"/>
+			<edge id ="40" source = "1015" target = "995"/>
+			<edge id ="41" source = "1015" target = "2712"/>
+			<edge id ="42" source = "1015" target = "665"/>
+			<edge id ="43" source = "1015" target = "810"/>
+			<edge id ="44" source = "1015" target = "2711"/>
+			<edge id ="45" source = "1015" target = "2430"/>
+			<edge id ="46" source = "1015" target = "1357"/>
+			<edge id ="47" source = "1015" target = "2713"/>
+			<edge id ="48" source = "665" target = "2429"/>
+			<edge id ="49" source = "665" target = "2428"/>
+			<edge id ="50" source = "665" target = "1015"/>
+			<edge id ="51" source = "665" target = "1788"/>
+			<edge id ="52" source = "665" target = "810"/>
+			<edge id ="53" source = "665" target = "1214"/>
+			<edge id ="54" source = "665" target = "2426"/>
+			<edge id ="55" source = "665" target = "2427"/>
+			<edge id ="56" source = "272" target = "995"/>
+			<edge id ="57" source = "272" target = "1012"/>
+			<edge id ="58" source = "272" target = "1014"/>
+			<edge id ="59" source = "272" target = "273"/>
+			<edge id ="60" source = "272" target = "270"/>
+			<edge id ="61" source = "272" target = "354"/>
+			<edge id ="62" source = "272" target = "1013"/>
+			<edge id ="63" source = "272" target = "810"/>
+			<edge id ="64" source = "418" target = "2428"/>
+			<edge id ="65" source = "418" target = "665"/>
+			<edge id ="66" source = "418" target = "744"/>
+			<edge id ="67" source = "418" target = "310"/>
+			<edge id ="68" source = "418" target = "1788"/>
+			<edge id ="69" source = "418" target = "273"/>
+			<edge id ="70" source = "418" target = "664"/>
+			<edge id ="71" source = "418" target = "258"/>
+			<edge id ="72" source = "744" target = "1787"/>
+			<edge id ="73" source = "744" target = "860"/>
+			<edge id ="74" source = "744" target = "862"/>
+			<edge id ="75" source = "744" target = "2680"/>
+			<edge id ="76" source = "744" target = "664"/>
+			<edge id ="77" source = "744" target = "2682"/>
+			<edge id ="78" source = "744" target = "1785"/>
+			<edge id ="79" source = "744" target = "2681"/>
+			<edge id ="80" source = "354" target = "995"/>
+			<edge id ="81" source = "354" target = "741"/>
+			<edge id ="82" source = "354" target = "1012"/>
+			<edge id ="83" source = "354" target = "734"/>
+			<edge id ="84" source = "354" target = "1355"/>
+			<edge id ="85" source = "354" target = "810"/>
+			<edge id ="86" source = "354" target = "353"/>
+			<edge id ="87" source = "354" target = "272"/>
+			<edge id ="88" source = "270" target = "272"/>
+			<edge id ="89" source = "270" target = "665"/>
+			<edge id ="90" source = "270" target = "883"/>
+			<edge id ="91" source = "270" target = "882"/>
+			<edge id ="92" source = "270" target = "810"/>
+			<edge id ="93" source = "270" target = "1382"/>
+			<edge id ="94" source = "270" target = "454"/>
+			<edge id ="95" source = "270" target = "2278"/>
+			<edge id ="96" source = "1012" target = "995"/>
+			<edge id ="97" source = "1012" target = "3840"/>
+			<edge id ="98" source = "1012" target = "741"/>
+			<edge id ="99" source = "1012" target = "3136"/>
+			<edge id ="100" source = "1012" target = "810"/>
+			<edge id ="101" source = "1012" target = "3032"/>
+			<edge id ="102" source = "1012" target = "1013"/>
+			<edge id ="103" source = "1012" target = "472"/>
+			<edge id ="104" source = "2427" target = "2428"/>
+			<edge id ="105" source = "2427" target = "1982"/>
+			<edge id ="106" source = "2427" target = "888"/>
+			<edge id ="107" source = "2427" target = "1788"/>
+			<edge id ="108" source = "2427" target = "3468"/>
+			<edge id ="109" source = "2427" target = "3470"/>
+			<edge id ="110" source = "2427" target = "3402"/>
+			<edge id ="111" source = "2427" target = "3469"/>
+			<edge id ="112" source = "2426" target = "1212"/>
+			<edge id ="113" source = "2426" target = "1982"/>
+			<edge id ="114" source = "2426" target = "3842"/>
+			<edge id ="115" source = "2426" target = "3468"/>
+			<edge id ="116" source = "2426" target = "1214"/>
+			<edge id ="117" source = "2426" target = "3671"/>
+			<edge id ="118" source = "2426" target = "2546"/>
+			<edge id ="119" source = "2426" target = "3471"/>
+			<edge id ="120" source = "1214" target = "1212"/>
+			<edge id ="121" source = "1214" target = "3640"/>
+			<edge id ="122" source = "1214" target = "1172"/>
+			<edge id ="123" source = "1214" target = "1213"/>
+			<edge id ="124" source = "1214" target = "2426"/>
+			<edge id ="125" source = "1214" target = "3671"/>
+			<edge id ="126" source = "1214" target = "3842"/>
+			<edge id ="127" source = "1214" target = "1831"/>
+			<edge id ="128" source = "1788" target = "2428"/>
+			<edge id ="129" source = "1788" target = "1982"/>
+			<edge id ="130" source = "1788" target = "888"/>
+			<edge id ="131" source = "1788" target = "665"/>
+			<edge id ="132" source = "1788" target = "3468"/>
+			<edge id ="133" source = "1788" target = "3470"/>
+			<edge id ="134" source = "1788" target = "1786"/>
+			<edge id ="135" source = "1788" target = "2427"/>
+			<edge id ="136" source = "2428" target = "1982"/>
+			<edge id ="137" source = "2428" target = "3679"/>
+			<edge id ="138" source = "2428" target = "3468"/>
+			<edge id ="139" source = "2428" target = "1788"/>
+			<edge id ="140" source = "2428" target = "3831"/>
+			<edge id ="141" source = "2428" target = "3471"/>
+			<edge id ="142" source = "2428" target = "3503"/>
+			<edge id ="143" source = "2428" target = "2427"/>
+			<edge id ="144" source = "2429" target = "1833"/>
+			<edge id ="145" source = "2429" target = "665"/>
+			<edge id ="146" source = "2429" target = "1834"/>
+			<edge id ="147" source = "2429" target = "2546"/>
+			<edge id ="148" source = "2429" target = "2714"/>
+			<edge id ="149" source = "2429" target = "2430"/>
+			<edge id ="150" source = "2429" target = "3402"/>
+			<edge id ="151" source = "2429" target = "2427"/>
+			<edge id ="152" source = "2713" target = "2094"/>
+			<edge id ="153" source = "2713" target = "3628"/>
+			<edge id ="154" source = "2713" target = "3613"/>
+			<edge id ="155" source = "2713" target = "3934"/>
+			<edge id ="156" source = "2713" target = "3611"/>
+			<edge id ="157" source = "2713" target = "2711"/>
+			<edge id ="158" source = "2713" target = "3904"/>
+			<edge id ="159" source = "2713" target = "2880"/>
+			<edge id ="160" source = "2430" target = "2279"/>
+			<edge id ="161" source = "2430" target = "2792"/>
+			<edge id ="162" source = "2430" target = "2793"/>
+			<edge id ="163" source = "2430" target = "1213"/>
+			<edge id ="164" source = "2430" target = "2711"/>
+			<edge id ="165" source = "2430" target = "2714"/>
+			<edge id ="166" source = "2430" target = "2880"/>
+			<edge id ="167" source = "2430" target = "2881"/>
+			<edge id ="168" source = "2711" target = "2279"/>
+			<edge id ="169" source = "2711" target = "2544"/>
+			<edge id ="170" source = "2711" target = "3613"/>
+			<edge id ="171" source = "2711" target = "884"/>
+			<edge id ="172" source = "2711" target = "2758"/>
+			<edge id ="173" source = "2711" target = "2880"/>
+			<edge id ="174" source = "2711" target = "2713"/>
+			<edge id ="175" source = "2711" target = "3904"/>
+			<edge id ="176" source = "810" target = "2279"/>
+			<edge id ="177" source = "810" target = "3031"/>
+			<edge id ="178" source = "810" target = "1012"/>
+			<edge id ="179" source = "810" target = "3032"/>
+			<edge id ="180" source = "810" target = "1015"/>
+			<edge id ="181" source = "810" target = "327"/>
+			<edge id ="182" source = "810" target = "1013"/>
+			<edge id ="183" source = "810" target = "272"/>
+			<edge id ="184" source = "1357" target = "1012"/>
+			<edge id ="185" source = "1357" target = "3393"/>
+			<edge id ="186" source = "1357" target = "3395"/>
+			<edge id ="187" source = "1357" target = "1015"/>
+			<edge id ="188" source = "1357" target = "1356"/>
+			<edge id ="189" source = "1357" target = "472"/>
+			<edge id ="190" source = "1357" target = "3392"/>
+			<edge id ="191" source = "1357" target = "3394"/>
+			<edge id ="192" source = "1392" target = "3737"/>
+			<edge id ="193" source = "1392" target = "3830"/>
+			<edge id ="194" source = "1392" target = "1862"/>
+			<edge id ="195" source = "1392" target = "3831"/>
+			<edge id ="196" source = "1392" target = "1082"/>
+			<edge id ="197" source = "1392" target = "2628"/>
+			<edge id ="198" source = "1392" target = "3075"/>
+			<edge id ="199" source = "1392" target = "3832"/>
+			<edge id ="200" source = "3737" target = "3594"/>
+			<edge id ="201" source = "3737" target = "1392"/>
+			<edge id ="202" source = "3737" target = "3224"/>
+			<edge id ="203" source = "3737" target = "2628"/>
+			<edge id ="204" source = "3737" target = "2589"/>
+			<edge id ="205" source = "3737" target = "3618"/>
+			<edge id ="206" source = "3737" target = "3970"/>
+			<edge id ="207" source = "3737" target = "3545"/>
+			<edge id ="208" source = "3393" target = "3450"/>
+			<edge id ="209" source = "3393" target = "3508"/>
+			<edge id ="210" source = "3393" target = "3778"/>
+			<edge id ="211" source = "3393" target = "3395"/>
+			<edge id ="212" source = "3393" target = "3449"/>
+			<edge id ="213" source = "3393" target = "3392"/>
+			<edge id ="214" source = "3393" target = "1357"/>
+			<edge id ="215" source = "3393" target = "3075"/>
+			<edge id ="216" source = "2112" target = "3816"/>
+			<edge id ="217" source = "2112" target = "1084"/>
+			<edge id ="218" source = "2112" target = "2347"/>
+			<edge id ="219" source = "2112" target = "2108"/>
+			<edge id ="220" source = "2112" target = "3382"/>
+			<edge id ="221" source = "2112" target = "3380"/>
+			<edge id ="222" source = "2112" target = "328"/>
+			<edge id ="223" source = "2112" target = "2881"/>
+			<edge id ="224" source = "2714" target = "2792"/>
+			<edge id ="225" source = "2714" target = "2793"/>
+			<edge id ="226" source = "2714" target = "3454"/>
+			<edge id ="227" source = "2714" target = "3339"/>
+			<edge id ="228" source = "2714" target = "327"/>
+			<edge id ="229" source = "2714" target = "3453"/>
+			<edge id ="230" source = "2714" target = "2430"/>
+			<edge id ="231" source = "2714" target = "2881"/>
+			<edge id ="232" source = "3392" target = "3508"/>
+			<edge id ="233" source = "3392" target = "3395"/>
+			<edge id ="234" source = "3392" target = "3873"/>
+			<edge id ="235" source = "3392" target = "1862"/>
+			<edge id ="236" source = "3392" target = "3393"/>
+			<edge id ="237" source = "3392" target = "1357"/>
+			<edge id ="238" source = "3392" target = "3871"/>
+			<edge id ="239" source = "3392" target = "3394"/>
+			<edge id ="240" source = "2866" target = "3456"/>
+			<edge id ="241" source = "2866" target = "2092"/>
+			<edge id ="242" source = "2866" target = "1969"/>
+			<edge id ="243" source = "2866" target = "2712"/>
+			<edge id ="244" source = "2866" target = "1672"/>
+			<edge id ="245" source = "2866" target = "2759"/>
+			<edge id ="246" source = "2866" target = "1673"/>
+			<edge id ="247" source = "2866" target = "2865"/>
+			<edge id ="248" source = "1014" target = "995"/>
+			<edge id ="249" source = "1014" target = "1969"/>
+			<edge id ="250" source = "1014" target = "2712"/>
+			<edge id ="251" source = "1014" target = "170"/>
+			<edge id ="252" source = "1014" target = "1861"/>
+			<edge id ="253" source = "1014" target = "1013"/>
+			<edge id ="254" source = "1014" target = "3135"/>
+			<edge id ="255" source = "1014" target = "1355"/>
+			<edge id ="256" source = "2712" target = "3456"/>
+			<edge id ="257" source = "2712" target = "2092"/>
+			<edge id ="258" source = "2712" target = "3634"/>
+			<edge id ="259" source = "2712" target = "1002"/>
+			<edge id ="260" source = "2712" target = "3515"/>
+			<edge id ="261" source = "2712" target = "1965"/>
+			<edge id ="262" source = "2712" target = "2578"/>
+			<edge id ="263" source = "2712" target = "1968"/>
+			<edge id ="264" source = "1969" target = "2712"/>
+			<edge id ="265" source = "1969" target = "1674"/>
+			<edge id ="266" source = "1969" target = "1672"/>
+			<edge id ="267" source = "1969" target = "2759"/>
+			<edge id ="268" source = "1969" target = "1965"/>
+			<edge id ="269" source = "1969" target = "2865"/>
+			<edge id ="270" source = "1969" target = "2866"/>
+			<edge id ="271" source = "1969" target = "1968"/>
+			<edge id ="272" source = "1013" target = "3136"/>
+			<edge id ="273" source = "1013" target = "741"/>
+			<edge id ="274" source = "1013" target = "1012"/>
+			<edge id ="275" source = "1013" target = "3576"/>
+			<edge id ="276" source = "1013" target = "1355"/>
+			<edge id ="277" source = "1013" target = "1014"/>
+			<edge id ="278" source = "1013" target = "3940"/>
+			<edge id ="279" source = "1013" target = "1861"/>
+			<edge id ="280" source = "995" target = "741"/>
+			<edge id ="281" source = "995" target = "1012"/>
+			<edge id ="282" source = "995" target = "1355"/>
+			<edge id ="283" source = "995" target = "1014"/>
+			<edge id ="284" source = "995" target = "1861"/>
+			<edge id ="285" source = "995" target = "1013"/>
+			<edge id ="286" source = "995" target = "3135"/>
+			<edge id ="287" source = "995" target = "170"/>
+			<edge id ="288" source = "84" target = "995"/>
+			<edge id ="289" source = "84" target = "418"/>
+			<edge id ="290" source = "84" target = "380"/>
+			<edge id ="291" source = "84" target = "82"/>
+			<edge id ="292" source = "84" target = "1014"/>
+			<edge id ="293" source = "84" target = "273"/>
+			<edge id ="294" source = "84" target = "83"/>
+			<edge id ="295" source = "84" target = "308"/>
+			<edge id ="296" source = "308" target = "418"/>
+			<edge id ="297" source = "308" target = "82"/>
+			<edge id ="298" source = "308" target = "273"/>
+			<edge id ="299" source = "308" target = "80"/>
+			<edge id ="300" source = "308" target = "309"/>
+			<edge id ="301" source = "308" target = "83"/>
+			<edge id ="302" source = "308" target = "1082"/>
+			<edge id ="303" source = "308" target = "84"/>
+			<edge id ="304" source = "309" target = "418"/>
+			<edge id ="305" source = "309" target = "311"/>
+			<edge id ="306" source = "309" target = "81"/>
+			<edge id ="307" source = "309" target = "308"/>
+			<edge id ="308" source = "309" target = "1392"/>
+			<edge id ="309" source = "309" target = "286"/>
+			<edge id ="310" source = "309" target = "83"/>
+			<edge id ="311" source = "309" target = "1082"/>
+			<edge id ="312" source = "82" target = "311"/>
+			<edge id ="313" source = "82" target = "81"/>
+			<edge id ="314" source = "82" target = "273"/>
+			<edge id ="315" source = "82" target = "80"/>
+			<edge id ="316" source = "82" target = "309"/>
+			<edge id ="317" source = "82" target = "83"/>
+			<edge id ="318" source = "82" target = "308"/>
+			<edge id ="319" source = "82" target = "84"/>
+			<edge id ="320" source = "380" target = "995"/>
+			<edge id ="321" source = "380" target = "798"/>
+			<edge id ="322" source = "380" target = "449"/>
+			<edge id ="323" source = "380" target = "997"/>
+			<edge id ="324" source = "380" target = "353"/>
+			<edge id ="325" source = "380" target = "996"/>
+			<edge id ="326" source = "380" target = "993"/>
+			<edge id ="327" source = "380" target = "994"/>
+			<edge id ="328" source = "188" target = "811"/>
+			<edge id ="329" source = "188" target = "189"/>
+			<edge id ="330" source = "188" target = "610"/>
+			<edge id ="331" source = "188" target = "663"/>
+			<edge id ="332" source = "188" target = "810"/>
+			<edge id ="333" source = "188" target = "354"/>
+			<edge id ="334" source = "188" target = "664"/>
+			<edge id ="335" source = "188" target = "258"/>
+			<edge id ="336" source = "286" target = "1221"/>
+			<edge id ="337" source = "286" target = "310"/>
+			<edge id ="338" source = "286" target = "1356"/>
+			<edge id ="339" source = "286" target = "1392"/>
+			<edge id ="340" source = "286" target = "223"/>
+			<edge id ="341" source = "286" target = "1357"/>
+			<edge id ="342" source = "286" target = "745"/>
+			<edge id ="343" source = "286" target = "258"/>
+			<edge id ="344" source = "664" target = "1787"/>
+			<edge id ="345" source = "664" target = "744"/>
+			<edge id ="346" source = "664" target = "663"/>
+			<edge id ="347" source = "664" target = "666"/>
+			<edge id ="348" source = "664" target = "610"/>
+			<edge id ="349" source = "664" target = "1785"/>
+			<edge id ="350" source = "664" target = "1786"/>
+			<edge id ="351" source = "664" target = "258"/>
+			<edge id ="352" source = "663" target = "811"/>
+			<edge id ="353" source = "663" target = "1212"/>
+			<edge id ="354" source = "663" target = "665"/>
+			<edge id ="355" source = "663" target = "1211"/>
+			<edge id ="356" source = "663" target = "1213"/>
+			<edge id ="357" source = "663" target = "666"/>
+			<edge id ="358" source = "663" target = "664"/>
+			<edge id ="359" source = "663" target = "258"/>
+			<edge id ="360" source = "310" target = "1212"/>
+			<edge id ="361" source = "310" target = "272"/>
+			<edge id ="362" source = "310" target = "665"/>
+			<edge id ="363" source = "310" target = "1641"/>
+			<edge id ="364" source = "310" target = "663"/>
+			<edge id ="365" source = "310" target = "810"/>
+			<edge id ="366" source = "310" target = "286"/>
+			<edge id ="367" source = "310" target = "258"/>
+			<edge id ="368" source = "189" target = "1221"/>
+			<edge id ="369" source = "189" target = "663"/>
+			<edge id ="370" source = "189" target = "400"/>
+			<edge id ="371" source = "189" target = "664"/>
+			<edge id ="372" source = "189" target = "745"/>
+			<edge id ="373" source = "189" target = "188"/>
+			<edge id ="374" source = "189" target = "361"/>
+			<edge id ="375" source = "189" target = "258"/>
+		</edges>
+	</graph>
+	</gexf>

@@ -1,0 +1,68 @@
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.2draft/viz">
+	<graph defaultedgetype="directed" idtype="string" type="static">
+		<nodes count="  1000  "> 
+			<node id ="11" label ="and">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="116" label ="among">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="40" label ="because">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="38" label ="when">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="22" label ="into">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="117" label ="within">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="27" label ="as">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="226" label ="through">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="17" label ="at">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="16" label ="in">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="120" label ="throughout">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="115" label ="before">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="271" label ="needs">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="26" label ="from">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="142" label ="takes">
+				<viz:color r="124" g="144" b="35" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="15" label ="for">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="270" label ="ampersand">

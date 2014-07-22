@@ -1,0 +1,280 @@
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.2draft/viz">
+	<graph defaultedgetype="directed" idtype="string" type="static">
+		<nodes count="  1000  "> 
+			<node id ="677" label ="groups">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="309" label ="people">
+				<viz:color r="255" g="140" b="0" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="571" label ="spring">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="681" label ="mind">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="682" label ="authority">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="353" label ="month">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="492" label ="states">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="311" label ="books">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="449" label ="committee">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="295" label ="dinner">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="911" label ="assembly">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="357" label ="style">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="494" label ="strength">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="781" label ="district">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="549" label ="space">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="308" label ="union">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="312" label ="hospital">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="554" label ="century">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="450" label ="system">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="684" label ="music">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="303" label ="man">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="546" label ="war">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="359" label ="movement">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="392" label ="march">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="566" label ="business">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="304" label ="government">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="547" label ="students">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="358" label ="season">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="553" label ="company">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="306" label ="men">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="568" label ="choice">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="552" label ="director">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="393" label ="words">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="873" label ="services">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="782" label ="trade">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="744" label ="friends">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="647" label ="stage">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="680" label ="sound">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="786" label ="daughter">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="354" label ="hour">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="391" label ="countries">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="356" label ="industry">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="305" label ="bill">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="548" label ="ways">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="307" label ="women">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="679" label ="race">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="294" label ="night">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="310" label ="action">
+				<viz:color r="30" g="144" b="255" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="355" label ="minutes">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+			<node id ="891" label ="husband">
+				<viz:color r="255" g="255" b="000" a="0.6"/>
+				<viz:size value="20"/>
+			</node>
+		</nodes>
+		<edges count="  0  "> 
+			<edge id ="0" source = "309" target = "357"/>
+			<edge id ="1" source = "309" target = "392"/>
+			<edge id ="2" source = "309" target = "391"/>
+			<edge id ="3" source = "309" target = "308"/>
+			<edge id ="4" source = "309" target = "304"/>
+			<edge id ="5" source = "309" target = "393"/>
+			<edge id ="6" source = "309" target = "310"/>
+			<edge id ="7" source = "309" target = "359"/>
+			<edge id ="8" source = "359" target = "781"/>
+			<edge id ="9" source = "359" target = "308"/>
+			<edge id ="10" source = "359" target = "571"/>
+			<edge id ="11" source = "359" target = "353"/>
+			<edge id ="12" source = "359" target = "684"/>
+			<edge id ="13" source = "359" target = "358"/>
+			<edge id ="14" source = "359" target = "568"/>
+			<edge id ="15" source = "359" target = "647"/>
+			<edge id ="16" source = "310" target = "494"/>
+			<edge id ="17" source = "310" target = "392"/>
+			<edge id ="18" source = "310" target = "391"/>
+			<edge id ="19" source = "310" target = "356"/>
+			<edge id ="20" source = "310" target = "306"/>
+			<edge id ="21" source = "310" target = "309"/>
+			<edge id ="22" source = "310" target = "492"/>
+			<edge id ="23" source = "310" target = "294"/>
+			<edge id ="24" source = "393" target = "392"/>
+			<edge id ="25" source = "393" target = "566"/>
+			<edge id ="26" source = "393" target = "781"/>
+			<edge id ="27" source = "393" target = "391"/>
+			<edge id ="28" source = "393" target = "548"/>
+			<edge id ="29" source = "393" target = "571"/>
+			<edge id ="30" source = "393" target = "306"/>
+			<edge id ="31" source = "393" target = "546"/>
+			<edge id ="32" source = "304" target = "554"/>
+			<edge id ="33" source = "304" target = "309"/>
+			<edge id ="34" source = "304" target = "308"/>
+			<edge id ="35" source = "304" target = "553"/>
+			<edge id ="36" source = "304" target = "305"/>
+			<edge id ="37" source = "304" target = "450"/>
+			<edge id ="38" source = "304" target = "449"/>
+			<edge id ="39" source = "304" target = "303"/>
+			<edge id ="40" source = "308" target = "911"/>
+			<edge id ="41" source = "308" target = "566"/>
+			<edge id ="42" source = "308" target = "312"/>
+			<edge id ="43" source = "308" target = "782"/>
+			<edge id ="44" source = "308" target = "311"/>
+			<edge id ="45" source = "308" target = "359"/>
+			<edge id ="46" source = "308" target = "891"/>
+			<edge id ="47" source = "308" target = "307"/>
+			<edge id ="48" source = "391" target = "781"/>
+			<edge id ="49" source = "391" target = "548"/>
+			<edge id ="50" source = "391" target = "681"/>
+			<edge id ="51" source = "391" target = "682"/>
+			<edge id ="52" source = "391" target = "568"/>
+			<edge id ="53" source = "391" target = "547"/>
+			<edge id ="54" source = "391" target = "393"/>
+			<edge id ="55" source = "391" target = "546"/>
+			<edge id ="56" source = "392" target = "680"/>
+			<edge id ="57" source = "392" target = "786"/>
+			<edge id ="58" source = "392" target = "354"/>
+			<edge id ="59" source = "392" target = "549"/>
+			<edge id ="60" source = "392" target = "548"/>
+			<edge id ="61" source = "392" target = "552"/>
+			<edge id ="62" source = "392" target = "295"/>
+			<edge id ="63" source = "392" target = "679"/>
+			<edge id ="64" source = "357" target = "393"/>
+			<edge id ="65" source = "357" target = "566"/>
+			<edge id ="66" source = "357" target = "309"/>
+			<edge id ="67" source = "357" target = "308"/>
+			<edge id ="68" source = "357" target = "355"/>
+			<edge id ="69" source = "357" target = "677"/>
+			<edge id ="70" source = "357" target = "873"/>
+			<edge id ="71" source = "357" target = "744"/>
+		</edges>
+	</graph>
+	</gexf>
