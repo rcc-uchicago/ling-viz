@@ -7,36 +7,49 @@ function xmlToGraph(xmlDoc)
 {   
     function flattenTags(name, f)
     {
-	var nl = xmlDoc.getElementsByTagName(name)
-	var arr = Array.prototype.slice.call(nl)
-	return arr.map(f);
+	    var nl = xmlDoc.getElementsByTagName(name)
+	    var arr = Array.prototype.slice.call(nl)
+	    return arr.map(f);
     }
+    
+    function getColor(tag)
+    {
+        var c = tag.getElementsByTagName("ns0:color")[0]; // use first color element (only one anyway)
+        if (c == undefined)
+            return 'black';
+        else {
+            return 'rgb(' + c.getAttribute('r') + "," + c.getAttribute('g') + "," + c.getAttribute('b') + ')';
+        }
+    } 
+     
 
     var nodes = flattenTags("node",
 			    function(tag) {
-				return {"label": tag.getAttribute("label"), "id": parseInt(tag.getAttribute("id"))};
+				return {"label": tag.getAttribute("label"), 
+					"id": parseInt(tag.getAttribute("id")),
+					"color": getColor(tag)};
 			    });
 
     function flattenEdge(tag)
     {
-	function idToPos(id) {
-	    var pos = nodes.findIndex(function(n) { return n.id == id }); // -1 if no node
-	    return pos;
-	}
-	var src = +tag.getAttribute("source"), tar = +tag.getAttribute("target");
-	var s = idToPos(src), t = idToPos(tar);
-	if (t >= 0 && s >= 0)
-	    return {"source": s, "target": t};
-	else {
-	    console.log("Ignoring invalid edge (" + src + "," + tar + ")");
-	    return null;
-	}
-    }
+        function idToPos(id) {
+            var pos = nodes.findIndex(function(n) { return n.id == id }); // -1 if no node
+            return pos;
+        }
+        var src = +tag.getAttribute("source"), tar = +tag.getAttribute("target");
+        var s = idToPos(src), t = idToPos(tar);
+        if (t >= 0 && s >= 0)
+            return {"source": s, "target": t};
+        else {
+            console.log("Ignoring invalid edge (" + src + "," + tar + ")");
+            return null;
+        }
+   }
 
     var edges = flattenTags("edge", flattenEdge).filter(function(e) { return e; });
     
     
-   return {nodes: nodes, edges: edges};
+    return {nodes: nodes, edges: edges};
 }
 
 
@@ -73,6 +86,7 @@ function plotGraph(svg, nodes, edges)
 	.attr("x", -8)
 	.attr("y", -8)
 	.attr("r", 8)
+    .attr("fill", function(d) { return d.color; })
 	.attr("id", function(d) { return d.label });
     
     node.append("text")
