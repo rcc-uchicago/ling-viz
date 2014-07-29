@@ -113,30 +113,63 @@ function plotGraph(svg, nodes, edges)
 
 
 function findNode(e) {
-    var name = e.target.value;
+    
+    /* event or string? */
+    //var name = e.target.value;
+    
+    var name = e;
+
     var node = document.getElementById(name);
-    if (node != null && document.getElementById("row_" + name) == null) {
-	node.setAttribute("fill", "red");
-	var row = d3.select("#selected").append("tr");
+    if (node != null) {
+        node.setAttribute("fill", nextColor());
+	
     
-	row.html(name + " ");
-	row.attr("id", "row_" + name)
-	row.append("a").html("x").attr("href", "#")
-            .on("click", function() { removeNode(name) });
-    }
-    
+        var node_obj = updateTable.nodes.find(function (n) { return n.label == name });
+        var nb_l = updateTable.edges.filter(function(e) { return e.source == node_obj; })
+            .map(function (n) { return n.target; });
+        var nb_r = updateTable.edges.filter(function(e) { return e.target == node_obj; })
+            .map(function (n) { return n.source; });
+        var neighbors = nb_l.concat(nb_r);
+
+        if (neighbors.length > 0) {
+            d3.select("#dtable").select("thead").select("tr")
+                .append("th")
+                .classed(name + "_col", true)
+                .html(name);
+            
+            d3.select("#dtable").select("tbody").selectAll("tr")
+                .append("td")
+                .classed(name + "_col", true)
+                .data(neighbors)
+                .on("click", updateTable)
+                .html(function(d) { return d.label; });
+
+            var col = nextColor();
+            for (var i in neighbors) {
+                var n = neighbors[i];
+                d3.select('#' + n.label)
+                    .attr('fill', col);
+            }
+        }   
+   }   
+
 }
 
 function removeNode(name) {
-  var o = document.getElementById("row_" + name);
-  if (o != null)
-   o.parentNode.removeChild(o);
+    d3.select("#" + name).attr("fill", "black");
 
-  var node = document.getElementById(name);
-  if (node != null) node.setAttribute("fill", "black");
+    d3.select("#dtable").selectAll("." + name + "_col").remove();    
+     
 }
 
 
+function nextColor() {
+    if (! this.colors) {
+        this.colors = ["red", "orange", "yellow", "green", "turquoise", "blue", "purple"];
+        this.idx = 0;
+    }
+    return this.colors[this.idx++];
+}
 
 function handleFileSelect(evt) {
     
@@ -155,11 +188,13 @@ function handleFileSelect(evt) {
 	    var graph = xmlToGraph(xmlDoc);
 	    
 	    d3.select("#vis").selectAll("*").remove(); // remove existing vis, if necessary
-	
+        d3.select("#dtable").selectAll("*").remove();
+
 	    if (graph.nodes != "") {
-		cls();
-		plotGraph(d3.select("#vis"), graph.nodes, graph.edges);
-	    }
+		    cls();
+		    plotGraph(d3.select("#vis"), graph.nodes, graph.edges);
+	        createTable(graph.nodes, graph.edges);
+        }
 	    else {
 		msg("Unable to load XML file.");
 	    }
@@ -168,6 +203,42 @@ function handleFileSelect(evt) {
     }
 }
 
+
+function updateTable() {
+    var cell = d3.select(d3.event.target);
+    if (cell.classed("sel")) {
+        cell.classed({"sel":false, "unsel": true});
+        removeNode(cell.html());
+    }
+    else {
+        cell.classed({"sel":true, "unsel":false});
+        findNode(cell.html());
+    }
+}
+
+function createTable(nodes, edges) {
+    updateTable.nodes = nodes;
+    updateTable.edges = edges;
+
+    d3.select("#dtable")
+        .append("thead")
+        .append("tr")
+        .append("th")
+        .html("nodes");
+   
+    var rows = d3.select("#dtable")
+       .append("tbody")
+       .selectAll("tr")
+       .data(nodes)
+        .enter() 
+       .append("tr");
+
+    rows
+        .append("td")
+        .html(function(d) { return d.label; })
+        .classed("unsel", true)
+        .on("click", updateTable);
+}
 
 
 /*

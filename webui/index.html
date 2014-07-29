@@ -15,6 +15,28 @@ a:visited {
     font: 10px sans-serif;
 }
 
+/* selectable table */
+table {
+    border-collapse: collapse;
+}
+
+td {
+    border:dotted;
+    border-width:1px;
+    width:100px;
+}
+.sel {
+    background-color: blue;
+    color: white;
+}
+.unsel {
+    background-color: white;
+    color: black;
+}
+.titles {
+    font: bold;
+}
+
 
 /* from d3: */
 .link {
@@ -45,6 +67,10 @@ a:visited {
 <svg width="800" height="500" style="border:solid; border-width:1px;">
 
 </svg>
+
+<table id="dtable">
+</table>
+
 </div>
 
 <script src="d3.js"></script>
