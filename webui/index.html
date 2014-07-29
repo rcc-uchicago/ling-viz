@@ -79,7 +79,20 @@ td {
 
 
 /* Register Find-Node behavior. */
-document.getElementById("nodename").onchange = findNode;
+document.getElementById("nodename").onchange = 
+    (function(e) {
+        /* select the right row in the table - a little hacky. */
+        var rows = d3.select("#dtable")
+            .select("tbody")
+            .selectAll("tr")
+            .each(function(r) {
+                var cell = this.childNodes[0];
+                if (cell.innerHTML == e.target.value)
+                    d3.select(cell).classed({"sel":true, "unsel":false}); 
+                });
+        
+        findNode(e.target.value)
+    });
 
 /* Register filepicker handler. */
 document.getElementById("filepicker").onchange = handleFileSelect;

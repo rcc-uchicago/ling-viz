@@ -112,13 +112,8 @@ function plotGraph(svg, nodes, edges)
 }
 
 
-function findNode(e) {
+function findNode(name) {
     
-    /* event or string? */
-    //var name = e.target.value;
-    
-    var name = e;
-
     var node = document.getElementById(name);
     if (node != null) {
         node.setAttribute("fill", nextColor());
