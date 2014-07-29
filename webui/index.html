@@ -42,12 +42,13 @@ a:visited {
 </div>
 
 <div id="content">
-<svg width="800" height="500" style="border:solid; border-width:1px;">
-
-</svg>
+<x3d class="x3d" width="800px" height="500px" style="border:solid; border-width:1px;">
+</x3d>
 </div>
 
 <script src="d3.js"></script>
+<script src="http://x3dom.org/x3dom/example/x3dom.js"></script>
+<script src="d3.layout.force3d.js"></script>
 <script src="graphutils.js"></script>
 <script>
 
@@ -59,8 +60,8 @@ document.getElementById("nodename").onchange = findNode;
 document.getElementById("filepicker").onchange = handleFileSelect;
 
 
-/* Uncomment this section for zoom behavior. */
-/* From: http://stackoverflow.com/questions/7871425/is-there-a-way-to-zoom-into-a-d3-force-layout-graph */
+/* Uncomment this section for zoom behavior.
+/* From: http://stackoverflow.com/questions/7871425/is-there-a-way-to-zoom-into-a-d3-force-layout-graph
 var svg = d3.select("svg")
    .attr("pointer-events", "all")
    .call(d3.behavior.zoom().on("zoom", redraw));
@@ -76,6 +77,14 @@ function redraw() {
       "translate(" + d3.event.translate + ")"
       + " scale(" + d3.event.scale + ")");
 }
+*/
+
+var x3d = d3.select("x3d");
+var vis = x3d
+    .append('x3d:scene')
+    .attr("id", "vis")
+    .attr("width", x3d.attr("width"))
+    .attr("height", x3d.attr("height"));
 
 
 /* Tick slider behavior */
@@ -91,5 +100,10 @@ function msg(x) {
 function cls() {
   d3.select("#msg").html(" ");
 }
+
+//plotGraph(d3.select("#vis"), [{label:"hi", id:"0", color:"black"}]);
+                            //  {label: "bye", id:"1", color:"black"}],
+                              //[{source:"0", target:"1"}]);
+
 
 </script>
