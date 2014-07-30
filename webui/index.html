@@ -15,6 +15,28 @@ a:visited {
     font: 10px sans-serif;
 }
 
+/* selectable table */
+table {
+    border-collapse: collapse;
+}
+
+td {
+    border:dotted;
+    border-width:1px;
+    width:100px;
+}
+.sel {
+    background-color: blue;
+    color: white;
+}
+.unsel {
+    background-color: white;
+    color: black;
+}
+.titles {
+    font: bold;
+}
+
 
 /* from d3: */
 .link {
@@ -44,6 +66,11 @@ a:visited {
 <div id="content">
 <x3d class="x3d" width="800px" height="500px" style="border:solid; border-width:1px;">
 </x3d>
+
+
+<table id="dtable">
+</table>
+
 </div>
 
 <script src="d3.js"></script>
@@ -54,7 +81,21 @@ a:visited {
 
 
 /* Register Find-Node behavior. */
-document.getElementById("nodename").onchange = findNode;
+document.getElementById("nodename").onchange = 
+    (function(e) {
+        var name = e.target.value;
+        /* select the right row in the table - a little hacky. */
+        var rows = d3.select("#dtable")
+            .select("tbody")
+            .selectAll("tr")
+            .each(function(r) {
+                var cell = this.childNodes[0];
+                if (cell.innerHTML == name)
+                    d3.select(cell).classed({"sel":true, "unsel":false}); 
+                });
+        
+        findNode(name)
+    });
 
 /* Register filepicker handler. */
 document.getElementById("filepicker").onchange = handleFileSelect;

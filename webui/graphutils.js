@@ -134,33 +134,62 @@ y = d3.scale.linear().domain([0, 100]).range([0, 10]),
 z = d3.scale.linear().domain([0, 100]).range([0, 10]);
 
 
-function findNode(e) {
-    var name = e.target.value;
+function findNode(name) {
     var node = d3.select('#' + name + "_sh");
-    if (node != null && document.getElementById("row_" + name) == null) {
+    if (node != null) {
 	
-        node.select("material").attr("diffuseColor", "red");
+        node.select("material").attr("diffuseColor", nextColor());
 
-	    var row = d3.select("#selected").append("tr");
+	    var row = d3.select("#selected").append("tr");	
     
-    	row.html(name + " ");
-    	row.attr("id", "row_" + name)
-    	row.append("a").html("x").attr("href", "#")
-             .on("click", function() { removeNode(name) });
-    }
-    
+        var node_obj = updateTable.nodes.find(function (n) { return n.label == name });
+        var nb_l = updateTable.edges.filter(function(e) { return e.source == node_obj; })
+            .map(function (n) { return n.target; });
+        var nb_r = updateTable.edges.filter(function(e) { return e.target == node_obj; })
+            .map(function (n) { return n.source; });
+        var neighbors = nb_l.concat(nb_r);
+
+        if (neighbors.length > 0) {
+            d3.select("#dtable").select("thead").select("tr")
+                .append("th")
+                .classed(name + "_col", true)
+                .html(name);
+            
+            d3.select("#dtable").select("tbody").selectAll("tr")
+                .append("td")
+                .classed(name + "_col", true)
+                .data(neighbors)
+                .on("click", updateTable)
+                .html(function(d) { return d.label; });
+
+            var col = nextColor();
+            for (var i in neighbors) {
+                var n = neighbors[i];
+                d3.select('#' + n.label + "_sh")
+                    .select("material").attr("diffuseColor", nextColor());
+            }
+        }   
+   }   
+
 }
 
 function removeNode(name) {
-  var o = document.getElementById("row_" + name);
-  if (o != null)
-   o.parentNode.removeChild(o);
 
   var node = d3.select('#' + name + "_sh");
   if (node != null) node.select("material").attr("diffuseColor", "steelblue");
+  
+  d3.select("#dtable").selectAll("." + name + "_col").remove();
+
 }
 
 
+function nextColor() {
+    if (! this.colors) {
+        this.colors = ["red", "orange", "yellow", "green", "turquoise", "blue", "purple"];
+        this.idx = 0;
+    }
+    return this.colors[this.idx++];
+}
 
 function handleFileSelect(evt) {
     
@@ -180,18 +209,59 @@ function handleFileSelect(evt) {
 	    
 	    //d3.select("#vis").selectAll("*").remove(); // remove existing vis, if necessary
 	    
+        d3.select("#dtable").selectAll("*").remove();
 
 	    if (graph.nodes != "") {
 		    cls();
 		    plotGraph(d3.select("#vis"), graph.nodes, graph.edges);
-	    }
+	        createTable(graph.nodes, graph.edges);
+        }
 	    else {
-		msg("Unable to load XML file.");
+		    msg("Unable to load XML file.");
 	    }
 	});
+
 	reader.readAsText(f);
     }
 }
+
+
+function updateTable() {
+    var cell = d3.select(d3.event.target);
+    if (cell.classed("sel")) {
+        cell.classed({"sel":false, "unsel": true});
+        removeNode(cell.html());
+    }
+    else {
+        cell.classed({"sel":true, "unsel":false});
+        findNode(cell.html());
+    }
+}
+
+function createTable(nodes, edges) {
+    updateTable.nodes = nodes;
+    updateTable.edges = edges;
+
+    d3.select("#dtable")
+        .append("thead")
+        .append("tr")
+        .append("th")
+        .html("nodes");
+   
+    var rows = d3.select("#dtable")
+       .append("tbody")
+       .selectAll("tr")
+       .data(nodes)
+        .enter() 
+       .append("tr");
+
+    rows
+        .append("td")
+        .html(function(d) { return d.label; })
+        .classed("unsel", true)
+        .on("click", updateTable);
+}
+
 
 /*
    'Array.findIndex' may not be in all JS implementations. See:
