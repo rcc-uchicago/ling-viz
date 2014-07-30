@@ -1,4 +1,14 @@
-d3.ns.prefix.x3da="http://www.web3d.org/specifications/x3d-namespace"
+
+/* Color changes should be transparent to drawing 'technology' - SVG, canvas, x3dom... */
+(function() {
+    d3.selection.prototype.color = function(c) {
+        return this.select("material").attr("diffuseColor", c);
+
+    };
+})();
+
+d3.ns.prefix.x3da="http://www.web3d.org/specifications/x3d-namespace";
+
 
 /* XML Parsing notes --
    D3 edges (as read from JSON) go from index to index -- i.e. {source:0,target:1} goes from the
@@ -136,9 +146,10 @@ z = d3.scale.linear().domain([0, 100]).range([0, 10]);
 
 function findNode(name) {
     var node = d3.select('#' + name + "_sh");
+   
     if (node != null) {
 	
-        node.select("material").attr("diffuseColor", nextColor());
+        node.color(nextColor());
 
 	    var row = d3.select("#selected").append("tr");	
     
@@ -166,7 +177,7 @@ function findNode(name) {
             for (var i in neighbors) {
                 var n = neighbors[i];
                 d3.select('#' + n.label + "_sh")
-                    .select("material").attr("diffuseColor", nextColor());
+                    .color(col);
             }
         }   
    }   
@@ -176,7 +187,7 @@ function findNode(name) {
 function removeNode(name) {
 
   var node = d3.select('#' + name + "_sh");
-  if (node != null) node.select("material").attr("diffuseColor", "steelblue");
+  if (node != null) node.color("steelblue");
   
   d3.select("#dtable").selectAll("." + name + "_col").remove();
 
