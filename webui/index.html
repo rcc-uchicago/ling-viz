@@ -81,17 +81,18 @@ td {
 /* Register Find-Node behavior. */
 document.getElementById("nodename").onchange = 
     (function(e) {
+        var name = e.target.value;
         /* select the right row in the table - a little hacky. */
         var rows = d3.select("#dtable")
             .select("tbody")
             .selectAll("tr")
             .each(function(r) {
                 var cell = this.childNodes[0];
-                if (cell.innerHTML == e.target.value)
+                if (cell.innerHTML == name)
                     d3.select(cell).classed({"sel":true, "unsel":false}); 
                 });
         
-        findNode(e.target.value)
+        findNode(name)
     });
 
 /* Register filepicker handler. */
