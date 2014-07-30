@@ -1,3 +1,10 @@
+/* Color changes should be transparent to drawing 'technology' - SVG, canvas, x3dom... */
+(function() {
+    d3.selection.prototype.color = function(c) {
+        return this.attr("fill", c);
+    };
+})();
+
 /* XML Parsing notes --
    D3 edges (as read from JSON) go from index to index -- i.e. {source:0,target:1} goes from the
    first node in the node list to the second node. GEXF files go by ID. How we transform:
@@ -114,9 +121,9 @@ function plotGraph(svg, nodes, edges)
 
 function findNode(e) {
     var name = e.target.value;
-    var node = document.getElementById(name);
+    var node = d3.select('#' + name);
     if (node != null && document.getElementById("row_" + name) == null) {
-	node.setAttribute("fill", "red");
+	node.color("red");
 	var row = d3.select("#selected").append("tr");
     
 	row.html(name + " ");
@@ -132,8 +139,8 @@ function removeNode(name) {
   if (o != null)
    o.parentNode.removeChild(o);
 
-  var node = document.getElementById(name);
-  if (node != null) node.setAttribute("fill", "black");
+  var node = d3.select('#' + name); 
+  if (node != null) node.color('black');
 }
 
 
