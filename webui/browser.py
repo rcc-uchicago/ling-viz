@@ -34,7 +34,13 @@ def makegraph(lines, word, ngen):
     return nodes_str, edges_str
 
 
+
+
 class VizWindow(QMainWindow):
+
+    width = 800
+    height = 500
+
   
     @pyqtSlot(result=str)
     def getNodes(self):
@@ -45,26 +51,29 @@ class VizWindow(QMainWindow):
         return self.edges
 
 
-    def __init__(self, nodes, edges):
+    def __init__(self, lines, word, gen):
 
         super(VizWindow, self).__init__()
     
-        self.nodes = nodes
-        self.edges = edges
+        self.lines = lines
+        self.word = word
+        self.ngen = ngen
 
         self.setWindowTitle("Graph viz")
         web = QWebView(self)
-
+        self.resize(self.width, self.height)
         
         web.load(QUrl("index-sm.html"))
         self.setCentralWidget(web)
 
         main_frame = web.page().mainFrame()
         doc_element = main_frame.documentElement()
-        main_frame.titleChanged.connect(lambda: self.plotGraph(main_frame, 800, 500))
+        main_frame.titleChanged.connect(lambda: self.plotGraph(main_frame))
     
-    def plotGraph(self, main_frame, width, height):
+    def plotGraph(self, main_frame):
         
+        self.nodes, self.edges = make_graph(self.lines, self.words, self.ngen)
+
         doc_element = main_frame.documentElement()
         main_frame.addToJavaScriptWindowObject("MainWindow", self)
         
@@ -72,8 +81,8 @@ class VizWindow(QMainWindow):
         
         svg = doc_element.findFirst("svg")
         svg.removeAllChildren() # maybe this is a replot
-        svg.setAttribute(QString("width"), QString(str(width)))
-        svg.setAttribute(QString("height"), QString(str(height)))
+        svg.setAttribute(QString("width"), QString(str(self.width)))
+        svg.setAttribute(QString("height"), QString(str(self.height)))
 
         svg.evaluateJavaScript("""
         
@@ -89,11 +98,8 @@ class VizWindow(QMainWindow):
     @pyqtSlot(QString, QWebElement)
     def handleClick(self, label, doc_elem):
         print label
-        with open(sys.argv[1]) as xs:
-            nodes, edges = makegraph(xs.readlines(), label, 1)
-            self.nodes = nodes
-            self.edges = edges
-            self.plotGraph(doc_elem.webFrame(), 800, 500)
+        self.name = label
+        self.plotGraph(doc_elem.webFrame())
 
 
 def graph2d(nodes, edges): 
@@ -113,9 +119,14 @@ def main():
     with open(sys.argv[1]) as xs:
         word = sys.argv[2]
         ngen = int(sys.argv[3])
-        nodes, edges = makegraph(xs.readlines(), word, ngen)
-        graph2d(nodes, edges)
-        
+        #nodes, edges = makegraph(xs.readlines(), word, ngen)
+        #graph2d(nodes, edges)
+        app = QApplication(list())
+        web = VizWindow(xs.readlines(), word, ngen)
+        web.show()
+
+    return app.exec_()
+
 
 if __name__ == "__main__":
     main()
