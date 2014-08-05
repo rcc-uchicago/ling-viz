@@ -51,7 +51,7 @@ class VizWindow(QMainWindow):
         return self.edges
 
 
-    def __init__(self, lines, word, gen):
+    def __init__(self, lines, word, ngen):
 
         super(VizWindow, self).__init__()
     
@@ -68,46 +68,38 @@ class VizWindow(QMainWindow):
 
         main_frame = web.page().mainFrame()
         doc_element = main_frame.documentElement()
-        main_frame.titleChanged.connect(lambda: self.plotGraph(main_frame))
+        main_frame.titleChanged.connect(self.plotGraph)
     
-    def plotGraph(self, main_frame):
-        
-        self.nodes, self.edges = make_graph(self.lines, self.words, self.ngen)
+    def plotGraph(self):
+
+        main_frame = self.centralWidget().page().mainFrame() # a little dangerous...
+
+        print "Plotting graph with center %s" % self.word
+        self.nodes, self.edges = makegraph(self.lines, self.word, self.ngen)
 
         doc_element = main_frame.documentElement()
-        main_frame.addToJavaScriptWindowObject("MainWindow", self)
-        
-        self.resize(width, height)
+        main_frame.addToJavaScriptWindowObject("MainWindow", self) 
         
         svg = doc_element.findFirst("svg")
-        svg.removeAllChildren() # maybe this is a replot
         svg.setAttribute(QString("width"), QString(str(self.width)))
         svg.setAttribute(QString("height"), QString(str(self.height)))
 
         svg.evaluateJavaScript("""
-        
+       
+            d3.select('svg').selectAll('*').remove()
             var nodes = JSON.parse(MainWindow.getNodes())
             var edges = JSON.parse(MainWindow.getEdges())
             plotGraph(d3.select('svg'), nodes, edges)
             
-            d3.selectAll("circle").on("click", function() { MainWindow.handleClick(d3.event.target.id, document) });
+            d3.selectAll("circle").on("click", function() { MainWindow.handleClick(d3.event.target.id) });
        
 
        """)
 
-    @pyqtSlot(QString, QWebElement)
-    def handleClick(self, label, doc_elem):
-        print label
-        self.name = label
-        self.plotGraph(doc_elem.webFrame())
-
-
-def graph2d(nodes, edges): 
-    app = QApplication(list())
-    web = VizWindow(nodes, edges)
-    web.show()
- 
-    return app.exec_()
+    @pyqtSlot(QString)
+    def handleClick(self, label):
+        self.word = label
+        self.plotGraph()
 
 
 def main():
@@ -119,8 +111,6 @@ def main():
     with open(sys.argv[1]) as xs:
         word = sys.argv[2]
         ngen = int(sys.argv[3])
-        #nodes, edges = makegraph(xs.readlines(), word, ngen)
-        #graph2d(nodes, edges)
         app = QApplication(list())
         web = VizWindow(xs.readlines(), word, ngen)
         web.show()
