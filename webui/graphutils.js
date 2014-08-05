@@ -86,7 +86,7 @@ function plotGraph(svg, nodes, edges)
 	.data(nodes)
 	.enter().append("g")
 	.attr("class", "node")
-	.call(force.drag);
+//	.call(force.drag);
 
     node.append("circle")
 	.attr("class", "node")
@@ -176,6 +176,39 @@ function handleFileSelect(evt) {
 }
 
 
+/* wrapper around plotGraph, for use in python */
+function plotNewGraph(nodes, edges, width, height) {
+    var svg = d3.select("#content")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        //.on("click", function() { console.log("clocked") });
+
+    /* Zoom behavior, only in 2d */
+    /*
+    svg
+        .attr("pointer-events", "all")
+        .call(d3.behavior.zoom().on("zoom", redraw));
+
+    var vis = svg
+        .append('svg:g')
+        .attr("id", "vis")
+        .attr("width", svg.attr("width"))
+        .attr("height", svg.attr("height"));
+
+    function redraw() {
+        vis.attr("transform",
+            "translate(" + d3.event.translate + ")"
+            + " scale(" + d3.event.scale + ")");
+        }
+        */
+    /* --- */
+    
+    plotGraph(svg, nodes, edges)
+
+}
+
+
 
 /*
    'Array.findIndex' may not be in all JS implementations. See:
@@ -210,3 +243,4 @@ if (!Array.prototype.findIndex) {
     }
   });
 }
+
