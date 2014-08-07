@@ -6,7 +6,6 @@
 * Galleries
   * [official](https://github.com/mbostock/d3/wiki/Gallery)
   * [searchable](http://christopheviau.com/d3list/gallery.html)
-
 * Mike Bostock
   * [blocks](http://bl.ocks.org/mbostock)
   * [features](http://bost.ocks.org/mike/)
