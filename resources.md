@@ -38,9 +38,12 @@ Why? As Mike Bostock notes:
 
 ## IPython Notebook
 
-See the [nbviewer](http://nbviewer.ipython.org/) to peruse examples of [IPython Notebooks](http://ipython.org/ipython-doc/stable/notebook/notebook.html).
+The [IPython Notebook](http://ipython.org/ipython-doc/stable/notebook/notebook.html) is an open-source, web-based interactive computing environment that enables users to create documents that combine live code and data with text, equations, plots and HTML.
+
+See the [nbviewer](http://nbviewer.ipython.org/) to peruse example notebooks.
 
 [This article](http://radar.oreilly.com/2014/01/ipython-a-unified-environment-for-interactive-data-analysis.html) provides a quick intro to IPython and describes how it's become a unified environment for interactive data analysis.
 
-Note that the new widget architecture allows users and developers to build rich user interfaces using JavaScript/HTML/CSS that communicate with the IPython kernel using JSON data. IPython 2.0 will ship a number of basic widgets (slider,
-checkbox, dropdown, etc.).  The widget architecture will enable developers to create new libraries that combine frontend technologies (d3, backbone.js, etc.) with the power of Python and other backend languages (Julia, Scala, Haskell, etc.).
+For an in-depth tutorial introduction, see [IPython In Depth](http://strataconf.com/strata2014/public/schedule/detail/31982): a recent 3-hour tutorial given by IPython core developers.  Full tutorial [content](https://github.com/ipython/ipython-in-depth) and [videos](http://www.safaribooksonline.com/library/view/strata-conference-santa/9781491900321/part04.html) are available.
+
+
