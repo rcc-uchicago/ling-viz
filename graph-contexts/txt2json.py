@@ -1,6 +1,40 @@
 #!/usr/bin/env python
  
 import sys
+import json
+
+def trim(data, n):
+
+
+    nd = data["nodes"]
+    ed = data["edges"]
+    ctx = data["contexts"]
+
+    def goodedge(e):
+        e["source"]
+
+    data2 = dict()
+    nd2 = nd[:n]
+    
+    ed2 = list()
+    for e in ed:
+        src = nd[e["source"]]
+        tar = nd[e["target"]]
+        if src in nd2 and tar in nd2:
+            ed2.append({"source": nd2.index(src), "target": nd2.index(tar)})
+    
+    ctx2 = dict()
+    for no in nd2:
+        n = no["label"]
+        if n in ctx:
+            ctx2[n] = ctx[n]
+    ctx2 = { c: ctx[c] for c in sorted(ctx2) }
+   
+
+    data2["nodes"] = nd
+    data2["edges"] = ed2
+    data2["contexts"] = ctx2
+    return data2
 
 def makegraph(lines):
     nodes = []
@@ -14,21 +48,15 @@ def makegraph(lines):
             for w in words[1:]:
                 w = w.strip()
                 if w not in nodes:
-                    nodes.append(w) 
-                edges.append((nodes.index(word), nodes.index(w)))
-
-
-    nodes_str = "["
+                    nodes.append(w)
+                edge = dict()
+                edges.append({"source":nodes.index(word), "target":nodes.index(w)})
+    nodes_d = []
+    i = 0
     for w in nodes:
-        nodes_str += '{"label": "%s", "id": "%d", "color": "blue"},' % (w, nodes.index(w))
-    nodes_str = nodes_str[:-1] + "]"
-    
-    edges_str = "["
-    for e in edges:
-        edges_str += '{"source": %d, "target": %d},' % e
-    edges_str = edges_str[:-1] + "]"
+        nodes_d.append({"label": w, "id": i, "color": "blue"})
 
-    return nodes_str, edges_str
+    return nodes_d, edges
 
 
 def makecontexts(lines):
@@ -38,25 +66,17 @@ def makecontexts(lines):
             split = l.split("\t")
             w = split[0]
             cs = [c.strip() for c in split[1:]]
+            cs.sort()
             contexts[w] = cs
-    ctx_str = "{\n"
-    for ctx in contexts:
-        cs = "[\n"
-        for c in contexts[ctx]:
-            cs += '"{}", '.format(c)
-        cs = cs[:-2] + "]"
-        ctx_str += '"{}" : {},\n'.format(ctx, cs)
-    ctx_str = ctx_str[:-2] + "\n]"
-
-    return ctx_str
+    return contexts
 
 def printjson(nodes, edges, contexts):
-    print '{'
-    print '"nodes" : ' + nodes + ","
-    print '"edges" : ' + edges + ","
-    print '"contexts" : ' + contexts
-    print '}'
-
+    j = dict()
+    j["nodes"] = nodes
+    j["edges"] = edges
+    j["contexts"] = contexts
+    json.dump(j, sys.stdout)
+    
 def main():
    
     if len(sys.argv) < 2:

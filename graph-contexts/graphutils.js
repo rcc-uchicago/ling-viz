@@ -61,6 +61,10 @@ function xmlToGraph(xmlDoc)
 
 
 var tickLimit = 1; // perhaps change this to a function.
+function setTickLimit(i) {
+    tickLimit = i;
+}
+
 function plotGraph(svg, nodes, edges)
 {
   
