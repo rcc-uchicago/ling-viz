@@ -48,7 +48,7 @@ function intersectAll(L) {
 }
 
 
-d3.json("json/english-brown-reduced.json", function(error, json) {
+d3.json("json/sample.json", function(error, json) {
 
     if (error) return (console.log(error))
     
@@ -97,11 +97,13 @@ d3.json("json/english-brown-reduced.json", function(error, json) {
     var selected_nodes = [] 
 
     function select(x) {
+        d3.select("#" + x).color(nextColor());
         selected_nodes.push(x)
         compute_contexts()
     }
 
     function unselect(x) {
+        d3.select("#" + x).color("blue");
         selected_nodes.remove(x)
         compute_contexts()
     }

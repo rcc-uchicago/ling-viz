@@ -215,16 +215,16 @@ function updateTable(sel, unsel) {
 
     if (cell.classed("sel")) {
         cell.classed({"sel":false, "unsel": true});
-        var node = d3.select('#' + name);
-        if (node != null)
-            node.color("blue");
+        //var node = d3.select('#' + name);
+        //if (node != null)
+        //    node.color("blue");
         unsel(cell.html());
     }
     else {
         cell.classed({"sel":true, "unsel":false});
-        var node = d3.select('#' + name);
-        if (node != null)
-            node.color(nextColor());
+        //var node = d3.select('#' + name);
+        //if (node != null)
+        //    node.color(nextColor());
         sel(cell.html());
     }
 }
