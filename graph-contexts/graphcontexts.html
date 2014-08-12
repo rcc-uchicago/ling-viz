@@ -48,7 +48,7 @@ function intersectAll(L) {
 }
 
 
-d3.json("json/sample.json", function(error, json) {
+d3.json("json/english-brown-reduced.json", function(error, json) {
 
     if (error) return (console.log(error))
     
@@ -108,7 +108,7 @@ d3.json("json/sample.json", function(error, json) {
         compute_contexts()
     }
     
-  
+    setTickLimit(10) 
     plotGraph(vis, nodes, edges);
                   
     createTable(table, nodes, edges, select, unselect);
