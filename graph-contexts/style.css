@@ -1,0 +1,48 @@
+
+/* unvisited link */
+a:link {
+    color: grey;
+    text-decoration: none;
+}
+
+/* visited link */
+a:visited {
+    color: grey;
+    text-decoration: none;
+    font: 10px sans-serif;
+}
+
+/* selectable table */
+table {
+    border-collapse: collapse;
+}
+
+td {
+    border:dotted;
+    border-width:1px;
+    width:100px;
+}
+.sel {
+    background-color: blue;
+    color: white;
+}
+.unsel {
+    background-color: white;
+    color: black;
+}
+.titles {
+    font: bold;
+}
+
+
+/* from d3: */
+.link {
+  stroke: #ccc;
+}
+
+.node text {
+  pointer-events: all;
+  font: 10px sans-serif;
+}
+
+

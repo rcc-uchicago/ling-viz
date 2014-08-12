@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<style>
+.right, .center {
+    width: 33%;
+ 
+}
+
+.left {
+    float: left;
+}
+
+/* positioning ought to be relative... */
+.right {
+    position: absolute;
+    top:10px;
+    right: 0;
+}
+
+.center {
+    float: center;
+}
+
+.right span {
+    font-style: italic;
+}
+
+</style>
+
+<div id="content">
+</div>
+<script src="d3.js"></script>
+<script src="graphutils.js"></script>
+<title>Graph with contexts</title>
+<script>
+
+
+function intersectAll(L) {
+
+    first = L[0];
+    rest = L.slice(1)
+       
+    return rest.reduce(function(acc, curr, i, arr) { 
+        return acc.filter(function (x) { return (x in curr); });           
+    }, first);
+}
+
+
+d3.json("english-brown.json", function(error, json) {
+
+    if (error) return (console.log(error))
+    
+    var nodes = json.nodes;
+    var edges = json.edges;
+    var contexts = json.contexts;
+
+    var svg = d3.select("#content")
+        .append("div")
+        .attr("class", "left")
+        .append("svg")
+        .attr("width", "800")
+        .attr("height", "500")
+
+    var table = d3.select("#content")
+        .append("div")
+        .attr("class", "center")
+        .append("table")
+
+    var rt = d3.select("#content")
+        .append("div")
+        .attr("class", "right")
+    
+    rt.append("b")
+        .text("Shared contexts")
+   
+    rt.append("br")
+    rt.append("span")
+
+    var sharedlist = d3.select("#content").select(".right")
+        .append("ul")
+
+   
+    var selected_nodes = [] 
+
+    function select(x) {
+        selected_nodes.push(x)
+        compute_contexts()
+    }
+
+    function unselect(x) {
+        selected_nodes.remove(x)
+        compute_contexts()
+    }
+    
+  
+    plotGraph(svg, nodes, edges);
+                  
+    createTable(table, nodes, edges, select, unselect);
+
+    function compute_contexts() {
+       
+        var selected_contexts = 
+            selected_nodes
+            .map(function(n) { return contexts[n] });
+
+        d3.select(".right")
+            .select("span")
+            .html(selected_nodes.join(", "))
+
+        sharedlist.selectAll('*').remove();
+
+        var shared = intersectAll(selected_contexts)
+        if (!shared) return;
+
+        
+        sharedlist
+          .selectAll("li")
+          .data(shared)
+          .enter()
+          .append("li")
+          .html(function (d) { return d; })
+    }
+
+    
+})
+
+
+</script>
