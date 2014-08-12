@@ -3,24 +3,24 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 
 <style>
-.right, .center {
-    width: 33%;
- 
-}
 
 .left {
+    width: 50%;
+    float: left;
+}
+
+
+.center {
+    width: 20%;
     float: left;
 }
 
 /* positioning ought to be relative... */
 .right {
+    width: 33%;
     position: absolute;
     top:10px;
     right: 0;
-}
-
-.center {
-    float: center;
 }
 
 .right span {
@@ -38,13 +38,19 @@
 
 
 function intersectAll(L) {
-
-    first = L[0];
-    rest = L.slice(1)
-       
-    return rest.reduce(function(acc, curr, i, arr) { 
-            return acc.filter(function (x) { return (curr.indexOf(x) >= 0); });           
-    }, first);
+    var first = L[0];
+    var rest = L.slice(1)
+   
+    var list = []
+    for (var i in first) {
+        var append = true
+        for (j in rest) {
+            append = append && (rest[j].indexOf(first[i]) >= 0)
+        }
+        if (append)
+            list.push(first[i])
+    }
+    return list
 }
 
 
@@ -75,10 +81,13 @@ d3.json("json/english-brown-reduced.json", function(error, json) {
     }
         
 
-    var table = d3.select("#content")
+    var cen = d3.select("#content")
         .append("div")
         .attr("class", "center")
-        .append("table")
+    var inp = cen.append("input")
+        .attr("type", "text")
+        .on("change", function() { toggle(d3.event.target.value) })
+    var table = cen.append("table")
 
     var rt = d3.select("#content")
         .append("div")
@@ -88,7 +97,7 @@ d3.json("json/english-brown-reduced.json", function(error, json) {
         .text("Shared contexts")
    
     rt.append("br")
-    rt.append("span")
+    var ctable = rt.append("table")
 
     var sharedlist = d3.select("#content").select(".right")
         .append("ul")
@@ -96,45 +105,77 @@ d3.json("json/english-brown-reduced.json", function(error, json) {
    
     var selected_nodes = [] 
 
+
+    function toggle(x) {
+        if (selected_nodes.indexOf(x) >= 0)
+            unselect(x)
+        else
+            select(x)
+    }
     function select(x) {
         d3.select("#" + x).color(nextColor());
+        selectCell(findCell(table, x))
         selected_nodes.push(x)
         compute_contexts()
     }
 
     function unselect(x) {
         d3.select("#" + x).color("blue");
+        unselectCell(findCell(table, x))
         selected_nodes.remove(x)
         compute_contexts()
     }
     
     setTickLimit(10) 
     plotGraph(vis, nodes, edges);
-                  
+    // add click events
+    d3.selectAll(".node")
+        .on("click", function(d) { toggle(d.label) })
+        .on("mouseover", function(d) { d3.selectAll(".node")
+                                            .selectAll("circle")
+                                            .filter(function(e) { return e.label != d.label })                                                                  .attr("fill-opacity", "0.5") })
+        .on("mouseout", function() { d3.selectAll(".node")
+                                        .selectAll("circle")
+                                        .attr("fill-opacity", "100%") })
+        
+
+
     createTable(table, nodes, edges, select, unselect);
 
     function compute_contexts() {
-       
+      
         var selected_contexts = 
             selected_nodes
             .map(function(n) { return contexts[n] });
 
-        d3.select(".right")
-            .select("span")
-            .html(selected_nodes.join(", "))
-
-        sharedlist.selectAll('*').remove();
-
-        var shared = intersectAll(selected_contexts)
-        if (!shared) return;
-
+        ctable.selectAll('*').remove();
         
-        sharedlist
-          .selectAll("li")
-          .data(shared)
-          .enter()
-          .append("li")
-          .html(function (d) { return d; })
+        /* header */
+        ctable
+            .append("thead")
+            .selectAll("th")
+            .data(selected_nodes)
+            .enter()
+            .append("th")
+            .text(function(d) { return d })
+         ctable.select("thead")
+                .append("th")
+                .html("<i>shared</i>")
+
+       
+        /* rows */ 
+        var shared = intersectAll(selected_contexts)
+        selected_contexts.push(shared)
+        var lengths = selected_contexts.map(function(d) { return d.length });
+        var m = Math.max.apply(null, lengths);
+        var tbody = ctable.append("tbody")
+        for (var i = 0; i < m; i++) {
+            var innerhtml = "<td>" + selected_contexts.map(function(d) { return d[i] }).join("</td><td>") + "</td>"
+            tbody
+                .append("tr")
+                .html(innerhtml)
+        }
+        
     }
 
     

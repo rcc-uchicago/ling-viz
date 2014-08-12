@@ -94,7 +94,7 @@ function plotGraph(svg, nodes, edges)
 	.call(force.drag);
 
     node.append("circle")
-	.attr("class", "node")
+//.attr("class", "node")
 	.attr("x", -8)
 	.attr("y", -8)
 	.attr("r", 8)
@@ -209,7 +209,7 @@ function handleFileSelect(evt) {
 }
 
 
-function updateTable(sel, unsel) {
+function updateTable_old(sel, unsel) {
     var cell = d3.select(d3.event.target);
     var name = cell.html()
 
@@ -227,6 +227,28 @@ function updateTable(sel, unsel) {
         //    node.color(nextColor());
         sel(cell.html());
     }
+}
+
+function updateTable(sel, unsel) {
+    var cell = d3.select(d3.event.target);  
+    if (cell.classed("sel")) {
+        unsel(cell.html());
+    }
+    else {
+        sel(cell.html());
+    }
+}
+
+function findCell (table, name) {
+    return table
+        .selectAll("td")
+        .filter(function(d) { return d.label == name })
+}
+function selectCell(cell) {
+    cell.classed({"sel":true, "unsel":false});
+}
+function unselectCell(cell) {
+    cell.classed({"sel":false, "unsel": true});
 }
 
 function createTable(table, nodes, edges, f1, f2) {
