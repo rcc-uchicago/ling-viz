@@ -43,12 +43,12 @@ function intersectAll(L) {
     rest = L.slice(1)
        
     return rest.reduce(function(acc, curr, i, arr) { 
-        return acc.filter(function (x) { return (x in curr); });           
+            return acc.filter(function (x) { return (curr.indexOf(x) >= 0); });           
     }, first);
 }
 
 
-d3.json("english-brown.json", function(error, json) {
+d3.json("english-brown-reduced.json", function(error, json) {
 
     if (error) return (console.log(error))
     
@@ -62,6 +62,18 @@ d3.json("english-brown.json", function(error, json) {
         .append("svg")
         .attr("width", "800")
         .attr("height", "500")
+        .attr("pointer-events", "all")
+        .call(d3.behavior.zoom().on("zoom", redraw));
+    var vis = svg
+        .append('svg:g') 
+        .attr("width", svg.attr("width"))
+        .attr("height", svg.attr("height"));
+    function redraw() {
+        vis.attr("transform",
+            "translate(" + d3.event.translate + ")"
+            + " scale(" + d3.event.scale + ")");
+    }
+        
 
     var table = d3.select("#content")
         .append("div")
@@ -95,7 +107,7 @@ d3.json("english-brown.json", function(error, json) {
     }
     
   
-    plotGraph(svg, nodes, edges);
+    plotGraph(vis, nodes, edges);
                   
     createTable(table, nodes, edges, select, unselect);
 

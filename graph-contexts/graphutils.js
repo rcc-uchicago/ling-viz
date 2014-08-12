@@ -217,7 +217,7 @@ function updateTable(sel, unsel) {
         cell.classed({"sel":false, "unsel": true});
         var node = d3.select('#' + name);
         if (node != null)
-            node.color("black");
+            node.color("blue");
         unsel(cell.html());
     }
     else {

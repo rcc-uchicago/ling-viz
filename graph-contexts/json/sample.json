@@ -1,0 +1,9 @@
+{ 
+    
+    "nodes" : [{"label": "made", "id": "0", "color": "blue"},{"label": "found", "id": "1", "color": "blue"},{"label": "called", "id": "2", "color": "blue"},{"label": "held", "id": "3", "color": "blue"},{"label": "used", "id": "4", "color": "blue"},{"label": "brought", "id": "5", "color": "blue"},{"label": "told", "id": "6", "color": "blue"},{"label": "asked", "id": "7", "color": "blue"},{"label": "kept", "id": "8", "color": "blue"},{"label": "followed", "id": "9", "color": "blue"}],
+    
+   "edges" : [{"source": 0, "target": 1},{"source": 0, "target": 2},{"source": 0, "target": 3},{"source": 0, "target": 4},{"source": 0, "target": 5},{"source": 0, "target": 6},{"source": 0, "target": 7},{"source": 0, "target": 8},{"source": 0, "target": 9}],
+
+   "contexts" : {"made": ["1", "2", "3"], "found": ["3", "4", "5"]}
+
+}
