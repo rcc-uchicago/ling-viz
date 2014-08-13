@@ -129,7 +129,11 @@ function getNeighbors(name, nodes, edges) {
             .map(function (n) { return n.target; });
     var nb_r = edges.filter(function(e) { return e.target == node_obj; })
             .map(function (n) { return n.source; });
-    var neighbors = nb_l.concat(nb_r);
+    var neighbors = nb_l;
+    for (i in nb_r) {
+        if (! nb_r[i] in neighbors)
+           neighbors.push(nb_r[i]) 
+    }
     return neighbors;
 
 }
@@ -179,32 +183,15 @@ function nextColor() {
     return this.colors[this.idx++];
 }
 
-function handleFileSelect(evt) {
-    
-   
+
+function handleFileSelect(evt, func) {
     var files = evt.target.files; // FileList object
 
-    // Loop through the FileList and render image files as thumbnails.
-    // This loop is only getting executed once, so could be changed.
     for (var i = 0, f; f = files[i]; i++) {
 	var reader = new FileReader();
 	reader.onload = (function(e) {
-	    var	parser = new DOMParser();
-
-	    var	xmlDoc = parser.parseFromString(e.target.result,"text/xml");
-	    
-	    var graph = xmlToGraph(xmlDoc);
-	    
-	    d3.select("#vis").selectAll("*").remove(); // remove existing vis, if necessary
-        d3.select("#dtable").selectAll("*").remove();
-
-	    if (graph.nodes != "") {
-		    cls();
-		    plotGraph(d3.select("#vis"), graph.nodes, graph.edges);
-	        createTable(graph.nodes, graph.edges);
-        }
-	    else {
-		msg("Unable to load XML file.");
+	    var json = JSON.parse(e.target.result);
+        func(json);
 	    }
 	});
 	reader.readAsText(f);

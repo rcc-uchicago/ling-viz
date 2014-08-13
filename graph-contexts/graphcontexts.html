@@ -36,12 +36,11 @@
 <title>Graph with contexts</title>
 <script>
 
+/* Intersect lists - must be sorted */
 function intersect(x, y) {
     var i = 0
     var j = 0
     var z = []
-    //x.sort()
-    //y.sort()
     while(i < x.length && j < y.length) {
         if (x[i] == y[j])
             z.push(x[i]);
@@ -61,30 +60,12 @@ function intersectAll(L) {
     return x;
 }
 
-function intersectAll_old(L) {
-    var first = L[0];
-    var rest = L.slice(1)
-   
-    var list = []
-    for (var i in first) {
-        var append = true
-        for (j in rest) {
-            append = append && (rest[j].indexOf(first[i]) >= 0)
-        }
-        if (append)
-            list.push(first[i])
-    }
-    return list
-}
-
-
-d3.json("json/english-brown-opt.json", function(error, json) {
+d3.json("json/english-brown-sort.json", function(error, json) {
 
     if (error) return (console.log(error))
     
     var nodes = json.nodes;
     var edges = json.edges;
-    var context_str = json["context-strings"];
     var contexts = json.contexts;
     var nodelabels = nodes.map(function(d) { return d.label; })
 
@@ -163,7 +144,10 @@ d3.json("json/english-brown-opt.json", function(error, json) {
     plotGraph(vis, nodes, edges);
     // add click events
     d3.selectAll(".node")
-        .on("click", function(d) { toggle(d.label) })
+        .on("click", function(d) {
+                node = d.label; 
+                toggle(node) 
+           })
         .on("mouseover", function(d, i) { 
                 d3.selectAll(".node")
                     .selectAll("circle")
@@ -181,12 +165,15 @@ d3.json("json/english-brown-opt.json", function(error, json) {
  
     function compute_contexts() {
       
+        ctable.selectAll('*').remove();
+        if (selected_nodes.length == 0)
+            return;
+
         var selected_contexts = 
             selected_nodes
             .map(function(n) { return contexts[n] });
 
-        ctable.selectAll('*').remove();
-        
+              
         /* header */
         ctable
             .append("thead")
@@ -211,7 +198,7 @@ d3.json("json/english-brown-opt.json", function(error, json) {
         var m = Math.max.apply(null, lengths);
         var tbody = ctable.append("tbody")
         for (var i = 0; i < m; i++) {
-            var innerhtml = "<td>" + selected_contexts.map(function(d) { return context_str[d[i]] }).join("</td><td>") + "</td>"
+            var innerhtml = "<td>" + selected_contexts.map(function(d) { return d[i] }).join("</td><td>") + "</td>"
             tbody
                 .append("tr")
                 .html(innerhtml)
