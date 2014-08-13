@@ -70,11 +70,41 @@ def makecontexts(lines):
             contexts[w] = cs
     return contexts
 
+def contexts_optimize(contexts):
+    contexts_str = list(set(s.strip() for c in contexts.values() for s in c))
+    contexts_str.sort()
+
+    contexts_opt = dict()
+    for c in sorted(contexts.keys()):
+        cl = contexts[c]
+        if len(cl) == 0:
+            continue
+        cl.sort()
+        
+        ocl = list()
+        j = 0
+        for i in range(len(contexts_str)):
+            if (contexts_str[i] == cl[j]):
+                ocl.append(i)
+                j += 1
+
+            if (j >= len(cl)):
+                break
+        
+        print >>sys.stderr, "%s :: before %d, optimized %d" % (c, len(cl), len(ocl))
+        #ocl = [contexts_str.index(s) for s in cl]
+
+        contexts_opt[c] = ocl
+
+    return contexts_str, contexts_opt
+
 def printjson(nodes, edges, contexts):
     j = dict()
     j["nodes"] = nodes
     j["edges"] = edges
-    j["contexts"] = contexts
+    contexts_str, contexts_opt = contexts_optimize(contexts)
+    j["contexts"] = contexts_opt
+    j["context-strings"] = contexts_str
     json.dump(j, sys.stdout)
     
 def main():

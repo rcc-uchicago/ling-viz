@@ -35,6 +35,10 @@ td {
     font: bold;
 }
 
+.remove {
+    color: grey;
+    font-style: italic;
+}
 
 /* from d3: */
 .link {

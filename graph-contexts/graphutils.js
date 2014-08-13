@@ -123,20 +123,23 @@ function plotGraph(svg, nodes, edges)
     
 }
 
+function getNeighbors(name, nodes, edges) {
+    var node_obj = nodes.find(function (n) { return n.label == name });
+    var nb_l = edges.filter(function(e) { return e.source == node_obj; })
+            .map(function (n) { return n.target; });
+    var nb_r = edges.filter(function(e) { return e.target == node_obj; })
+            .map(function (n) { return n.source; });
+    var neighbors = nb_l.concat(nb_r);
+    return neighbors;
 
+}
 function findNode(name) {
 
     var node = d3.select('#' + name);
     if (node != null) {
         node.color(nextColor());
-	
-    
-        var node_obj = updateTable.nodes.find(function (n) { return n.label == name });
-        var nb_l = updateTable.edges.filter(function(e) { return e.source == node_obj; })
-            .map(function (n) { return n.target; });
-        var nb_r = updateTable.edges.filter(function(e) { return e.target == node_obj; })
-            .map(function (n) { return n.source; });
-        var neighbors = nb_l.concat(nb_r);
+	    
+        var neighbors = getNeighbors(name, updateTable.nodes, updateTable.edges);
 
         if (neighbors.length > 0) {
             d3.select("#dtable").select("thead").select("tr")
@@ -251,15 +254,14 @@ function unselectCell(cell) {
     cell.classed({"sel":false, "unsel": true});
 }
 
-function createTable(table, nodes, edges, f1, f2) {
-    updateTable.nodes = nodes;
-    updateTable.edges = edges;
+function createTable(table, header, nodes, func) {
+    table.selectAll("*").remove()
 
     table
         .append("thead")
         .append("tr")
         .append("th")
-        .html("nodes");
+        .html(header);
    
     var rows = table
        .append("tbody")
@@ -272,7 +274,7 @@ function createTable(table, nodes, edges, f1, f2) {
         .append("td")
         .html(function(d) { return d.label; })
         .classed("unsel", true)
-        .on("click", function() { updateTable(f1, f2) } );
+        .on("click", function(d) { func(d.label) } );
 }
 
 
