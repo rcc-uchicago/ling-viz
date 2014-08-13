@@ -47,8 +47,8 @@ function DrawInterface(json) {
         .append("div")
         .attr("class", "left")
         .append("svg")
-        .attr("width", "800")
-        .attr("height", "500")
+        .attr("width", (window.innerWidth * 0.5) -20)
+        .attr("height", window.innerHeight - 20)
         .attr("pointer-events", "all")
         .call(d3.behavior.zoom().on("zoom", redraw));
     var vis = svg
