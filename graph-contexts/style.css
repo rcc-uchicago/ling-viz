@@ -12,6 +12,10 @@ a:visited {
     font: 10px sans-serif;
 }
 
+svg {
+    border: 1px;
+    border-style: dashed;
+}
 
 /* selectable table */
 table {

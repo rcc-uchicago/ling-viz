@@ -192,40 +192,8 @@ function handleFileSelect(evt, func) {
 	reader.onload = (function(e) {
 	    var json = JSON.parse(e.target.result);
         func(json);
-	    }
 	});
 	reader.readAsText(f);
-    }
-}
-
-
-function updateTable_old(sel, unsel) {
-    var cell = d3.select(d3.event.target);
-    var name = cell.html()
-
-    if (cell.classed("sel")) {
-        cell.classed({"sel":false, "unsel": true});
-        //var node = d3.select('#' + name);
-        //if (node != null)
-        //    node.color("blue");
-        unsel(cell.html());
-    }
-    else {
-        cell.classed({"sel":true, "unsel":false});
-        //var node = d3.select('#' + name);
-        //if (node != null)
-        //    node.color(nextColor());
-        sel(cell.html());
-    }
-}
-
-function updateTable(sel, unsel) {
-    var cell = d3.select(d3.event.target);  
-    if (cell.classed("sel")) {
-        unsel(cell.html());
-    }
-    else {
-        sel(cell.html());
     }
 }
 
@@ -265,6 +233,30 @@ function createTable(table, header, nodes, func) {
 }
 
 
+/* Intersect lists - must be sorted */
+function intersect(x, y) {
+    var i = 0
+    var j = 0
+    var z = []
+    while(i < x.length && j < y.length) {
+        if (x[i] == y[j])
+            z.push(x[i]);
+        if (x[i] < y[j])
+            i++;
+        else
+            j++;
+    }
+    return z;
+}
+
+function intersectAll(L) {
+    var x = L[0]
+    for (i = 1; i < L.length; i++) {
+        x = intersect(x, L[i])
+    }
+    return x;
+}
+
 /*
    'Array.findIndex' may not be in all JS implementations. See:
    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
@@ -298,6 +290,9 @@ if (!Array.prototype.findIndex) {
     }
   });
 }
+
+
+
 
 /* Add an Array remove function*/
 if (!Array.prototype.remove) {

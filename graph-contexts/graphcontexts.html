@@ -36,33 +36,7 @@
 <title>Graph with contexts</title>
 <script>
 
-/* Intersect lists - must be sorted */
-function intersect(x, y) {
-    var i = 0
-    var j = 0
-    var z = []
-    while(i < x.length && j < y.length) {
-        if (x[i] == y[j])
-            z.push(x[i]);
-        if (x[i] < y[j])
-            i++;
-        else
-            j++;
-    }
-    return z;
-}
-
-function intersectAll(L) {
-    var x = L[0]
-    for (i = 1; i < L.length; i++) {
-        x = intersect(x, L[i])
-    }
-    return x;
-}
-
-d3.json("json/english-brown-sort.json", function(error, json) {
-
-    if (error) return (console.log(error))
+function DrawInterface(json) {
     
     var nodes = json.nodes;
     var edges = json.edges;
@@ -142,16 +116,19 @@ d3.json("json/english-brown-sort.json", function(error, json) {
     
     setTickLimit(10) 
     plotGraph(vis, nodes, edges);
+    
     // add click events
     d3.selectAll(".node")
         .on("click", function(d) {
-                node = d.label; 
+                node = d.label;
+                neighbors = getNeighbors(node, nodes, edges)
+                createTable(table, node, neighbors, toggle);  
                 toggle(node) 
            })
         .on("mouseover", function(d, i) { 
                 d3.selectAll(".node")
                     .selectAll("circle")
-                    .attr("fill-opacity", "0.5")
+                    .attr("fill-opacity", "0.3")
                 d3.select("#" + d.label).attr("fill-opacity", "1.0")
                 getNeighbors(d.label, nodes, edges).forEach(function (n) {
                     d3.select("#" + n.label).attr("fill-opacity", "1.0")
@@ -207,7 +184,15 @@ d3.json("json/english-brown-sort.json", function(error, json) {
     }
 
     
-})
+}
+
+d3.select("#content")
+    .append("input")
+    .attr("type", "file")
+    .attr("title", "pick a file to use")
+    .on("change", function() {
+            handleFileSelect(d3.event, DrawInterface); 
+            d3.select("input").remove(); })
 
 
 </script>
