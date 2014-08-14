@@ -99,7 +99,7 @@ function plotGraph(svg, nodes, edges)
 	.attr("y", -8)
 	.attr("r", 8)
     .attr("fill", function(d) { return d.color; })
-	.attr("id", function(d) { return d.label });
+	.attr("id", function(d) { return cleanName(d.label); });
     
     node.append("text")
 	.attr("dx", 12)
@@ -121,6 +121,17 @@ function plotGraph(svg, nodes, edges)
 	    tick++;
     });
     
+}
+
+function cleanName(name) {
+    if (+name > 0)
+        return "_" + name;
+    else
+        return name.replace("'", "_apos_");
+}
+
+function selectNode(name) {
+    return d3.select("#" + cleanName(name));
 }
 
 function getNeighbors(name, nodes, edges) {
@@ -258,9 +269,10 @@ function intersectAll(L) {
 }
 
 /*
-   'Array.findIndex' may not be in all JS implementations. See:
+   Some array functions are in Firefox but not Chrome. We add them below. See more at (for example):   
    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
 */
+
 if (!Array.prototype.findIndex) {
   Object.defineProperty(Array.prototype, 'findIndex', {
     enumerable: false,
@@ -291,7 +303,35 @@ if (!Array.prototype.findIndex) {
   });
 }
 
+if (!Array.prototype.find) {
+  Object.defineProperty(Array.prototype, 'find', {
+    enumerable: false,
+    configurable: true,
+    writable: true,
+    value: function(predicate) {
+      if (this == null) {
+        throw new TypeError('Array.prototype.find called on null or undefined');
+      }
+      if (typeof predicate !== 'function') {
+        throw new TypeError('predicate must be a function');
+      }
+      var list = Object(this);
+      var length = list.length >>> 0;
+      var thisArg = arguments[1];
+      var value;
 
+      for (var i = 0; i < length; i++) {
+        if (i in list) {
+          value = list[i];
+          if (predicate.call(thisArg, value, i, list)) {
+            return value;
+          }
+        }
+      }
+      return undefined;
+    }
+  });
+}
 
 
 /* Add an Array remove function*/
@@ -317,4 +357,5 @@ if (!Array.prototype.remove) {
     }
   });
 }
+
 

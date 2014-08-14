@@ -101,14 +101,14 @@ function DrawInterface(json) {
             select(x)
     }
     function select(x) {
-        d3.select("#" + x).color(nextColor());
+        selectNode(x).color(nextColor());
         selectCell(findCell(table, x))
         selected_nodes.push(x)
         compute_contexts()
     }
 
     function unselect(x) {
-        d3.select("#" + x).color("blue");
+        selectNode(x).color("blue");
         unselectCell(findCell(table, x))
         selected_nodes.remove(x)
         compute_contexts()
@@ -129,9 +129,9 @@ function DrawInterface(json) {
                 d3.selectAll(".node")
                     .selectAll("circle")
                     .attr("fill-opacity", "0.3")
-                d3.select("#" + d.label).attr("fill-opacity", "1.0")
+                selectNode(d.label).attr("fill-opacity", "1.0")
                 getNeighbors(d.label, nodes, edges).forEach(function (n) {
-                    d3.select("#" + n.label).attr("fill-opacity", "1.0")
+                    selectNode(n.label).attr("fill-opacity", "1.0")
                     })
             })
         .on("mouseout", function() { d3.selectAll(".node")
