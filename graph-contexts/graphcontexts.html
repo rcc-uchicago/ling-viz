@@ -163,14 +163,19 @@ function DrawInterface(json) {
             .text("x")
             .attr("class", "remove")
             .on("click", function(d) { toggle(d) })
-         ctable.select("thead")
+        
+        
+        /* add shared column */
+        if (selected_nodes.length > 1) {
+            ctable.select("thead")
                 .append("th")
                 .html("<i>shared</i>")
+ 
+            var shared = intersectAll(selected_contexts)
+            selected_contexts.push(shared)
+        }
 
-       
-        /* rows */ 
-        var shared = intersectAll(selected_contexts)
-        selected_contexts.push(shared)
+        /* rows */
         var lengths = selected_contexts.map(function(d) { return d.length });
         var m = Math.max.apply(null, lengths);
         var tbody = ctable.append("tbody")
