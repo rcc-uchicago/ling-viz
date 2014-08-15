@@ -14,9 +14,9 @@ a:visited {
     text-decoration: none;
     font: 10px sans-serif;
 }
+</style>
 
-
-/* from d3: */
+<style id="svgstyle">
 .link {
   stroke: #ccc;
 }
@@ -25,8 +25,6 @@ a:visited {
   pointer-events: all;
   font: 10px sans-serif;
 }
-
-
 </style>
 <title>Graph Visualization v 0.1</title>
 <body>
@@ -91,5 +89,30 @@ function msg(x) {
 function cls() {
   d3.select("#msg").html(" ");
 }
+
+
+function svgToText(svg) {
+    var text = '<svg width="' + svg.attr("width") + '" height="' + svg.attr("height") + '">'
+        + '<style type="text/css" >'
+        + '<![CDATA['
+        + d3.select("#svgstyle").html()
+        + ']]>'
+        + '</style>'
+        + svg.html()
+        + '</svg>'
+    return encodeURIComponent(text);
+}
+
+d3.select("#menu")
+    .append("a")
+    .attr('download', "graph-image.svg")
+    .text("Download svg")
+    .attr("style", "color:blue;text-decoration:underline;")
+    .on("mouseover", function() {
+        d3.event.target.href = 'data:text/plain;charset=utf-8,' + svgToText(svg);
+       
+     });
+
+
 
 </script>

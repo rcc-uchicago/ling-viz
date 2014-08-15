@@ -2,31 +2,16 @@
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css" href="style.css">
 
-<style>
-
-.left {
-    width: 50%;
-    float: left;
+<!-- below style is from the D3 example. -->
+<style id="svgstyle">
+.link {
+  stroke: #ccc;
 }
 
-
-.center {
-    width: 20%;
-    float: left;
+.node text {
+  pointer-events: all;
+  font: 10px sans-serif;
 }
-
-/* positioning ought to be relative... */
-.right {
-    width: 33%;
-    position: absolute;
-    top:10px;
-    right: 0;
-}
-
-.right span {
-    font-style: italic;
-}
-
 </style>
 
 <div id="content">
@@ -34,6 +19,12 @@
 <script src="d3.js"></script>
 <script src="graphutils.js"></script>
 <title>Graph with contexts</title>
+
+
+<menu type="context" id="supermenu">
+    <menuitem label="Download SVG" onclick="downloadSVG()"></menuitem>
+</menu>
+
 <script>
 
 function DrawInterface(json) {
@@ -46,6 +37,7 @@ function DrawInterface(json) {
     var svg = d3.select("#content")
         .append("div")
         .attr("class", "left")
+        .attr("contextmenu", "supermenu")
         .append("svg")
         .attr("width", (window.innerWidth * 0.5) -20)
         .attr("height", window.innerHeight - 20)
@@ -199,5 +191,29 @@ d3.select("#content")
             handleFileSelect(d3.event, DrawInterface); 
             d3.select("input").remove(); })
 
+
+/* Download SVG feature */
+
+function svgToText(svg) {
+    var text = '<svg width="' + svg.attr("width") + '" height="' + svg.attr("height") + '">'
+        + '<style type="text/css" >'
+        + '<![CDATA['
+        + d3.select("#svgstyle").html()
+        + ']]>'
+        + '</style>'
+        + svg.html()
+        + '</svg>'
+    return encodeURIComponent(text);
+}
+
+function downloadSVG() {
+    var svg = d3.select("svg");
+    var href = 'data:text/please-download-me;charset=utf-8,' + svgToText(svg);
+    var pom = d3.select("body").append("a");
+    pom.attr('download', 'graph-image.svg');
+    pom.attr('href', 'data:text/plain;charset=utf-8,' + svgToText(svg));
+    pom.node().click();
+    pom.remove();
+}
 
 </script>
