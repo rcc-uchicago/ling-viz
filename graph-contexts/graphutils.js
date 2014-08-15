@@ -5,60 +5,6 @@
     };
 })();
 
-/* XML Parsing notes --
-   D3 edges (as read from JSON) go from index to index -- i.e. {source:0,target:1} goes from the
-   first node in the node list to the second node. GEXF files go by ID. How we transform:
-   - When adding an edge, search through node list.
-   This is naive, and may not work for very large graph sizes. Solution might be to sort nodelist. */
-function xmlToGraph(xmlDoc)
-{   
-    function flattenTags(name, f)
-    {
-	    var nl = xmlDoc.getElementsByTagName(name)
-	    var arr = Array.prototype.slice.call(nl)
-	    return arr.map(f);
-    }
-    
-    function getColor(tag)
-    {
-        var c = tag.getElementsByTagName("ns0:color")[0]; // use first color element (only one anyway)
-        if (c == undefined)
-            return 'black';
-        else {
-            return 'rgb(' + c.getAttribute('r') + "," + c.getAttribute('g') + "," + c.getAttribute('b') + ')';
-        }
-    } 
-     
-
-    var nodes = flattenTags("node",
-			    function(tag) {
-				return {"label": tag.getAttribute("label"), 
-					"id": parseInt(tag.getAttribute("id")),
-					"color": getColor(tag)};
-			    });
-
-    function flattenEdge(tag)
-    {
-        function idToPos(id) {
-            var pos = nodes.findIndex(function(n) { return n.id == id }); // -1 if no node
-            return pos;
-        }
-        var src = +tag.getAttribute("source"), tar = +tag.getAttribute("target");
-        var s = idToPos(src), t = idToPos(tar);
-        if (t >= 0 && s >= 0)
-            return {"source": s, "target": t};
-        else {
-            console.log("Ignoring invalid edge (" + src + "," + tar + ")");
-            return null;
-        }
-   }
-
-    var edges = flattenTags("edge", flattenEdge).filter(function(e) { return e; });
-    
-    
-    return {nodes: nodes, edges: edges};
-}
-
 
 var tickLimit = 1; // perhaps change this to a function.
 function setTickLimit(i) {
@@ -94,7 +40,6 @@ function plotGraph(svg, nodes, edges)
 	.call(force.drag);
 
     node.append("circle")
-//.attr("class", "node")
 	.attr("x", -8)
 	.attr("y", -8)
 	.attr("r", 8)
@@ -148,50 +93,14 @@ function getNeighbors(name, nodes, edges) {
     return neighbors;
 
 }
-function findNode(name) {
-
-    var node = d3.select('#' + name);
-    if (node != null) {
-        node.color(nextColor());
-	    
-        var neighbors = getNeighbors(name, updateTable.nodes, updateTable.edges);
-
-        if (neighbors.length > 0) {
-            d3.select("#dtable").select("thead").select("tr")
-                .append("th")
-                .classed(name + "_col", true)
-                .html(name);
-            
-            d3.select("#dtable").select("tbody").selectAll("tr")
-                .append("td")
-                .classed(name + "_col", true)
-                .data(neighbors)
-                .on("click", updateTable)
-                .html(function(d) { return d.label; });
-
-            var col = nextColor();
-            for (var i in neighbors) {
-                var n = neighbors[i];
-                d3.select('#' + n.label)
-                    .color(col);
-            }
-        }   
-   }   
-
-}
-
-function removeNode(name) {
-    d3.select("#" + name).color("black");
-    d3.select("#dtable").selectAll("." + name + "_col").remove();   
-}
 
 
 function nextColor() {
-    if (! this.colors) {
-        this.colors = ["red", "orange", "yellow", "green", "turquoise", "blue", "purple"];
-        this.idx = 0;
+    if (! nextColor.colors) {
+        nextColor.colors = ["red", "orange", "yellow", "green", "turquoise", "blue", "purple"];
+        nextColor.idx = 0;
     }
-    return this.colors[this.idx++];
+    return nextColor.colors[nextColor.idx++];
 }
 
 
@@ -241,6 +150,30 @@ function createTable(table, header, nodes, func) {
         .html(function(d) { return d.label; })
         .classed("unsel", true)
         .on("click", function(d) { func(d.label) } );
+}
+
+
+/* Download SVG feature */
+
+function svgToText(svg) {
+    var text = '<svg width="' + svg.attr("width") + '" height="' + svg.attr("height") + '">'
+        + '<style type="text/css" >'
+        + '<![CDATA['
+        + d3.select("#svgstyle").html()
+        + ']]>'
+        + '</style>'
+        + svg.html()
+        + '</svg>'
+    return encodeURIComponent(text);
+}
+
+function downloadSVG(svg) {
+    var href = 'data:text/please-download-me;charset=utf-8,' + svgToText(svg);
+    var pom = d3.select("body").append("a");
+    pom.attr('download', 'graph-image.svg');
+    pom.attr('href', 'data:text/plain;charset=utf-8,' + svgToText(svg));
+    pom.node().click();
+    pom.remove();
 }
 
 

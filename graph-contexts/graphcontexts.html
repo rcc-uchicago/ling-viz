@@ -22,7 +22,7 @@
 
 
 <menu type="context" id="supermenu">
-    <menuitem label="Download SVG" onclick="downloadSVG()"></menuitem>
+    <menuitem label="Download SVG" onclick="downloadSVG(d3.select('svg'))"></menuitem>
 </menu>
 
 <script>
@@ -190,30 +190,5 @@ d3.select("#content")
     .on("change", function() {
             handleFileSelect(d3.event, DrawInterface); 
             d3.select("input").remove(); })
-
-
-/* Download SVG feature */
-
-function svgToText(svg) {
-    var text = '<svg width="' + svg.attr("width") + '" height="' + svg.attr("height") + '">'
-        + '<style type="text/css" >'
-        + '<![CDATA['
-        + d3.select("#svgstyle").html()
-        + ']]>'
-        + '</style>'
-        + svg.html()
-        + '</svg>'
-    return encodeURIComponent(text);
-}
-
-function downloadSVG() {
-    var svg = d3.select("svg");
-    var href = 'data:text/please-download-me;charset=utf-8,' + svgToText(svg);
-    var pom = d3.select("body").append("a");
-    pom.attr('download', 'graph-image.svg');
-    pom.attr('href', 'data:text/plain;charset=utf-8,' + svgToText(svg));
-    pom.node().click();
-    pom.remove();
-}
 
 </script>
