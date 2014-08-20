@@ -86,10 +86,12 @@ function plotGraph(scene, nodes, edges)
 
     var link = scene.selectAll(".link")
 	    .data(edges)
-	    .enter().append("x3d:shape")
+	    .enter().append("x3d:Shape")
 	    .attr("class", "link")
-        .html("<indexedlineset coordindex='0 1 ' ><coordinate point='0 0 0 0 0 0' class='line'></coordinate></indexedlineset>").select(".line"); // fixi
-
+        .html("<IndexedLineSet coordIndex='0 1'><Coordinate point='0 0 0 0 0 0' class='line' /></IndexedLineSet>").select(".line"); 
+  
+    var line = scene.selectAll(".line") 
+        
 
 
     var node = scene.selectAll(".node")
@@ -115,16 +117,16 @@ function plotGraph(scene, nodes, edges)
 	.attr("id", function(d) { return d.label });
     */
 
-    node.append("text")
+    //node.append("text")
 	//.attr("dx", 12)
 	//.attr("dy", ".35em")
-	.text(function(d) { return d.label });
+	//.text(function(d) { return d.label });
 
 
     var tick = tickLimit;
     force.on("tick", function() {
 	    if (tick == tickLimit) {
-	        link.attr("point",
+	        line.attr("point",
                 function(d) {
                 return x(d.target.x)+" "+y(d.target.y)+" "+z(d.target.z)+" "
                  +x(d.source.x)+" "+y(d.source.y)+" "+z(d.source.z)});

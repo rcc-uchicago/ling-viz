@@ -144,7 +144,45 @@ function cls() {
 
 //plotGraph(d3.select("#vis"), [{label:"hi", id:"0", color:"black"}]);
                             //  {label: "bye", id:"1", color:"black"}],
-                              //[{source:"0", target:"1"}]);
+                            //[{source:"0", target:"1"}]);
 
+function getx3d(x3d) {
+
+
+    var processColor = function(x) {
+        var o = x3dom.fields.SFColor.colorParse("blue")
+        return o.r + " " + o.g + " "  + o.b;
+    }
+
+    var node = document.createElement("x3d");
+    node.innerHTML = x3d.node().innerHTML;
+
+    var d = d3.select(node)
+    d.selectAll("div, canvas, text").remove();
+    d.selectAll("material")
+        .each(function () {
+                var c = this.getAttribute("diffusecolor");
+                this.setAttribute("diffusecolor", processColor(c)) });
+
+    var html = node.outerHTML;
+
+    /* We need to do a TON more replacements because of weird case thing between x3dom/D3/x3d.
+       Probably take out of JS. */
+    return html.replace(/indexedlineset/g, "IndexedLineSet")
+        .replace(/coordindex/g, "coordIndex")
+        .replace(/diffusecolor/g, "diffuseColor")
+        .replace(/appearance/g, "Appearance")
+        .replace(/material/g, "Material")
+}
+
+
+d3.select("#menu")
+    .append("a")
+    .attr('download', "graph-image.x3d")
+    .text("Download x3d")
+    .attr("style", "color:blue;text-decoration:underline;")
+    .on("mouseover", function() {
+        d3.event.target.href = 'data:text/plain;charset=utf-8,' + getx3d(d3.select("x3d"))       
+     });
 
 </script>
