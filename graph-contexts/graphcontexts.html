@@ -17,6 +17,7 @@
 <div id="content">
 </div>
 <script src="d3.js"></script>
+<script src="sankey.js"></script>
 <script src="graphutils.js"></script>
 <title>Graph with contexts</title>
 
@@ -34,6 +35,7 @@ function DrawInterface(json) {
     var contexts = json.contexts;
     var nodelabels = nodes.map(function(d) { return d.label; })
 
+    /* Graph svg */
     var svg = d3.select("#content")
         .append("div")
         .attr("class", "left")
@@ -52,6 +54,14 @@ function DrawInterface(json) {
             "translate(" + d3.event.translate + ")"
             + " scale(" + d3.event.scale + ")");
     }
+
+    /* Sanky svg */
+     var sanky_svg = d3.select(".left").append("svg")
+        .attr("width", svg.attr("width"))
+        .attr("height", svg.attr("height"))
+        .append("g");
+      //  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
         
 
     var cen = d3.select("#content")
@@ -142,7 +152,7 @@ function DrawInterface(json) {
             selected_nodes
             .map(function(n) { return contexts[n] });
 
-              
+
         /* header */
         ctable
             .append("thead")
@@ -177,9 +187,11 @@ function DrawInterface(json) {
                 .append("tr")
                 .html(innerhtml)
         }
-        
-    }
 
+        /* Sanky diagram */
+        var data = getSankeyData(selected_nodes, contexts);
+        createSankey(data, sanky_svg); 
+    }
     
 }
 
