@@ -46,10 +46,25 @@ function getSankeyData(words, contexts) {
     var nodes = [];
     var edges = [];
 
-    var nodeadd = function (s) { if (nodes.indexOf(s) == -1) nodes.push(s); };
+
+    var getidx = function(node) {
+       for (var i in nodes) {
+            var n = nodes[i]; 
+            if (node.name == n.name && node.pos == n.pos)
+                return +i;
+        }
+       return -1;
+    }
+
+    var nodeadd = function (s, i) { 
+        var node = {"name":s, "pos":i};
+        if (getidx(node) == -1)
+            nodes.push(node);
+        return node;
+    }
     
     var edgeadd = function (n, m) {
-        var v = [nodes.indexOf(n), nodes.indexOf(m)];
+        var v = [getidx(n), getidx(m)];
         edges.push(v);
     }
 
@@ -90,31 +105,36 @@ function getSankeyData(words, contexts) {
 
    for (var i in words) {
      var w = words[i];
-     nodeadd(w);
      for (var j in contexts[w]) {
         var ctx = contexts[w][j];
         var cs = ctx.split(' ');
-        nodeadd(cs[0]);
-        for (var k = 0; k < cs.length - 1; k++) {
-            if (cs[k] == "__")
-               var st = w;
-            else
-               var st = cs[k];
-
-                if (cs[k+1] == "__")
-                    var end = w;
-                else {
-                    var end = cs[k+1];
-                    nodeadd(end);
-                }
-
-              edgeadd(st, end);
+        
+        /* We either have a start-context, a middle context, or an end context. */
+        if (cs[0] == "__") {
+            var fst = nodeadd(w, 2);
+            var snd = nodeadd(cs[1], 3);
+            var thd = nodeadd(cs[2], 4);
         }
-    }
+        else if (cs[1] == "__") {
+            var fst = nodeadd(cs[0], 1);
+            var snd = nodeadd(w, 2);
+            var thd = nodeadd(cs[2], 3);
+        }
+        else if (cs[2] == "__") {
+            var fst = nodeadd(cs[0], 0);
+            var snd = nodeadd(cs[1], 1);
+            var thd = nodeadd(w, 2);
+        }
+        else
+            console.log("mayday! bad data.");
+
+        edgeadd(fst, snd);
+        edgeadd(snd, thd);
+     }
   }
 
 
-    return {"nodes":collapseNodes(nodes), "links":collapseEdges(edges)};
+   return {"nodes":nodes, "links":collapseEdges(edges)};
 }
 
 
@@ -154,7 +174,6 @@ d3.json("json/fake-contexts.json", function(json) {
       .links(data.links)
       .layout(32);
 
-      console.log(data.nodes);
 
   var link = svg.append("g").selectAll(".link")
       .data(data.links)
