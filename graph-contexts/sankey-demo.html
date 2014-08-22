@@ -26,7 +26,7 @@
   stroke-opacity: .2;
 }
 
-.link:hover {
+.sel {
   stroke-opacity: .5;
 }
 
@@ -45,7 +45,6 @@ function getSankeyData(words, contexts) {
     
     var nodes = [];
     var edges = [];
-
 
     var getidx = function(node) {
        for (var i in nodes) {
@@ -71,12 +70,14 @@ function getSankeyData(words, contexts) {
         for (var i = 0; i < edges.length; i++) {
             if (edges[i].source == src && edges[i].target == tar) {
                 edges[i].value++;
-                return;
+                return edges[i];
             }
         }
-        var edge = {"source":src, "target":tar, "value":1};
+        var edge = {"source":src, "target":tar, "value":1, "prev":[], "next":[]};
         edges.push(edge);
+        return edge;
     }
+
 
    for (var i in words) {
      var w = words[i];
@@ -84,6 +85,7 @@ function getSankeyData(words, contexts) {
         var ctx = contexts[w][j];
         var cs = ctx.split(' ');
         
+
         /* We either have a start-context, a middle context, or an end context. */
         if (cs[0] == "__") {
             var fst = nodeadd(w, 2);
@@ -103,8 +105,10 @@ function getSankeyData(words, contexts) {
         else
             console.log("mayday! bad data.");
 
-        edgeadd(fst, snd);
-        edgeadd(snd, thd);
+        var e = edgeadd(fst, snd);
+        var f = edgeadd(snd, thd);
+        e.next.push(f); /* This is for path highlighting. */
+        f.prev.push(e);
      }
   }
 
@@ -127,7 +131,6 @@ function getParameterByName(name) {
 
 
 d3.json("json/english-brown.json", function(json) {
-    
     /* If using "english-brown.json", try "oh" (fewest contexts) */
 
     var wordparam = getParameterByName("word");
@@ -135,10 +138,9 @@ d3.json("json/english-brown.json", function(json) {
 
     var data = getSankeyData(words, json.contexts);
 
-
     var margin = {top: 1, right: 1, bottom: 6, left: 1},
         width = document.body.clientWidth - margin.left - margin.right,
-        height = 600 - margin.top - margin.bottom;  
+        height = 1000 - margin.top - margin.bottom;  
 
     var formatNumber = d3.format(",.0f"),
         format = function(d) { return formatNumber(d) + " TWh"; },
@@ -222,26 +224,40 @@ d3.json("json/english-brown.json", function(json) {
     link.attr("d", path);
   }
 
-
-    /* Fix the height problem in the layout ...
+  
+  /* Path hightlighting */
     
-    for (var p = 0; p < 5; p++) {
-        var nd = d3.selectAll(".node").filter(function(d) { return d.pos == p; });
-            nd.each(function(d, i) {
-                var r = this.getAttribute("transform"); 
-                var ht = r.match(/,(-?[0-9\.]+)\)/);
-                if (ht && ht[1] < 0)
-                    console.log("oh no in pos " + p);
-             });    
+    /* Given a link, highlight the entire path. */
+    function highlightPath(lk) {
+        lk.classed("sel", true);
+        var edge = lk.datum();
+        link.each(function (d) {
+            if (edge.prev.indexOf(d) >= 0 || edge.next.indexOf(d) >= 0) {
+                d3.select(this).classed("sel", true);
+            }
+        });
     }
-    */
-   /*
-    var nd = d3.selectAll(".node").filter(function (d) { return d.name == "he" });
-   var r = nd.attr("transform"); 
-   var ht = r.match(/,(-?[0-9\.]+)\)/);
-   console.log(ht);
-    */
-
+    
+    link.on("mouseover",
+        function() {
+            var lk = d3.select(d3.event.target);
+            highlightPath(lk);          
+        });
+    link.on("mouseout", function() { link.classed("sel", false); });
+    
+     
+    
+    node.on("mouseover",
+        function() {
+            var nd = d3.select(d3.event.target).datum();
+            link.each(function (d) {
+                if (d.source == nd || d.target == nd) {
+                    highlightPath(d3.select(this));
+                }
+            });
+        });
+    node.on("mouseout", function() { link.classed("sel", false); });
+       
 });
 
 </script>
