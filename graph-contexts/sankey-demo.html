@@ -56,6 +56,7 @@ function getSankeyData(words, contexts) {
        return -1;
     }
 
+
     var nodeadd = function (s, i) { 
         var node = {"name":s, "pos":i};
         if (getidx(node) == -1)
@@ -64,44 +65,18 @@ function getSankeyData(words, contexts) {
     }
     
     var edgeadd = function (n, m) {
-        var v = [getidx(n), getidx(m)];
-        edges.push(v);
-    }
+        var src = getidx(n);
+        var tar = getidx(m);
 
-    var collapseNodes = function(ns) {
-       return ns.map(function(n) { return {"name": n}; });
-    }
-    var removeAll = function(xs, s) {
-        var j = 0;
-        for (var i = 0; i < xs.length; i++) {
-            if(xs[i] == s) {
-                xs.splice(i, 1);
+        for (var i = 0; i < edges.length; i++) {
+            if (edges[i].source == src && edges[i].target == tar) {
+                edges[i].value++;
+                return;
             }
         }
-        return j;
+        var edge = {"source":src, "target":tar, "value":1};
+        edges.push(edge);
     }
-    var collapseEdges = function(es) {
-        es.sort();
-        var edgeList = [];
-
-        var old = es[0];
-        var v = 1, i = 1;
-        for ( ; i < es.length; i++) {
-            if (es[i] == old) {
-                v++;
-            }
-            else {
-                edgeList.push({"source":es[i-1][0], "target":es[i-1][1], "value":v });
-                v = 1;
-            }
-        }
-        var idx = es[i-1];
-        edgeList.push({"source":idx[0], "target":idx[1], "value":v });
-
-
-        return edgeList;
-    }
-
 
    for (var i in words) {
      var w = words[i];
@@ -134,46 +109,72 @@ function getSankeyData(words, contexts) {
   }
 
 
-   return {"nodes":nodes, "links":collapseEdges(edges)};
+   return {"nodes":nodes, "links":edges};
 }
-
 
 
 </script>
 
 
 <script>
+/* From SO */
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
 
-var margin = {top: 1, right: 1, bottom: 6, left: 1},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
 
-var formatNumber = d3.format(",.0f"),
-    format = function(d) { return formatNumber(d) + " TWh"; },
-    color = d3.scale.category20();
+d3.json("json/english-brown.json", function(json) {
+    
+    /* If using "english-brown.json", try "oh" (fewest contexts) */
 
-var svg = d3.select("#chart").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    var wordparam = getParameterByName("word");
+    var words = wordparam ? wordparam.split(',') : ["oh"];
 
-var sankey = d3.sankey()
-    .nodeWidth(15)
-    .nodePadding(10)
-    .size([width, height]);
+    var data = getSankeyData(words, json.contexts);
 
-var path = sankey.link();
 
-d3.json("json/fake-contexts.json", function(json) {
+    var margin = {top: 1, right: 1, bottom: 6, left: 1},
+        width = document.body.clientWidth - margin.left - margin.right,
+        height = 600 - margin.top - margin.bottom;  
 
-    var data = getSankeyData(json.words, json.contexts);
+    var formatNumber = d3.format(",.0f"),
+        format = function(d) { return formatNumber(d) + " TWh"; },
+        color = d3.scale.category20();
 
-  sankey
+    var svg = d3.select("#chart").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height",height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var sankey = d3.sankey()
+        .nodeWidth(15)
+        .nodePadding(10)
+        .size([width, height]);
+
+    var path = sankey.link();
+
+    sankey
       .nodes(data.nodes)
       .links(data.links)
       .layout(32);
 
+    /* Fix negative heights - ideally, ultimately the Sankey Y-layout should be fixed. */
+    for (var p = 0; p < 5; p++) {
+        var nd = data.nodes.filter(function (n) { return n.pos == p });
+        var ext = d3.extent(nd, function(n) { return n.y; });
+        var m = ext[0], M = ext[1];
+        if (m < 0 || M > height) {
+            var bottom = Math.abs(m);
+            var space = bottom + M;
+            data.nodes.forEach(function (n) {
+                n.y = (n.y + bottom) * (height / space);
+            });
+        }
+    }
 
   var link = svg.append("g").selectAll(".link")
       .data(data.links)
@@ -220,6 +221,27 @@ d3.json("json/fake-contexts.json", function(json) {
     sankey.relayout();
     link.attr("d", path);
   }
+
+
+    /* Fix the height problem in the layout ...
+    
+    for (var p = 0; p < 5; p++) {
+        var nd = d3.selectAll(".node").filter(function(d) { return d.pos == p; });
+            nd.each(function(d, i) {
+                var r = this.getAttribute("transform"); 
+                var ht = r.match(/,(-?[0-9\.]+)\)/);
+                if (ht && ht[1] < 0)
+                    console.log("oh no in pos " + p);
+             });    
+    }
+    */
+   /*
+    var nd = d3.selectAll(".node").filter(function (d) { return d.name == "he" });
+   var r = nd.attr("transform"); 
+   var ht = r.match(/,(-?[0-9\.]+)\)/);
+   console.log(ht);
+    */
+
 });
 
 </script>
