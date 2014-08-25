@@ -152,54 +152,80 @@ function createTable(table, header, nodes, func) {
         .on("click", function(d) { func(d.label) } );
 }
 
-
 function getSankeyData(words, contexts) {
     
     var nodes = [];
-    var edges = {};
+    var edges = [];
 
-    var nodeadd = function (s) { if (! (s in nodes)) nodes.push(s); };
+    var getidx = function(node) {
+       for (var i in nodes) {
+            var n = nodes[i]; 
+            if (node.name == n.name && node.pos == n.pos)
+                return +i;
+        }
+       return -1;
+    }
+
+
+    var nodeadd = function (s, i) { 
+        var node = {"name":s, "pos":i};
+        if (getidx(node) == -1)
+            nodes.push(node);
+        return node;
+    }
     
     var edgeadd = function (n, m) {
-        var idx = [nodes.indexOf(n), nodes.indexOf(m)];
-        if (edges.hasOwnProperty(idx))
-            edges[idx] = edges[idx] + 1;
-        else
-            edges[idx] = 1;
-    }
+        var src = getidx(n);
+        var tar = getidx(m);
 
-    var collapseNodes = function(ns) {
-       return ns.map(function(n) { return {"name": n}; });
-    }
-    var collapseEdges = function(es) {
-        var edgelist = [];
-        for (i in es)
-            edgelist.push({"source":i[0], "target":i[1], "value":es[i].toString()});
-        return edgelist;
-    }
-
-    for (var i in words) {
-        var w = words[i];
-        nodeadd(w);
-        for (var j in contexts[w]) {
-            var ctx = contexts[w][j];
-            var cs = ctx.split(' ');
-            for (var k = 0; k < cs.length && cs[k] != "__"; k++) {
-                nodeadd(cs[k]);
-                edgeadd(cs[k], w);
-            }
-            k++;
-            for (; k < cs.length; k++) {
-                nodeadd(cs[k]);
-                edgeadd(w, cs[k]);
+        for (var i = 0; i < edges.length; i++) {
+            if (edges[i].source == src && edges[i].target == tar) {
+                edges[i].value++;
+                return edges[i];
             }
         }
+        var edge = {"source":src, "target":tar, "value":1, "prev":[], "next":[]};
+        edges.push(edge);
+        return edge;
     }
 
 
-    return {"nodes":collapseNodes(nodes), "links":collapseEdges(edges)};
-}
+   for (var i in words) {
+     var w = words[i];
+     for (var j in contexts[w]) {
+        var ctx = contexts[w][j];
+        var cs = ctx.split(' ');
+        
 
+        /* We either have a start-context, a middle context, or an end context. */
+        if (cs[0] == "__") {
+            var fst = nodeadd(w, 2);
+            var snd = nodeadd(cs[1], 3);
+            var thd = nodeadd(cs[2], 4);
+        }
+        else if (cs[1] == "__") {
+            var fst = nodeadd(cs[0], 1);
+            var snd = nodeadd(w, 2);
+            var thd = nodeadd(cs[2], 3);
+        }
+        else if (cs[2] == "__") {
+            var fst = nodeadd(cs[0], 0);
+            var snd = nodeadd(cs[1], 1);
+            var thd = nodeadd(w, 2);
+        }
+        else
+            console.log("mayday! bad data.");
+
+        var e = edgeadd(fst, snd);
+        var f = edgeadd(snd, thd);
+        e.next.push(f); /* This is for path highlighting. */
+        f.prev.push(e);
+     }
+  }
+
+
+   return {"nodes":nodes, "links":edges};
+}
 
 function createSankey(data, svg) {
     var width = svg.attr("width"), height = svg.attr("height");
