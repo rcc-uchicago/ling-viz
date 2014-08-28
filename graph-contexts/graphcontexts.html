@@ -55,14 +55,6 @@ function DrawInterface(json) {
             + " scale(" + d3.event.scale + ")");
     }
 
-    /* Sanky svg */
-     var sanky_svg = d3.select(".left").append("svg")
-        .attr("width", svg.attr("width"))
-        .attr("height", svg.attr("height"))
-        .append("g");
-      //  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        
 
     var cen = d3.select("#content")
         .append("div")
@@ -83,8 +75,8 @@ function DrawInterface(json) {
         .append("div")
         .attr("class", "right")
     
-    rt.append("b")
-        .text("Shared contexts")
+    rt.append("span")
+    .html("<b>Shared contexts</b> <a id='sankey' target='_blank'>sanky</a> <a id='hive' target='_blank'>hive</a>")
    
     rt.append("br")
     var ctable = rt.append("table")
@@ -152,6 +144,11 @@ function DrawInterface(json) {
             selected_nodes
             .map(function(n) { return contexts[n] });
 
+        d3.select("#sankey")
+            .attr("href", "sankey-demo.html?word=" + selected_nodes);
+        d3.select("#hive")
+            .attr("href", "hive-demo.html?word=" + selected_nodes);
+
 
         /* header */
         ctable
@@ -188,19 +185,12 @@ function DrawInterface(json) {
                 .html(innerhtml)
         }
 
-        /* Sanky diagram */
-        var data = getSankeyData(selected_nodes, contexts);
-        createSankey(data, sanky_svg); 
     }
     
 }
 
-d3.select("#content")
-    .append("input")
-    .attr("type", "file")
-    .attr("title", "pick a file to use")
-    .on("change", function() {
-            handleFileSelect(d3.event, DrawInterface); 
-            d3.select("input").remove(); })
+d3.json("json/english-brown.json", function(json) {
+    DrawInterface(json);
+});
 
 </script>

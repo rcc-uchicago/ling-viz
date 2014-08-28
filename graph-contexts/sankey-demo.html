@@ -38,13 +38,6 @@
 <script src="sankey.js"></script>
 <script src="graphutils.js"></script>
 <script>
-/* From SO */
-function getParameterByName(name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(location.search);
-    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
 
 
 d3.json("json/english-brown.json", function(json) {
@@ -55,12 +48,16 @@ d3.json("json/english-brown.json", function(json) {
 
     var data = getSankeyData(words, json.contexts);
 
+
+    //var height = calcHeight(data.nodes, 10);
+
+
     var margin = {top: 1, right: 1, bottom: 6, left: 1},
-        width = document.body.clientWidth - margin.left - margin.right,
+        width = document.body.clientWidth - margin.left - margin.right
         height = 1000 - margin.top - margin.bottom;  
 
     var formatNumber = d3.format(",.0f"),
-        format = function(d) { return formatNumber(d) + " TWh"; },
+        format = function(d) { return formatNumber(d); },
         color = d3.scale.category20();
 
     var svg = d3.select("#chart").append("svg")
@@ -68,6 +65,7 @@ d3.json("json/english-brown.json", function(json) {
         .attr("height",height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 
     var sankey = d3.sankey()
         .nodeWidth(15)
@@ -81,20 +79,12 @@ d3.json("json/english-brown.json", function(json) {
       .links(data.links)
       .layout(32);
 
-    /* Fix negative heights - ideally, ultimately the Sankey Y-layout should be fixed. */
-    for (var p = 0; p < 5; p++) {
-        var nd = data.nodes.filter(function (n) { return n.pos == p });
-        var ext = d3.extent(nd, function(n) { return n.y; });
-        var m = ext[0], M = ext[1];
-        if (m < 0 || M > height) {
-            var bottom = Math.abs(m);
-            var space = bottom + M;
-            data.nodes.forEach(function (n) {
-                n.y = (n.y + bottom) * (height / space);
-            });
-        }
-    }
 
+    //data.nodes.forEach(function(d) {
+    //    d.y = d.y * (height / fake_height);
+    //});
+    
+   
   var link = svg.append("g").selectAll(".link")
       .data(data.links)
     .enter().append("path")
@@ -117,7 +107,7 @@ d3.json("json/english-brown.json", function(json) {
       .on("drag", dragmove));
 
   node.append("rect")
-      .attr("height", function(d) { return d.dy; })
+      .attr("height", function(d) { return d.y; })
       .attr("width", sankey.nodeWidth())
       .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
       .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
@@ -134,6 +124,34 @@ d3.json("json/english-brown.json", function(json) {
     .filter(function(d) { return d.x < width / 2; })
       .attr("x", 6 + sankey.nodeWidth())
       .attr("text-anchor", "start");
+
+    /* Fix negative heights - ideally, ultimately the Sankey Y-layout should be fixed.
+
+    function getPosition(node) {
+        var s = node.getAttribute("transform");
+        var r = s.match(/(-?[0-9]+)/g)
+        return r;
+    }
+
+    for (var i = 0; i < 5; i++) {
+        var nd = node.filter(function(d) { return d.pos == i });
+        var E = d3.extent(nd[0], function(d) { return +getPosition(d)[1] });
+        var m = E[0], M = E[1];
+        if (m < 0 || M > height) {
+            console.log(E);
+            var bottom = Math.abs(m);
+            var space = bottom + M;
+            nd.each(function(n, i) {
+                var xy = getPosition(this);
+                var y = (+xy[1] + bottom) * (height / space);
+                //console.log("bottom: " + bottom + " height " + height + " space " + space)
+                //console.log("Pos " + i + " old ht " + xy[1] + " new " + Math.floor(y))
+                //throw new Error("ghel");
+                this.setAttribute("transform", "translate(" + xy[0] + "," + Math.floor(y) + ")");
+            });
+        }
+    } 
+*/
 
   function dragmove(d) {
     d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
@@ -176,5 +194,23 @@ d3.json("json/english-brown.json", function(json) {
     node.on("mouseout", function() { link.classed("sel", false); });
        
 });
+
+function calcHeight(nodes, nodepadding) {
+   
+    /*
+    var nodesByBreadth = d3.nest()
+        .key(function(d) { return d.pos; })
+        .sortKeys(d3.ascending)
+        .entries(nodes)
+        .map(function(d) { return d.values; });
+
+     height = max (over columns) of (nodePadding * (sum(i, v_i))) ) */
+    //var ht = d3.max(nodesByBreadth, function(nodes) { return nodepadding * d3.sum(nodes, function(d) { return d.value } ); }); 
+  
+    var ht = nodepadding * nodes.length;
+
+    return ht;
+}
+
 
 </script>

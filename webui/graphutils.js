@@ -40,10 +40,10 @@ function xmlToGraph(xmlDoc)
     function flattenEdge(tag)
     {
         function idToPos(id) {
-            var pos = nodes.findIndex(function(n) { return n.id == id }); // -1 if no node
+            var pos = nodes.findIndex(function(n) { return (n.id == +id) || (n.label == id); }); // -1 if no node 
             return pos;
         }
-        var src = +tag.getAttribute("source"), tar = +tag.getAttribute("target");
+        var src = tag.getAttribute("source"), tar = tag.getAttribute("target");
         var s = idToPos(src), t = idToPos(tar);
         if (t >= 0 && s >= 0)
             return {"source": s, "target": t};

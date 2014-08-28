@@ -5,6 +5,75 @@
     };
 })();
 
+function xmlToGraph(xmlText)
+{   
+    var xmlDoc = new DOMParser().parseFromString(xmlText, "text/xml");
+
+    function flattenTags(name, f)
+    {
+	    var nl = xmlDoc.getElementsByTagName(name)
+	    var arr = Array.prototype.slice.call(nl)
+	    return arr.map(f);
+    }
+    
+    function getColor(tag)
+    {
+        var c = tag.getElementsByTagName("color")[0]; // use first color element (only one anyway)
+        if (c == undefined)
+            return 'black';
+        else {
+            return 'rgb(' + c.getAttribute('r') + "," + c.getAttribute('g') + "," + c.getAttribute('b') + ')';
+        }
+    } 
+      
+    
+
+    var nodes = [];
+    var nl = xmlDoc.getElementsByTagName("node");
+    var nodearr = Array.prototype.slice.call(nl);
+    nodearr.forEach(function(tag, id) {
+        var label = tag.getAttribute("label");
+        var att = tag.getElementsByTagName("attvalue")[0];
+        var color = getColor(tag);
+        if(!att) {
+            nodes.push({"label": label, "id": id, "pos": 2, "color": color});
+            return;
+        }
+        var ds = att.getAttribute("value").replace(/'/g, '"');
+        var dsa = JSON.parse(ds);
+        for (i in dsa) {
+            if (dsa[i] > 0) {
+                var pos = (+i + 2);
+                nodes.push({"label": label,
+                    "id": id,
+                    "pos": pos,
+                    "color": color});
+            }
+        }
+    });
+
+    function flattenEdge(tag)
+    {
+        function idToPos(id) {
+            var pos = nodes.findIndex(function(n) { return (n.id == +id) || (n.label == id); }); // -1 if no node 
+            return pos;
+        }
+        var src = tag.getAttribute("source"), tar = tag.getAttribute("target");
+        var s = idToPos(src), t = idToPos(tar);
+        if (t >= 0 && s >= 0)
+            return {"source": s, "target": t, "value": 1};
+        else {
+            console.log("Ignoring invalid edge (" + src + "," + tar + ")");
+            return null;
+        }
+   }
+
+    var edges = flattenTags("edge", flattenEdge).filter(function(e) { return e; });
+    
+    
+    return {"nodes": nodes, "links": edges};
+}
+
 
 var tickLimit = 1; // perhaps change this to a function.
 function setTickLimit(i) {
@@ -104,14 +173,14 @@ function nextColor() {
 }
 
 
-function handleFileSelect(evt, func) {
+function handleFileSelect(evt, parse, func) {
     var files = evt.target.files; // FileList object
 
     for (var i = 0, f; f = files[i]; i++) {
 	var reader = new FileReader();
 	reader.onload = (function(e) {
-	    var json = JSON.parse(e.target.result);
-        func(json);
+	    var data = parse(e.target.result);
+        func(data);
 	});
 	reader.readAsText(f);
     }
@@ -431,4 +500,12 @@ if (!Array.prototype.remove) {
   });
 }
 
+
+/* From SO */
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
 
