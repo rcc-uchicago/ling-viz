@@ -4,9 +4,15 @@
 <title>Sankey Diagram</title>
 <style>
 
+html {
+    width:100%;
+    height:100%;
+}
 
-#chart {
-  height: 500px;
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
 }
 
 .node rect {
@@ -54,7 +60,8 @@ d3.json("json/english-brown.json", function(json) {
 
     var margin = {top: 1, right: 1, bottom: 6, left: 1},
         width = document.body.clientWidth - margin.left - margin.right
-        height = 1000 - margin.top - margin.bottom;  
+        height = document.body.clientHeight - margin.top - margin.bottom;  
+
 
     var formatNumber = d3.format(",.0f"),
         format = function(d) { return formatNumber(d); },
@@ -65,6 +72,7 @@ d3.json("json/english-brown.json", function(json) {
         .attr("height",height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+   
 
 
     var sankey = d3.sankey()
@@ -107,13 +115,14 @@ d3.json("json/english-brown.json", function(json) {
       .on("drag", dragmove));
 
   node.append("rect")
-      .attr("height", function(d) { return d.y; })
+      .attr("height", function(d) { return d.dy; })
       .attr("width", sankey.nodeWidth())
       .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
       .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
     .append("title")
       .text(function(d) { return d.name + "\n" + format(d.value); });
 
+ 
   node.append("text")
       .attr("x", -6)
       .attr("y", function(d) { return d.dy / 2; })

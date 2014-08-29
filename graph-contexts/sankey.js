@@ -109,7 +109,7 @@ d3.sankey = function() {
   // nodes with no outgoing links are assigned the maximum breadth.
 
   
-  function computeNodeBreadths() {
+  function computeNodeBreadths_() {
    var width = sankey.size()[0]; 
    nodes.forEach(function(d) {
         d.x = d.pos * (width - nodeWidth) / 4;
@@ -117,7 +117,7 @@ d3.sankey = function() {
     })
   }
  
-  function computeNodeBreadths_() {
+  function computeNodeBreadths() {
     var remainingNodes = nodes,
         nextNodes,
         x = 0;
