@@ -57,6 +57,7 @@ d3.sankey = function() {
     computeNodeBreadths();
     computeNodeDepths(iterations);
     computeLinkDepths();
+    computeRealHeights();
     return sankey;
   };
 
@@ -65,7 +66,10 @@ d3.sankey = function() {
     return sankey;
   };
 
-  sankey.link = function() {
+  sankey.link = function(_) {
+
+    var scale = arguments.length ? _ : 1;
+
     var curvature = .5;
 
     function link(d) {
@@ -75,8 +79,8 @@ d3.sankey = function() {
           xi = d3.interpolateNumber(x0, x1),
           x2 = xi(curvature),
           x3 = xi(1 - curvature),
-          y0 = d.source.y * s + d.sy + d.dy / 2,
-          y1 = d.target.y * s + d.ty + d.dy / 2;
+          y0 = d.source.y * s * scale + d.sy + d.dy / 2,
+          y1 = d.target.y * s * scale + d.ty + d.dy / 2;
       return "M" + x0 + "," + y0
            + "C" + x2 + "," + y0
            + " " + x3 + "," + y1
@@ -340,6 +344,14 @@ d3.sankey = function() {
 
   function value(link) {
     return link.value;
+  }
+
+  function computeRealHeights() {
+    var dh = sankey.displayHeight();
+    var scale = (dh == 1) ? 1 : dh / sankey.size()[1];
+    nodes.forEach(function(node) {
+      node.ht = node.y * scale;
+    });
   }
 
   return sankey;
