@@ -74,8 +74,8 @@ d3.sankey = function() {
 
     function link(d) {
         var s = sankey.displayHeight() / sankey.size()[1];
-      var x0 = d.source.x + d.source.dx,
-          x1 = d.target.x,
+      var x0 = d.source.x * scale,
+          x1 = d.target.x * scale,
           xi = d3.interpolateNumber(x0, x1),
           x2 = xi(curvature),
           x3 = xi(1 - curvature),
