@@ -70,14 +70,13 @@ d3.sankey = function() {
     var curvature = .5;
 
     function link(d) {
-        var s = sankey.displayHeight() / sankey.size()[1];
       var x0 = d.source.x + d.source.dx,
           x1 = d.target.x,
           xi = d3.interpolateNumber(x0, x1),
           x2 = xi(curvature),
           x3 = xi(1 - curvature),
-          y0 = d.source.y * s + d.sy + d.dy / 2,
-          y1 = d.target.y * s + d.ty + d.dy / 2;
+          y0 = d.source.ht + d.sy + d.dy / 2,
+          y1 = d.target.ht + d.ty + d.dy / 2;
       return "M" + x0 + "," + y0
            + "C" + x2 + "," + y0
            + " " + x3 + "," + y1
