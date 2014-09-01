@@ -140,11 +140,11 @@ d3.json("json/english-brown.json", function(json) {
 
    function redraw() {
         var scale = Math.max(1.0, d3.event.scale);
-        node.attr("transform", function(d) { return "translate(" + scale * d.x + "," + (scale) * d.ht  + ")" });
+        node.attr("transform", function(d) { return "translate(" + d.x + "," + (scale) * d.ht  + ")" });
         link.attr("d", sankey.link(scale));        
         svg.attr("transform",
-            "translate(" + d3.event.translate + ")")
-        //    + " scale(" + scale + ")");
+            "translate(" + d3.event.translate + ")"
+            + " scale(" + scale + ")");
     }
 
 
