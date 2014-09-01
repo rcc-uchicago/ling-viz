@@ -70,10 +70,9 @@ d3.json("json/english-brown.json", function(json) {
     var svg = d3.select("#chart").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height",height + margin.top + margin.bottom)
-        .call(d3.behavior.zoom().on("zoom", redraw))
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+   
 
 
     var sankey = d3.sankey()
@@ -105,7 +104,7 @@ d3.json("json/english-brown.json", function(json) {
       .data(data.nodes)
     .enter().append("g")
       .attr("class", "node")
-      .attr("transform", function(d) { return "translate(" + d.x + "," + d.ht  + ")"; }) /* x and y are added by sankey.layout() */
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y * (height / fake_height) + ")"; }) /* x and y are added by sankey.layout() */
     .call(d3.behavior.drag()
       .origin(function(d) { return d; })
       .on("dragstart", function() { this.parentNode.appendChild(this); })
@@ -137,16 +136,6 @@ d3.json("json/english-brown.json", function(json) {
     sankey.relayout();
     link.attr("d", path);
   }
-
-   function redraw() {
-        var scale = Math.max(1.0, d3.event.scale);
-        node.attr("transform", function(d) { return "translate(" + d.x + "," + (scale) * d.ht  + ")" });
-        link.attr("d", sankey.link(scale));        
-        svg.attr("transform",
-            "translate(" + d3.event.translate + ")"
-            + " scale(" + scale + ")");
-    }
-
 
   
   /* Path hightlighting */
