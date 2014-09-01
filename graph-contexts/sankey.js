@@ -57,6 +57,7 @@ d3.sankey = function() {
     computeNodeBreadths();
     computeNodeDepths(iterations);
     computeLinkDepths();
+    computeRealHeights();
     return sankey;
   };
 
@@ -340,6 +341,14 @@ d3.sankey = function() {
 
   function value(link) {
     return link.value;
+  }
+
+  function computeRealHeights() {
+    var dh = sankey.displayHeight();
+    var scale = (dh == 1) ? 1 : dh / sankey.size()[1];
+    nodes.forEach(function(node) {
+      node.ht = node.y * scale;
+    });
   }
 
   return sankey;

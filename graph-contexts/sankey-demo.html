@@ -104,7 +104,7 @@ d3.json("json/english-brown.json", function(json) {
       .data(data.nodes)
     .enter().append("g")
       .attr("class", "node")
-      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y * (height / fake_height) + ")"; }) /* x and y are added by sankey.layout() */
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.ht + ")"; }) /* x and y are added by sankey.layout() */
     .call(d3.behavior.drag()
       .origin(function(d) { return d; })
       .on("dragstart", function() { this.parentNode.appendChild(this); })
