@@ -55,7 +55,7 @@ d3.json("json/english-brown.json", function(json) {
     var data = getSankeyData(words, json.contexts);
 
 
-    //var height = calcHeight(data.nodes, 10);
+    var fake_height = calcHeight(data.nodes, 10);
 
 
     var margin = {top: 1, right: 1, bottom: 6, left: 1},
@@ -78,7 +78,9 @@ d3.json("json/english-brown.json", function(json) {
     var sankey = d3.sankey()
         .nodeWidth(15)
         .nodePadding(10)
-        .size([width, height]);
+        .size([width, fake_height])
+        .displayHeight(height)
+        .useValues(false);
 
     var path = sankey.link();
 
@@ -86,12 +88,6 @@ d3.json("json/english-brown.json", function(json) {
       .nodes(data.nodes)
       .links(data.links)
       .layout(32);
-
-
-    //data.nodes.forEach(function(d) {
-    //    d.y = d.y * (height / fake_height);
-    //});
-    
    
   var link = svg.append("g").selectAll(".link")
       .data(data.links)
@@ -108,7 +104,7 @@ d3.json("json/english-brown.json", function(json) {
       .data(data.nodes)
     .enter().append("g")
       .attr("class", "node")
-      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; }) /* x and y are added by sankey.layout() */
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y * (height / fake_height) + ")"; }) /* x and y are added by sankey.layout() */
     .call(d3.behavior.drag()
       .origin(function(d) { return d; })
       .on("dragstart", function() { this.parentNode.appendChild(this); })
@@ -134,36 +130,9 @@ d3.json("json/english-brown.json", function(json) {
       .attr("x", 6 + sankey.nodeWidth())
       .attr("text-anchor", "start");
 
-    /* Fix negative heights - ideally, ultimately the Sankey Y-layout should be fixed.
-
-    function getPosition(node) {
-        var s = node.getAttribute("transform");
-        var r = s.match(/(-?[0-9]+)/g)
-        return r;
-    }
-
-    for (var i = 0; i < 5; i++) {
-        var nd = node.filter(function(d) { return d.pos == i });
-        var E = d3.extent(nd[0], function(d) { return +getPosition(d)[1] });
-        var m = E[0], M = E[1];
-        if (m < 0 || M > height) {
-            console.log(E);
-            var bottom = Math.abs(m);
-            var space = bottom + M;
-            nd.each(function(n, i) {
-                var xy = getPosition(this);
-                var y = (+xy[1] + bottom) * (height / space);
-                //console.log("bottom: " + bottom + " height " + height + " space " + space)
-                //console.log("Pos " + i + " old ht " + xy[1] + " new " + Math.floor(y))
-                //throw new Error("ghel");
-                this.setAttribute("transform", "translate(" + xy[0] + "," + Math.floor(y) + ")");
-            });
-        }
-    } 
-*/
-
-  function dragmove(d) {
-    d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
+ function dragmove(d) {
+    d.y = Math.max(0, Math.min(height - d.dy, d3.event.y));
+    d3.select(this).attr("transform", "translate(" + d.x + "," + d.y * (height / fake_height) + ")");
     sankey.relayout();
     link.attr("d", path);
   }

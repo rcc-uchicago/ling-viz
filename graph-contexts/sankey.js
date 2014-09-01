@@ -4,7 +4,9 @@ d3.sankey = function() {
       nodePadding = 8,
       size = [1, 1],
       nodes = [],
-      links = [];
+      links = [],
+      displayHeight = 1,
+      useValues = true;
 
   sankey.nodeWidth = function(_) {
     if (!arguments.length) return nodeWidth;
@@ -36,6 +38,19 @@ d3.sankey = function() {
     return sankey;
   };
 
+  sankey.displayHeight = function(_) {
+      if (!arguments.length) return displayHeight;
+      displayHeight = _;
+      return sankey;
+  };
+
+ sankey.useValues = function(_) {
+    if (!arguments.length) return useValues;
+    useValues = _;
+    return sankey;
+  };
+
+
   sankey.layout = function(iterations) {
     computeNodeLinks();
     computeNodeValues();
@@ -54,13 +69,14 @@ d3.sankey = function() {
     var curvature = .5;
 
     function link(d) {
+        var s = sankey.displayHeight() / sankey.size()[1];
       var x0 = d.source.x + d.source.dx,
           x1 = d.target.x,
           xi = d3.interpolateNumber(x0, x1),
           x2 = xi(curvature),
           x3 = xi(1 - curvature),
-          y0 = d.source.y + d.sy + d.dy / 2,
-          y1 = d.target.y + d.ty + d.dy / 2;
+          y0 = d.source.y * s + d.sy + d.dy / 2,
+          y1 = d.target.y * s + d.ty + d.dy / 2;
       return "M" + x0 + "," + y0
            + "C" + x2 + "," + y0
            + " " + x3 + "," + y1
@@ -95,12 +111,17 @@ d3.sankey = function() {
 
   // Compute the value (size) of each node by summing the associated links.
   function computeNodeValues() {
-    nodes.forEach(function(node) {
-      node.value = Math.max(
-        d3.sum(node.sourceLinks, value),
-        d3.sum(node.targetLinks, value)
-      );
-    });
+      if (useValues)
+            nodes.forEach(function(node) {
+                node.value = Math.max(
+                d3.sum(node.sourceLinks, value),
+                d3.sum(node.targetLinks, value)
+            );
+            });
+      else
+          nodes.forEach(function(node) {
+              node.value = 1;
+          });
   }
 
   // Iteratively assign the breadth (x-position) for each node.
@@ -109,7 +130,7 @@ d3.sankey = function() {
   // nodes with no outgoing links are assigned the maximum breadth.
 
   
-  function computeNodeBreadths_() {
+  function computeNodeBreadths() {
    var width = sankey.size()[0]; 
    nodes.forEach(function(d) {
         d.x = d.pos * (width - nodeWidth) / 4;
@@ -117,7 +138,7 @@ d3.sankey = function() {
     })
   }
  
-  function computeNodeBreadths() {
+  function computeNodeBreadths_() {
     var remainingNodes = nodes,
         nextNodes,
         x = 0;
@@ -183,7 +204,7 @@ d3.sankey = function() {
       var ky = d3.min(nodesByBreadth, function(nodes) {
         return (size[1] - (nodes.length - 1) * nodePadding) / d3.sum(nodes, value);
       });
-      ky = d3.max([ky, 1])
+      ky = d3.max([ky, 0.5])
 
       nodesByBreadth.forEach(function(nodes) {
         nodes.forEach(function(node, i) {
@@ -193,6 +214,8 @@ d3.sankey = function() {
       });
 
       links.forEach(function(link) {
+        if (!useValues)
+          link.value = 1;
         link.dy = link.value * ky;
       });
     }
@@ -265,22 +288,42 @@ d3.sankey = function() {
     }
   }
 
+  function computeLinkDepths_() {
+    nodes.forEach(function(node) {
+        node.sourceLinks.forEach(function(link) {
+            link.sy = 0;
+            link.ty = 0;
+        });
+    });
+  }
   function computeLinkDepths() {
-    nodes.forEach(function(node) {
-      node.sourceLinks.sort(ascendingTargetDepth);
-      node.targetLinks.sort(ascendingSourceDepth);
-    });
-    nodes.forEach(function(node) {
-      var sy = 0, ty = 0;
-      node.sourceLinks.forEach(function(link) {
-        link.sy = sy;
-        sy += link.dy;
-      });
-      node.targetLinks.forEach(function(link) {
-        link.ty = ty;
-        ty += link.dy;
-      });
-    });
+    if (useValues) {
+
+        nodes.forEach(function(node) {
+          node.sourceLinks.sort(ascendingTargetDepth);
+          node.targetLinks.sort(ascendingSourceDepth);
+        });
+        nodes.forEach(function(node) {
+          var sy = 0, ty = 0;
+          node.sourceLinks.forEach(function(link) {
+            link.sy = sy;
+            sy += link.dy;
+          });
+          node.targetLinks.forEach(function(link) {
+            link.ty = ty;
+            ty += link.dy;
+          });
+        });
+    }
+    else {
+        nodes.forEach(function(node) {
+            node.sourceLinks.forEach(function(link) {
+                link.sy = 0;
+                link.ty = 0;
+            });
+        });
+    }
+
 
     function ascendingSourceDepth(a, b) {
       return a.source.y - b.source.y;
