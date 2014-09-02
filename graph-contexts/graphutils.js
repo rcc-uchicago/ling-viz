@@ -268,19 +268,19 @@ function getSankeyData(words, contexts) {
 
         /* We either have a start-context, a middle context, or an end context. */
         if (cs[0] == "__") {
-            var fst = nodeadd(w, 2);
-            var snd = nodeadd(cs[1], 3);
-            var thd = nodeadd(cs[2], 4);
+            var fst = nodeadd(w, 0);
+            var snd = nodeadd(cs[1], 1);
+            var thd = nodeadd(cs[2], 2);
         }
         else if (cs[1] == "__") {
-            var fst = nodeadd(cs[0], 1);
-            var snd = nodeadd(w, 2);
-            var thd = nodeadd(cs[2], 3);
+            var fst = nodeadd(cs[0], -1);
+            var snd = nodeadd(w, 0);
+            var thd = nodeadd(cs[2], 1);
         }
         else if (cs[2] == "__") {
-            var fst = nodeadd(cs[0], 0);
-            var snd = nodeadd(cs[1], 1);
-            var thd = nodeadd(w, 2);
+            var fst = nodeadd(cs[0], -2);
+            var snd = nodeadd(cs[1], -1);
+            var thd = nodeadd(w, 0);
         }
         else
             console.log("mayday! bad data.");

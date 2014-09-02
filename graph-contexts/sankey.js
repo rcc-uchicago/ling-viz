@@ -133,7 +133,7 @@ d3.sankey = function() {
   function computeNodeBreadths() {
    var width = sankey.size()[0]; 
    nodes.forEach(function(d) {
-        d.x = d.pos * (width - nodeWidth) / 4;
+        d.x = (d.pos + 2) * (width - nodeWidth) / 4;
         d.dx = nodeWidth;
     })
   }
