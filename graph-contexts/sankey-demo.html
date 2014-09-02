@@ -36,8 +36,33 @@ body {
   stroke-opacity: .5;
 }
 
+.menu {
+    width: -moz-fit-content;
+    background: lightgrey;
+    position: absolute;
+    top: 0px;
+    left: -500px;
+}
+
+.here {
+    position:absolute;
+    top: 0px;
+    background:darkgrey;
+}
+
 </style>
 <body>
+
+<div class="here">
+    <svg height="50" width="50">
+        <circle r="1.0" fill="blue"/>
+    </svg>
+    <div class="menu">
+        Node width <input type="number"/>   </br>
+        <input type="button" value="Redraw" /> </br>
+    </div>
+</div>
+
 <p id="chart" />
 
 <script src="d3.js"></script>
@@ -45,6 +70,20 @@ body {
 <script src="graphutils.js"></script>
 <script>
 
+var menu = d3.select(".menu");
+d3.select(".here")
+    .on("mouseenter", menuin)
+    .on("mouseleave", menuout);
+function menuin() {
+    menu
+        .transition()
+        .style("left", "0px");
+}
+function menuout() {
+    menu
+        .transition()
+        .style("left", "-500px");
+}
 
 d3.json("json/english-brown.json", function(json) {
     /* If using "english-brown.json", try "oh" (fewest contexts) */
@@ -138,7 +177,7 @@ d3.json("json/english-brown.json", function(json) {
   }
 
   
-  /* Path hightlighting */
+  /* Path highlighting */
     
     /* Given a link, highlight the entire path. */
     function highlightPath(lk) {
@@ -200,7 +239,7 @@ function applyColorScheme(nodes) {
     function getmask(n) {
         var mask = []
         for (var i = -2; i <= 2; i++) {
-            nodesByPos[i.toString()].forEach(function (m) {
+            nodesByPos[i].forEach(function (m) {
                 if(m.name == n.name)
                     mask.push(i);
             });
