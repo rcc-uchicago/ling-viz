@@ -37,29 +37,30 @@ body {
 }
 
 .menu {
-    width: -moz-fit-content;
     background: lightgrey;
     position: absolute;
     top: 0px;
     left: -500px;
+    width: 200px;
+    font: 10px sans-serif;
+
 }
 
 .here {
     position:absolute;
     top: 0px;
-    background:darkgrey;
+    background:black;
 }
 
 </style>
 <body>
 
 <div class="here">
-    <svg height="50" width="50">
-        <circle r="1.0" fill="blue"/>
+    <svg height="30" width="20">
     </svg>
     <div class="menu">
-        Node width <input type="number"/>   </br>
-        <input type="button" value="Redraw" /> </br>
+        <input type="checkbox" id="usevalues">Node thickness depends on value<br>
+        <input type="button" value="Redraw" id="redraw" /> <br>
     </div>
 </div>
 
@@ -84,18 +85,30 @@ function menuout() {
         .transition()
         .style("left", "-500px");
 }
+d3.select("#redraw")
+    .on("click", DrawEverything);
 
 d3.json("json/english-brown.json", function(json) {
     /* If using "english-brown.json", try "oh" (fewest contexts) */
 
     var wordparam = getParameterByName("word");
     var words = wordparam ? wordparam.split(',') : ["oh"];
-
     var data = getSankeyData(words, json.contexts);
-    applyColorScheme(data.nodes);
+     applyColorScheme(data.nodes);
+    DrawEverything(data);
 
+});
+
+function DrawEverything(_) {
+
+    d3.select("#chart").select("svg").remove();
+
+    if(! DrawEverything.data)
+        DrawEverything.data = _;
+
+    var data = DrawEverything.data;
+   
     var fake_height = calcHeight(data.nodes, 10);
-
 
     var margin = {top: 1, right: 1, bottom: 6, left: 1},
         width = document.body.clientWidth - margin.left - margin.right
@@ -113,12 +126,13 @@ d3.json("json/english-brown.json", function(json) {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
    
 
+    console.log(d3.select("#usevalues").node().checked);
     var sankey = d3.sankey()
         .nodeWidth(15)
         .nodePadding(10)
         .size([width, fake_height])
         .displayHeight(height)
-        .useValues(false);
+        .useValues(d3.select("#usevalues").node().checked);
 
     var path = sankey.link();
 
@@ -210,7 +224,7 @@ d3.json("json/english-brown.json", function(json) {
         });
     node.on("mouseout", function() { link.classed("sel", false); });
        
-});
+}
 
 function calcHeight(nodes, nodepadding) {
    
