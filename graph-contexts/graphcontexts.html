@@ -95,7 +95,14 @@ function DrawInterface(json) {
             select(x)
     }
     function select(x) {
-        selectNode(x).color(nextColor());
+        var nd = selectNode(x);
+        
+        plotGraph.center = d3.select(".node").data().indexOf(nd.datum());    
+        vis.attr("transform", "scale(2.0)");
+
+
+        console.log("zoomed");
+        nd.color(nextColor());
         selectCell(findCell(table, x))
         selected_nodes.push(x)
         compute_contexts()

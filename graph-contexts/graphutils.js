@@ -123,6 +123,12 @@ function plotGraph(svg, nodes, edges)
     var tick = tickLimit;
     force.on("tick", function() {
 	if (tick == tickLimit) {
+
+        if (plotGraph.center) {
+            nodes[plotGraph.center].x = width/2;
+            nodes[plotGraph.center].y = heigh/2;
+        }
+
 	    link.attr("x1", function(d) { return d.source.x; })
 		.attr("y1", function(d) { return d.source.y; })
 		.attr("x2", function(d) { return d.target.x; })

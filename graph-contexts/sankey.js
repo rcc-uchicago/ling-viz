@@ -6,7 +6,8 @@ d3.sankey = function() {
       nodes = [],
       links = [],
       displayHeight = 1,
-      useValues = true;
+      useValues = true,
+      customLayout = false;
 
   sankey.nodeWidth = function(_) {
     if (!arguments.length) return nodeWidth;
@@ -49,6 +50,12 @@ d3.sankey = function() {
     useValues = _;
     return sankey;
   };
+
+ sankey.customLayout = function(_) {
+     if(!arguments.length) return customLayout;
+     customLayout = _;
+     return sankey;
+ };
 
 
   sankey.layout = function(iterations) {
@@ -130,7 +137,11 @@ d3.sankey = function() {
   // nodes with no outgoing links are assigned the maximum breadth.
 
   
-  function computeNodeBreadths() {
+    function computeNodeBreadths() {
+        customLayout ? computeNodeBreadths_custom() : computeNodeBreadths_old() ;
+    }
+
+  function computeNodeBreadths_custom() {
    var width = sankey.size()[0]; 
    nodes.forEach(function(d) {
         d.x = (d.pos + 2) * (width - nodeWidth) / 4;
@@ -138,7 +149,7 @@ d3.sankey = function() {
     })
   }
  
-  function computeNodeBreadths_() {
+  function computeNodeBreadths_old() {
     var remainingNodes = nodes,
         nextNodes,
         x = 0;
