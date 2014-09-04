@@ -242,8 +242,9 @@ function getSankeyData(words, contexts) {
     }
 
 
-    var nodeadd = function (s, i) { 
-        var node = {"name":s, "pos":i};
+    var nodeadd = function (s, i) {
+        var id = "(" + s + "," + i + ")";
+        var node = {"name":s, "pos":i, "id":id};
         if (getidx(node) == -1)
             nodes.push(node);
         return node;
@@ -259,7 +260,8 @@ function getSankeyData(words, contexts) {
                 return edges[i];
             }
         }
-        var edge = {"source":src, "target":tar, "value":1, "prev":[], "next":[]};
+        var id = "[" + n.id + "," + m.id + "]";
+        var edge = {"source":src, "target":tar, "value":1, "prev":[], "next":[], "id":id};
         edges.push(edge);
         return edge;
     }

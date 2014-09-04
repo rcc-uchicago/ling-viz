@@ -103,16 +103,8 @@ d3.json("json/english-brown.json", function(json) {
 
     var wordparam = getParameterByName("word");
     var words = wordparam ? wordparam.split(',') : ["oh"];
-    d3.select("#wordlist")
-        .selectAll("li")
-        .data(words)
-        .enter()
-        .append("li")
-        .text(function(d) { return d; });
-    //var data = getSankeyData(words, json.contexts);
-    //data.words = words;
-    json.words = words;
-    DrawEverything(json);
+  
+    DrawEverything(json, words);
 
 });
 
@@ -121,15 +113,9 @@ function ischecked(s) { return d3.select('#' + s).node().checked };
 function getvalue(s) { return d3.select('#' + s).node().value; };
 
 
-function DrawEverything(_) {
+function DrawEverything(json, words) {
 
-    if(! DrawEverything.json)
-        DrawEverything.json = _;
-
-    var json = DrawEverything.json;
-    var data = getSankeyData(json.words, json.contexts);
-
-    var fake_height = calcHeight(data.nodes, 10);
+    var data = {} //getSankeyData(json.words, json.contexts);
 
     var margin = {top: 1, right: 1, bottom: 6, left: 1},
         width = document.body.clientWidth - margin.left - margin.right
@@ -142,40 +128,75 @@ function DrawEverything(_) {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
    
+    var sankey = d3.sankey()
+        .size([width, fake_height])
+        .displayHeight(height)
+
+
+    var link = svg.append("g").selectAll(".link");
+    var node = svg.append("g").selectAll(".node");
+
+    var fake_height = 0;
+
+
     /* Menu items */
 
     function cbfunc(f1, f2) {
         return function () { this.checked ? f1() : f2() }
     }
-
-    d3.selectAll(".attr")
-        .on("change", function() { updateSVG() });
-    //d3.select("#uselabels")
-    //    .on("change", cbfunc(addLabels, function() { svg.selectAll("text").remove() }));
     function lsfunc(n) {
         return function() {
             link.transition().style("stroke-width", n);
         }
     }
+
+
+    
+    d3.selectAll(".attr")
+        .on("change", function() { if (! d3.select(".node").empty()) updateSVG() });
+    
+    d3.select("#uselabels")
+        .on("change", function() {
+            node.select("text").attr("visibility", this.checked ? "visible" : "hidden");        
+         });
+
     d3.select("#skinnyedges")
         .on("change", cbfunc(lsfunc(1), lsfunc(function(d) { return Math.max(1, d.dy); })));
-    
+   
+    d3.select("#addword")
+        .on("change", function() {
+            var w = d3.event.target.value;
+             words.push(w);
+             d3.select("#wordlist")
+                .append("li").html("<a href='#'>" + w + "</a>")
+                .select("a").on("click", removeWord);
+             
+             data = getSankeyData(words, json.contexts);
+             updateSVG(data.nodes.sort(), data.links.sort());
+        });   
+    function removeWord() {
+        var li = this.parentNode;
+        var w = this.innerHTML;
+        words.remove(w);
+        data = getSankeyData(words, json.contexts);
+        d3.select(li).remove();
+        updateSVG(data.nodes.sort(), data.links.sort());
+    }
 
-    var sankey = d3.sankey()
-        .size([width, fake_height])
-        .displayHeight(height)
+    d3.select("#wordlist")
+        .selectAll("li")
+        .data(words)
+        .enter()
+        .append("li")
+        .append("a")
+        .attr("href", "#")
+        .html(function(d) { return d; })
+        .on("click", removeWord);
 
-    var path = sankey.link();
-
-    sankey
-      .nodes(data.nodes)
-      .links(data.links)
-      .layout(32);
-
-    var link = svg.append("g").selectAll(".link");
-    var node = svg.append("g").selectAll(".node");
-
-    updateSVG(data.nodes, data.links);
+    if (words.length) {
+        data = getSankeyData(words, json.contexts);
+        updateSVG(data.nodes.sort(), data.links.sort());
+    }
 
     function updateSVG(nodes, links) {
         
@@ -188,14 +209,24 @@ function DrawEverything(_) {
         var customLayout = ischecked("customlayout");
         var useLabels = ischecked("uselabels");
 
+        if (nodes && links) {
+            sankey.nodes(nodes);
+            sankey.links(links);
+            fake_height = calcHeight(nodes, nodePadding);
+            sankey
+                .size([width, fake_height])
+                .displayHeight(height);
+        }
 
-        sankey 
+        sankey
             .nodeWidth(nodeWidth)
             .nodePadding(nodePadding)
             .useValues(useValues)
             .customLayout(customLayout);
         sankey
             .layout(32);
+
+        var path = sankey.link();
 
         if (useColors)
             applyColorScheme(data.nodes);
@@ -206,49 +237,25 @@ function DrawEverything(_) {
         }
 
 
-        /* Update old values */
-        link
-            .transition()
-            .attr("d", path)
-            .style("stroke-width", skinnyEdges ? 1 : function(d) { return Math.max(1, d.dy); });
-
-        if (links) {
-       /* Create new values */
-            link = link.data(links);
+        /* New values */
+        if (nodes && links) {
+            
+            link = link.data(links, function(d) { return d.id; });
             link
                 .enter().append("path")
                     .attr("class", "link")
                     .attr("d", path)
-                    .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+                    .style("stroke-width", skinnyEdges ? 1 : function(d) { return Math.max(1, d.dy); })
                     .on("mouseover", highlightlink)
                     .on("mouseout", unhighlight);
+            link.append("title")
+                .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + d.value; });
         /* remove unneeded */
             link.exit().remove();
-            link.sort(function(a, b) { return b.dy - a.dy; });
-        }
-        
-
-        /* Update old values */
-        node
-            .transition()
-            .attr("transform", function(d) { return "translate(" + d.x + "," + d.ht + ")"; }) 
-
-        node.selectAll("rect")
-            .transition()
-            .attr("height", function(d) { return d.dy; })
-            .attr("width", sankey.nodeWidth())
-            .style("fill", function(d) { return d.color; })
-            .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
-
-        node.selectAll("text")
-            .transition()
-            .attr("y", function(d) { return d.dy / 2; })
-            .attr("dy", ".35em")
-            .attr("x", 6 + sankey.nodeWidth())
-
-        if (nodes) { 
+            //link.sort(function(a, b) { return b.dy - a.dy; });
+ 
         /* Create new values */
-            node = node.data(nodes);
+            node = node.data(nodes, function(d) { return d.id; });
             node
                 .enter().append("g")
                 .attr("class", "node")
@@ -268,7 +275,8 @@ function DrawEverything(_) {
                 .append("title")
                 .text(function(d) { return d.name + "\n" + d.value; })
         
-                .append("text")
+            node.select("text").remove();
+            node.append("text")
                     .attr("x", -6)
                     .attr("y", function(d) { return d.dy / 2; })
                     .attr("dy", ".35em")
@@ -278,22 +286,54 @@ function DrawEverything(_) {
                     .filter(function(d) { return d.x < width / 2; })
                     .attr("x", 6 + sankey.nodeWidth())
                     .attr("text-anchor", "start")
-                    .attr("visibility", useLabels);
+                    .attr("visibility", useLabels ? "visible" : "hidden");
             
             /* Remove old */
             node.exit().remove();
+
         }
+
+
+        /* Update old values */
+        link
+            .transition()
+            .attr("d", path)
+            .style("stroke-width", skinnyEdges ? 1 : function(d) { return Math.max(1, d.dy); });
+
+        if (nodes && links) {
+            node.selectAll("rect").data(nodes, function(d) { return d.id; });
+            node.selectAll("text").data(nodes, function(d) { return d.id; });
+        }
+
+        node
+            .transition()
+            .attr("transform", function(d) { return "translate(" + d.x + "," + d.ht + ")"; }) 
+
+        node.selectAll("rect")
+            .transition()
+            .attr("height", function(d) { return d.dy; })
+            .attr("width", sankey.nodeWidth())
+            .style("fill", function(d) { return d.color; })
+            .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
+
+        node.selectAll("text")
+            .transition()
+            .attr("y", function(d) { return d.dy / 2; })
+            .attr("dy", ".35em")
+            .attr("x", 6 + sankey.nodeWidth())
+    
+        function dragmove(d) {
+            d.ht += d3.event.dy;
+            d.y = d.ht * (fake_height / height);
+            d3.select(this).attr("transform", "translate(" + d.x + "," + d.ht + ")");
+            sankey.relayout();
+            link.attr("d", path);
+        }
+
    
-    }
+   }
 
-   function dragmove(d) {
-        d.y = Math.max(0, Math.min(fake_height - d.dy, d3.event.y));
-        d.ht = d.y * (height / fake_height);
-        d3.select(this).attr("transform", "translate(" + d.x + "," + d.ht + ")");
-        sankey.relayout();
-        link.attr("d", path);
-    }
-
+ 
     /* Path highlighting */
     
     /* Given a link, highlight the entire path. */
