@@ -316,11 +316,13 @@ function DrawEverything(json, words) {
             .style("fill", function(d) { return d.color; })
             .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
 
-        node.selectAll("text")
-            .transition()
-            .attr("y", function(d) { return d.dy / 2; })
-            .attr("dy", ".35em")
-            .attr("x", 6 + sankey.nodeWidth())
+        if (!(nodes && links) && useLabels) {
+            node.selectAll("text")
+                .transition()
+                .attr("y", function(d) { return d.dy / 2; })
+                .attr("dy", ".35em")
+                .attr("x", 6 + sankey.nodeWidth())
+        }
     
         function dragmove(d) {
             d.ht += d3.event.dy;
