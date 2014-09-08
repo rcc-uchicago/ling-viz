@@ -64,11 +64,12 @@ input[type="number"] {
     </svg>
     <div class="menu">
         <input type="checkbox" class="attr" id="usevalues" checked>Node thickness depends on value<br>
-        <input type="checkbox" class="attr" id="usecolors" checked>Use custom color scheme<br>
+        <input type="checkbox" id="usecolors" checked>Use custom color scheme<br>
         <input type="checkbox" id="uselabels" checked>Display labels of nodes<br>
         <input type="number" id="nodewidth" class="attr" min="0" max="100" value="15">Node width<br>
         <input type="number" id="nodepadding" class="attr" min="0" max="100" value="10">Node padding<br>
         <input type="checkbox" id="skinnyedges">Skinny edges <br>
+        <input type="checkbox" id="customlayout" class="attr" checked>Use custom layout function <br>
         <input type="text" id="addword"> <br>
         <ul id="wordlist">
         </ul>
@@ -96,8 +97,6 @@ function menuout() {
         .transition()
         .style("left", "-500px");
 }
-//d3.selectAll("input")
-//    .on("change", DrawEverything);
 
 
 d3.json("json/english-brown.json", function(json) {
@@ -139,6 +138,9 @@ function redraw() {
 
 }
 
+function ischecked(s) { return d3.select('#' + s).node().checked };
+
+function getvalue(s) { return d3.select('#' + s).node().value; };
 
 function DrawEverything(words, _) {
 
@@ -174,15 +176,17 @@ function DrawEverything(words, _) {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
    
 
-    var nodeWidth = d3.select("#nodewidth").node().value;
-    var useValues = d3.select("#usevalues").node().checked;
-    var nodePadding = d3.select("#nodepadding").node().value; 
+    var nodeWidth = getvalue("nodewidth");
+    var useValues = ischecked("usevalues");
+    var nodePadding = getvalue("nodepadding");
+    var customLayout = ischecked("customlayout");
     var sankey = d3.sankey()
         .nodeWidth(nodeWidth)
         .nodePadding(nodePadding)
         .size([width, fake_height])
         .displayHeight(height)
-        .useValues(useValues);
+        .useValues(useValues)
+        .customLayout(customLayout);
 
     var path = sankey.link();
 
@@ -237,11 +241,11 @@ function DrawEverything(words, _) {
         addLabels();
 
     function dragmove(d) {
-        d.y = Math.max(0, Math.min(fake_height - d.dy, d3.event.y));
-        d.ht = d.y * (height / fake_height);
-        d3.select(this).attr("transform", "translate(" + d.x + "," + d.ht + ")");
-        sankey.relayout();
-        link.attr("d", path);
+            d.ht += d3.event.dy;
+            d.y = d.ht * (fake_height / height);
+            d3.select(this).attr("transform", "translate(" + d.x + "," + d.ht + ")");
+            sankey.relayout();
+            link.attr("d", path);
     }
 
   
@@ -297,34 +301,40 @@ function DrawEverything(words, _) {
     d3.select("#skinnyedges")
         .on("change", cbfunc(lsfunc(1), lsfunc(function(d) { return Math.max(1, d.dy); })));
 
-    //d3.select("#skinnyedges").on("change", update);
-    function update() {
+    d3.select("#usecolors")
+        .on("change", function() {
+            if (this.checked) {
+                applyColorScheme(data.nodes);
+            }
+            else {
+                data.nodes.forEach(function(d) {
+                    d.color = color(d.name.replace(/ .*/, ""));
+                });
+            }
+            node.selectAll("rect")
+                .transition()
+                .style("fill", function(d) { return d.color; })
+                .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
+        });
 
-        function ischecked(s) { return d3.select('#' + s).node().checked };
-        function getvalue(s) { return d3.select('#' + s).node().value; };
+
+    function update() {
 
         var nodeWidth = getvalue("nodewidth");
         var useValues = ischecked("usevalues");
         var nodePadding = getvalue("nodepadding");
         var useColors = ischecked("usecolors");
         var skinnyEdges = ischecked("skinnyedges");
+        var customLayout = ischecked("customlayout");
 
         sankey 
             .nodeWidth(nodeWidth)
             .nodePadding(nodePadding)
-            .useValues(useValues);
+            .useValues(useValues)
+            .customLayout(customLayout);
         sankey
             .layout(32);
-
-        if (useColors)
-            applyColorScheme(data.nodes);
-        else {
-            data.nodes.forEach(function(d) {
-                d.color = color(d.name.replace(/ .*/, ""))
-            });
-        }
-
-
+ 
         link
             .transition()
             .attr("d", path)
@@ -352,14 +362,7 @@ function DrawEverything(words, _) {
 
 function calcHeight(nodes, nodepadding) {
    
-    /*
-    var nodesByBreadth = d3.nest()
-        .key(function(d) { return d.pos; })
-        .sortKeys(d3.ascending)
-        .entries(nodes)
-        .map(function(d) { return d.values; });
-
-     height = max (over columns) of (nodePadding * (sum(i, v_i))) ) */
+    // height = max (over columns) of (nodePadding * (sum(i, v_i))) ) */
     //var ht = d3.max(nodesByBreadth, function(nodes) { return nodepadding * d3.sum(nodes, function(d) { return d.value } ); }); 
   
     var ht = nodepadding * nodes.length;
