@@ -69,6 +69,9 @@ input[type="number"] {
         <input type="number" id="nodewidth" class="attr" min="0" max="100" value="15">Node width<br>
         <input type="number" id="nodepadding" class="attr" min="0" max="100" value="10">Node padding<br>
         <input type="checkbox" id="skinnyedges">Skinny edges <br>
+        <input type="text" id="addword"> <br>
+        <ul id="wordlist">
+        </ul>
     </div>
 </div>
 
@@ -99,20 +102,50 @@ function menuout() {
 
 d3.json("json/english-brown.json", function(json) {
     /* If using "english-brown.json", try "oh" (fewest contexts) */
-
     var wordparam = getParameterByName("word");
     var words = wordparam ? wordparam.split(',') : ["oh"];
-    var data = getSankeyData(words, json.contexts);
-    DrawEverything(data);
+    words.forEach(addWord);  
+    //var data = getSankeyData(words, json.contexts);
+    DrawEverything(words, json);
 
 });
 
-function DrawEverything(_) {
 
-    if(! DrawEverything.data)
-        DrawEverything.data = _;
+d3.select("#addword").on("change", function() {
+    var w = d3.event.target.value;
+    addWord(w);
+    redraw();
+});
 
-    var data = DrawEverything.data;
+
+function addWord(w) {
+    d3.select("#wordlist")
+        .append("li")
+        .html("<a href='#'>" + w + "</a>")
+        .on("click", removeWord)
+}
+
+function removeWord() {
+    d3.select(this).remove();
+    redraw();
+}
+
+function redraw() {
+    var words = []
+    d3.select("#wordlist")
+        .selectAll("a")
+        .each(function() { words.push(this.innerHTML); })
+    DrawEverything(words);
+
+}
+
+
+function DrawEverything(words, _) {
+
+    if(! DrawEverything.json && _)
+        DrawEverything.json = _;
+
+    var data = getSankeyData(words, DrawEverything.json.contexts); 
    
     var fake_height = calcHeight(data.nodes, 10);
 
@@ -132,7 +165,8 @@ function DrawEverything(_) {
                 d.color = color(d.name.replace(/ .*/, ""))
         });
     }
-  
+ 
+    d3.select("#chart").select("svg").remove(); 
     var svg = d3.select("#chart").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height",height + margin.top + margin.bottom)
