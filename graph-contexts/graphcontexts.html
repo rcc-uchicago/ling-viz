@@ -34,17 +34,20 @@ function DrawInterface(json) {
     var edges = json.edges;
     var contexts = json.contexts;
     var nodelabels = nodes.map(function(d) { return d.label; })
+    var zoom = d3.behavior.zoom();
 
     /* Graph svg */
+    var width = window.innerWidth * 0.5 - 20;
+    var height = window.innerHeight - 20;
     var svg = d3.select("#content")
         .append("div")
         .attr("class", "left")
         .attr("contextmenu", "supermenu")
         .append("svg")
-        .attr("width", (window.innerWidth * 0.5) -20)
-        .attr("height", window.innerHeight - 20)
+        .attr("width", width)
+        .attr("height", height)
         .attr("pointer-events", "all")
-        .call(d3.behavior.zoom().on("zoom", redraw));
+        .call(zoom.on("zoom", redraw));
     var vis = svg
         .append('svg:g') 
         .attr("width", svg.attr("width"))
@@ -95,7 +98,21 @@ function DrawInterface(json) {
             select(x)
     }
     function select(x) {
-        selectNode(x).color(nextColor());
+        var node = selectNode(x);
+        node.color(nextColor());
+
+        /* Zooming adapted from http://stackoverflow.com/questions/13861657/automatic-zoom-on-object-in-d3-force-layout */
+        var zoomFactor = 3;
+       
+        var vec = node.node().parentNode.getAttribute("transform");
+        var trans = vec.match(/-?[0-9\.]+/g)
+
+        var transx = (-parseInt(trans[0]) * zoomFactor + width/2),
+            transy = (-parseInt(trans[1]) * zoomFactor + height/2);
+        vis.transition().attr("transform", "translate(" + transx + "," + transy + ")scale(" + zoomFactor + ")");
+        zoom.scale(zoomFactor);
+        zoom.translate([transx, transy]);
+
         selectCell(findCell(table, x))
         selected_nodes.push(x)
         compute_contexts()
