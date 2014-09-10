@@ -185,4 +185,19 @@ d3.select("#menu")
         d3.event.target.href = 'data:text/plain;charset=utf-8,' + getx3d(d3.select("x3d"))       
      });
 
+
+if (require) {
+    var fs = require('fs');
+    window.setInterval(function() {
+        fs.writeFile("data.x3d", getx3d(d3.select("x3d")), function(err) {
+        if(err) {
+            console.log(err);
+        } else {
+            console.log("The file was saved!");
+        }
+        });
+    }, 2000);
+} 
+
+
 </script>

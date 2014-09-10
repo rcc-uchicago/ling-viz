@@ -1,4 +1,4 @@
-NW=/home/simon/rcc/goldsmith/node-webkit-v0.9.2-linux-x64/nw
+NW=~/Downloads/node-webkit-v0.10.4-osx-x64/node-webkit.app/Contents/MacOS/node-webkit
 publish_dest=midway.rcc.uchicago.edu:~/public_html/dataviz
 
 app.nw: index.html package.json d3.js graphutils.js
