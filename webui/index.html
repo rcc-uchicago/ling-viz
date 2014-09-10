@@ -65,23 +65,7 @@ td {
 
 <div id="content">
 <x3d class="x3d" width="800px" height="500px" style="border:solid; border-width:1px;">
-</x3d>
-
- <object id="obj" type="model/x3d+xml" width="800" height="500">
-<!-- <param name="src" value="http://www.web3d.org/x3d/content/examples/HelloWorld.x3d"> -->
-
-         <!-- the remaining HTML that follows should not need further modification -->
-        <param name="anaglyph" value="RB">
-    
-        <!-- the following anchor-link text is only displayed to user if no X3D plugin is already installed -->
-        <div id="noX3dPluginInstalled">
-            <a href="http://www.web3d.org/x3d/content/examples/X3dResources.html#Applications" target="helpPage">Select an X3D plugin to see this example...</a>
-            <!-- alternate url: http://www.web3d.org/tools/viewers_and_browsers -->
-        </div>
-    </object>
-    
-
-
+</x3d> 
 
 <table id="dtable">
 </table>
@@ -208,15 +192,20 @@ d3.select("#menu")
         
         var data = getx3d(d3.select("x3d"));
         var x3d = new Blob([data], {type: 'model/x3d+xml;charset=utf-8'});
-        var url = URL.createObjectURL(x3d);
+        var url = window.URL.createObjectURL(x3d);
 
-        d3.select("obj")
-            .append("param")
-            .attr("name", "src")
-            .attr("value", url);
-            
+        var obj = d3.select("#content")
+            .append("object")
+            .attr("type", "model/x3d+xml")
+            .attr("width", "800")
+            .attr("height", "500");
+        
+        obj.node().data = url;
+
+        console.log(url);            
             
             
             
             });
 </script>
+
