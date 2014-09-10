@@ -155,7 +155,17 @@ function findNode(name) {
 
 	    var row = d3.select("#selected").append("tr");	
     
+        /* The following code is changed because of a weird problem with node-webkit:
         var node_obj = updateTable.nodes.find(function (n) { return n.label == name });
+        */
+
+        var node_obj = undefined;
+        for (var i = 0; i < updateTable.nodes.length; i++)
+            if(updateTable.nodes[i].label == name)
+                node_obj = updateTable.nodes[i]
+        
+        
+        
         var nb_l = updateTable.edges.filter(function(e) { return e.source == node_obj; })
             .map(function (n) { return n.target; });
         var nb_r = updateTable.edges.filter(function(e) { return e.target == node_obj; })
@@ -309,3 +319,4 @@ if (!Array.prototype.findIndex) {
     }
   });
 }
+
