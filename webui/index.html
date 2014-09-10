@@ -148,9 +148,8 @@ function cls() {
 
 function getx3d(x3d) {
 
-
     var processColor = function(x) {
-        var o = x3dom.fields.SFColor.colorParse("blue")
+        var o = x3dom.fields.SFColor.colorParse(x)
         return o.r + " " + o.g + " "  + o.b;
     }
 
@@ -164,7 +163,19 @@ function getx3d(x3d) {
                 var c = this.getAttribute("diffusecolor");
                 this.setAttribute("diffusecolor", processColor(c)) });
 
+    var keepattr = ["translation", "diffusecolor", "coordindex", "point", "lit"];
+    d.selectAll('*').each(function() {
+            var that = this;
+            var toRemove = Array.prototype.slice.call(this.attributes)
+                .filter(function(a) { return keepattr.indexOf(a.name) < 0; });
+            toRemove.forEach(function(a) { that.removeAttribute(a.name); });
+    });
+           
     var html = node.outerHTML;
+
+    var prefix = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.0//EN" "http://www.web3d.org/specifications/x3d-3.0.dtd">\n<X3D xmlns:xsd=\'http://www.w3.org/2001/XMLSchema-instance\' profile=\'Full\' version=\'3.0\' xsd:noNamespaceSchemaLocation=\'http://www.web3d.org/specifications/x3d-3.0.xsd\'>';
+    html = html.replace("<x3d>", prefix);
+
 
     /* We need to do a TON more replacements because of weird case thing between x3dom/D3/x3d.
        Probably take out of JS. */
@@ -173,6 +184,12 @@ function getx3d(x3d) {
         .replace(/diffusecolor/g, "diffuseColor")
         .replace(/appearance/g, "Appearance")
         .replace(/material/g, "Material")
+        .replace(/x3d/g, "X3D")
+        .replace(/transform/g, "Transform")
+        .replace(/scene/g, "Scene")
+        .replace(/coordinate/g, "Coordinate")
+        .replace(/shape/g, "Shape")
+        .replace(/sphere/g, "Sphere")
 }
 
 
@@ -186,7 +203,7 @@ d3.select("#menu")
      });
 
 
-if (require) {
+if (typeof require != "undefined") {
     var fs = require('fs');
     window.setInterval(function() {
         fs.writeFile("data.x3d", getx3d(d3.select("x3d")), function(err) {
