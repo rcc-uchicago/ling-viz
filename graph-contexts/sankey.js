@@ -194,6 +194,7 @@ d3.sankey = function() {
     });
   }
 
+
   function computeNodeDepths(iterations) {
     var nodesByBreadth = d3.nest()
         .key(function(d) { return d.x; })
@@ -201,8 +202,24 @@ d3.sankey = function() {
         .entries(nodes)
         .map(function(d) { return d.values; });
 
-    //
     initializeNodeDepth();
+
+    if (customLayout) {
+        var byvalue = function(d, e) { return d.value < e.value; };
+        nodesByBreadth.forEach(function(nodes, p) {
+            var y0 = p ? 0 : 50; // HACK! there's a menu in the way of the first thing.
+            nodes.sort(byvalue).forEach(function(node, i) {
+                node.y = i;
+                var dy = y0 - node.y;
+                if (dy > 0) node.y += dy;
+                y0 = node.y + node.dy + nodePadding;
+                
+
+            });
+        });
+        return;
+    }
+
     resolveCollisions();
     for (var alpha = 1; iterations > 0; --iterations) {
       relaxRightToLeft(alpha *= .99);
@@ -358,6 +375,12 @@ d3.sankey = function() {
     var scale = (dh == 1) ? 1 : dh / sankey.size()[1];
     nodes.forEach(function(node) {
       node.ht = node.y * scale;
+      node.dy = node.dy * scale;
+    });
+    links.forEach(function(link) {
+        link.dy *= scale;
+        link.sy *= scale;
+        link.ty *= scale;
     });
   }
 

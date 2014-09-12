@@ -243,17 +243,18 @@ function getSankeyData(words, contexts) {
         return node;
     }
     
-    var edgeadd = function (n, m) {
+    var edgeadd = function (n, m, ctx) {
         var src = getidx(n);
         var tar = getidx(m);
 
         for (var i = 0; i < edges.length; i++) {
             if (edges[i].source == src && edges[i].target == tar) {
                 edges[i].value++;
+                edges[i].contexts.push(ctx);
                 return edges[i];
             }
         }
-        var edge = {"source":src, "target":tar, "value":1, "prev":[], "next":[]};
+        var edge = {"source":src, "target":tar, "value":1, "prev":[], "next":[], "contexts": [ctx]};
         edges.push(edge);
         return edge;
     }
@@ -285,8 +286,9 @@ function getSankeyData(words, contexts) {
         else
             console.log("mayday! bad data.");
 
-        var e = edgeadd(fst, snd);
-        var f = edgeadd(snd, thd);
+        ctx = ctx.replace('__', w);
+        var e = edgeadd(fst, snd, ctx);
+        var f = edgeadd(snd, thd, ctx);
         e.next.push(f); /* This is for path highlighting. */
         f.prev.push(e);
      }

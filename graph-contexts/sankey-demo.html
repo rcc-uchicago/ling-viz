@@ -209,7 +209,10 @@ function DrawEverything(words, _) {
       .sort(function(a, b) { return b.dy - a.dy; });
 
     link.append("title")
-      .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
+      .text(function(d) {
+            var contexts = d.contexts.join('\n');
+            return d.source.name + " → " + d.target.name + " (" + format(d.value) + ")\n" + contexts;
+      });
 
     var node = svg.append("g").selectAll(".node")
         .data(data.nodes)
@@ -227,7 +230,12 @@ function DrawEverything(words, _) {
         .style("fill", function(d) { return d.color; })
         .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
         .append("title")
-            .text(function(d) { return d.name + "\n" + format(d.value); });
+            .text(function(d) {
+                    var contexts = d.sourceLinks.concat(d.targetLinks)
+                        .reduce(function(acc, l) { return acc.concat(l.contexts) }, []);
+                    contexts = arrayUnique(contexts);
+                    return d.name + " (" + format(d.value) + ")\n" + contexts.join('\n'); 
+              });
     
     function addLabels() {
         node.append("text")
@@ -427,6 +435,13 @@ function applyColorScheme(nodes) {
     
 
 }
+
+var arrayUnique = function(a) {
+    return a.reduce(function(p, c) {
+        if (p.indexOf(c) < 0) p.push(c);
+        return p;
+    }, []);
+};
 
 
 </script>
