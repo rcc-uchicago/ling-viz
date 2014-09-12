@@ -282,10 +282,13 @@ function DrawEverything(words, _) {
         });
         var nd = getallnodes(edge);
         node.each(function(d) {
-            if (nd.indexOf(d) >= 0) 
+            if (nd.indexOf(d) >= 0) { 
                 d3.select(this).classed("unsel", false);
-            else
+                d.selected = true;
+            }
+            else if (! d.selected) {
                 d3.select(this).classed("unsel", true);
+            }
         });
 
     }
@@ -294,6 +297,7 @@ function DrawEverything(words, _) {
         var x = {"sel": false, "unsel":false};
         link.classed(x);
         node.classed(x);
+        node.each(function(d) { d.selected = false; });
     }
     
     link.on("mouseover",
@@ -303,8 +307,7 @@ function DrawEverything(words, _) {
         });
     link.on("mouseout", unHighlight);
     
-    node.on("mouseover",
-        function() {
+    node.on("mouseover", function(d) { 
             var nd = d3.select(d3.event.target).datum();
             link.each(function (d) {
                 if (d.source == nd || d.target == nd) {
