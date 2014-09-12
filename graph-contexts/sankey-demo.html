@@ -36,6 +36,11 @@ body {
   stroke-opacity: .5;
 }
 
+.unsel {
+  stroke-opacity: .1;
+  opacity: .1;
+}
+
 .menu {
     background: lightgrey;
     position: absolute;
@@ -70,6 +75,7 @@ input[type="number"] {
         <input type="number" id="nodepadding" class="attr" min="0" max="100" value="10">Node padding<br>
         <input type="checkbox" id="skinnyedges">Skinny edges <br>
         <input type="checkbox" id="customlayout" class="attr" checked>Use custom layout function <br>
+        <input type="checkbox" id="fullheight" onclick="redraw()">Height can grow past bottom<br>
         <input type="text" id="addword"> <br>
         <ul id="wordlist">
         </ul>
@@ -135,7 +141,6 @@ function redraw() {
         .selectAll("a")
         .each(function() { words.push(this.innerHTML); })
     DrawEverything(words);
-
 }
 
 function ischecked(s) { return d3.select('#' + s).node().checked };
@@ -152,9 +157,9 @@ function DrawEverything(words, _) {
     var fake_height = calcHeight(data.nodes, 10);
 
     var margin = {top: 1, right: 1, bottom: 6, left: 1},
-        width = document.body.clientWidth - margin.left - margin.right
-        height = document.body.clientHeight - margin.top - margin.bottom;  
-
+        width = document.body.clientWidth - margin.left - margin.right,
+        height = ischecked("fullheight") ? fake_height : document.body.clientHeight - margin.top - margin.bottom;  
+       
 
     var formatNumber = d3.format(",.0f"),
         format = function(d) { return formatNumber(d); },
@@ -255,11 +260,32 @@ function DrawEverything(words, _) {
     function highlightPath(lk) {
         lk.classed("sel", true);
         var edge = lk.datum();
+
+        function getallnodes(e) {
+            var edges = [e].concat(e.next, e.prev);
+            return edges
+                .reduce(function(nl, edge) { return nl.concat(edge.target, edge.source); }, []);
+        }
+
         link.each(function (d) {
             if (edge.prev.indexOf(d) >= 0 || edge.next.indexOf(d) >= 0) {
                 d3.select(this).classed("sel", true);
             }
         });
+        var nd = getallnodes(edge);
+        node.each(function(d) {
+            if (nd.indexOf(d) >= 0) 
+                d3.select(this).classed("unsel", false);
+            else
+                d3.select(this).classed("unsel", true);
+        });
+
+    }
+
+    function unHighlight() {
+        var x = {"sel": false, "unsel":false};
+        link.classed(x);
+        node.classed(x);
     }
     
     link.on("mouseover",
@@ -267,9 +293,7 @@ function DrawEverything(words, _) {
             var lk = d3.select(d3.event.target);
             highlightPath(lk);          
         });
-    link.on("mouseout", function() { link.classed("sel", false); });
-    
-     
+    link.on("mouseout", unHighlight);
     
     node.on("mouseover",
         function() {
@@ -280,7 +304,7 @@ function DrawEverything(words, _) {
                 }
             });
         });
-    node.on("mouseout", function() { link.classed("sel", false); });
+    node.on("mouseout", unHighlight);
     
 
     /* Menu items */
