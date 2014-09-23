@@ -58,8 +58,19 @@ body {
 }
 
 input[type="number"] {
-   width: 30px;
+    width: 30px;
 }
+
+input[type="text"] {
+    width: 50px;
+}
+
+.tooltip {
+    background: lemonchiffon;
+    box-shadow: 2px 2px 5px #888888; 
+    font: 12px sans-serif;
+}
+
 
 </style>
 <body>
@@ -75,8 +86,10 @@ input[type="number"] {
         <input type="number" id="nodepadding" class="attr" min="0" max="100" value="10">Node padding<br>
         <input type="checkbox" id="skinnyedges">Skinny edges <br>
         <input type="checkbox" id="customlayout" class="attr" checked>Use custom layout function <br>
+        <input type="checkbox" id="customsort" class="attr">Order by number of positions<br>
         <input type="checkbox" id="fullheight" onclick="redraw()">Height can grow past bottom<br>
-        <input type="text" id="addword"> <br>
+        Find word: <input type="text" id="searchbox"><br>
+        Add word: <input type="text" id="addword"> <br>
         <ul id="wordlist">
         </ul>
     </div>
@@ -185,13 +198,15 @@ function DrawEverything(words, _) {
     var useValues = ischecked("usevalues");
     var nodePadding = getvalue("nodepadding");
     var customLayout = ischecked("customlayout");
+    var customSort = ischecked("customsort");
     var sankey = d3.sankey()
         .nodeWidth(nodeWidth)
         .nodePadding(nodePadding)
         .size([width, fake_height])
         .displayHeight(height)
         .useValues(useValues)
-        .customLayout(customLayout);
+        .customLayout(customLayout)
+        .customSort(customSort ? orderByPosition : undefined);
 
     var path = sankey.link();
 
@@ -220,10 +235,10 @@ function DrawEverything(words, _) {
         .attr("class", "node")
         .attr("transform", function(d) { return "translate(" + d.x + "," + d.ht + ")"; }) 
         .call(d3.behavior.drag()
-        .origin(function(d) { return d; })
-        .on("dragstart", function() { this.parentNode.appendChild(this); })
-        .on("drag", dragmove));
-
+            .origin(function(d) { return d; })
+            .on("dragstart", function() { this.parentNode.appendChild(this); })
+            .on("drag", dragmove));
+        
     node.append("rect")
         .attr("height", function(d) { return d.dy; })
         .attr("width", sankey.nodeWidth())
@@ -236,6 +251,7 @@ function DrawEverything(words, _) {
                     contexts = arrayUnique(contexts);
                     return d.name + " (" + format(d.value) + ")\n" + contexts.join('\n'); 
               });
+
     
     function addLabels() {
         node.append("text")
@@ -300,23 +316,40 @@ function DrawEverything(words, _) {
         node.each(function(d) { d.selected = false; });
     }
     
-    link.on("mouseover",
-        function() {
-            var lk = d3.select(d3.event.target);
-            highlightPath(lk);          
-        });
-    link.on("mouseout", unHighlight);
-    
-    node.on("mouseover", function(d) { 
-            var nd = d3.select(d3.event.target).datum();
-            link.each(function (d) {
-                if (d.source == nd || d.target == nd) {
+    function highlightNode(nd) {
+        //var nd = n.datum();
+        link.each(function (d) {
+            if (d.source == nd || d.target == nd) {
                     highlightPath(d3.select(this));
                 }
-            });
-        });
-    node.on("mouseout", unHighlight);
-    
+            }); 
+    }
+
+    var linkon = function() {
+         var lk = d3.select(d3.event.target);
+            highlightPath(lk);
+    }
+    var nodeon = function() {
+         var nd = d3.select(d3.event.target).datum();
+         highlightNode(nd);  
+    }
+   
+    var highlightOn = function() {
+        link.on("mouseover", linkon);
+        link.on("mouseout", unHighlight);
+        node.on("mouseover", nodeon);
+        node.on("mouseout", unHighlight);
+    }
+    highlightOn();
+
+    var highlightOff = function() {
+       link
+            .on("mouseover", undefined)
+            .on("mouseout", undefined);
+       node 
+            .on("mouseover", undefined)
+            .on("mouseout", undefined);
+    }
 
     /* Menu items */
 
@@ -352,6 +385,47 @@ function DrawEverything(words, _) {
                 .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
         });
 
+    d3.select("#searchbox")
+    .on("change", function() {
+        var s = d3.event.target.value;
+        node.each(function(d) {
+            if (d.name == s) {
+             selectNode(this, d);            
+          }
+       });
+        setHighlightOn();
+     });
+
+    function selectNode(that, d) {
+        highlightNode(d);  
+        var text = d3.select(that).select("title").html();
+        var g = d3.select("#chart svg")
+            .append("g")
+            .attr("transform", that.getAttribute("transform"))
+            .attr("class", "tooltip")
+
+        var lines = text.split('\n')
+        g.append("foreignObject")
+            .attr("x", 6 + sankey.nodeWidth())
+            .attr("width", 100)
+            .attr("height", lines.length * 14)
+            .attr("y", d.dy/2)
+            .attr("requiredExtensions","http://www.w3.org/1999/xhtml")
+            .html("<div class='tooltip'>" + lines.join('<br>') + "</div>")
+       highlightOff();
+    }
+
+    function setHighlightOn() {
+         d3.select("body").on("click", function() {
+            unHighlight();
+            this.onclick = null; 
+            d3.selectAll(".tooltip").remove();
+            highlightOn();
+        });
+    }
+
+
+
 
     function update() {
 
@@ -361,12 +435,14 @@ function DrawEverything(words, _) {
         var useColors = ischecked("usecolors");
         var skinnyEdges = ischecked("skinnyedges");
         var customLayout = ischecked("customlayout");
+        var customSort = ischecked("customsort");
 
         sankey 
             .nodeWidth(nodeWidth)
             .nodePadding(nodePadding)
             .useValues(useValues)
-            .customLayout(customLayout);
+            .customLayout(customLayout)
+            .customSort(customSort ? orderByPosition : undefined);
         sankey
             .layout(32);
  
@@ -406,7 +482,6 @@ function calcHeight(nodes, nodepadding) {
 }
 
 
-
 function applyColorScheme(nodes) {
     var nodesByPos = {}
     for(var i = -2; i <= 2; i++)
@@ -433,10 +508,17 @@ function applyColorScheme(nodes) {
    
     nodes.forEach(function(n) {
         var mask = getmask(n);
+        n.mask = mask;
         n.color = applyColorScheme.colors[mask] || "grey";
     });
     
+}
 
+function orderByPosition(n, m)
+{
+    var nm = Math.abs(d3.sum(n.mask));
+    var mm = Math.abs(d3.sum(m.mask));
+    return nm == mm ? n.value < m.value : nm < mm;
 }
 
 var arrayUnique = function(a) {

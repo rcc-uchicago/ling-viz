@@ -7,7 +7,8 @@ d3.sankey = function() {
       links = [],
       displayHeight = 1,
       useValues = true,
-      customLayout = false;
+      customLayout = false,
+      customSort = undefined;
 
   sankey.nodeWidth = function(_) {
     if (!arguments.length) return nodeWidth;
@@ -56,6 +57,13 @@ d3.sankey = function() {
      customLayout = _;
      return sankey;
  };
+
+  sankey.customSort = function(_) {
+     if(!arguments.length) return customSort;
+     customSort = _;
+     return sankey;
+ };
+
 
 
   sankey.layout = function(iterations) {
@@ -205,7 +213,7 @@ d3.sankey = function() {
     initializeNodeDepth();
 
     if (customLayout) {
-        var byvalue = function(d, e) { return d.value < e.value; };
+        var byvalue = customSort || function(d, e) { return d.value < e.value; };
         nodesByBreadth.forEach(function(nodes, p) {
             var y0 = p ? 0 : 50 + nodes[0].dy; // HACK! there's a menu in the way of the first thing.
             nodes.sort(byvalue).forEach(function(node, i) {
