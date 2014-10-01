@@ -57,12 +57,18 @@ body {
     background: lightgrey;
 }
 
+
+
 input[type="number"] {
-    width: 30px;
+    width: 40px;
 }
 
 input[type="text"] {
     width: 50px;
+}
+
+.smalltext {
+    width: 20px !important;
 }
 
 .tooltip {
@@ -88,6 +94,8 @@ input[type="text"] {
         <input type="checkbox" id="customlayout" class="attr" checked>Use custom layout function <br>
         <input type="checkbox" id="customsort" class="attr">Order by number of positions<br>
         <input type="checkbox" id="fullheight" onclick="redraw()">Height can grow past bottom<br>
+        <input type="number" id="viewwidth">Width of view<br>
+        Pos: <input type="text" class="smalltext" id="colorpos"> Color: <input type="text" id="colorcol"> <button type='button' id="colorgo">Go</button><br> 
         Find word: <input type="text" id="searchbox"><br>
         Add word: <input type="text" id="addword"> <br>
         <ul id="wordlist">
@@ -169,10 +177,10 @@ function DrawEverything(words, _) {
    
     var fake_height = calcHeight(data.nodes, 10);
 
-    var margin = {top: 1, right: 1, bottom: 6, left: 1},
-        width = document.body.clientWidth - margin.left - margin.right,
-        height = ischecked("fullheight") ? fake_height : document.body.clientHeight - margin.top - margin.bottom;  
-       
+    var margin = {top: 1, right: 1, bottom: 6, left: 1};
+    var width = parseInt(getvalue("viewwidth")) ||  document.body.clientWidth - margin.left - margin.right;
+    var height = ischecked("fullheight") ? fake_height : document.body.clientHeight - margin.top - margin.bottom;  
+    d3.select("#viewwidth").attr("value", width);  
 
     var formatNumber = d3.format(",.0f"),
         format = function(d) { return formatNumber(d); },
@@ -369,6 +377,9 @@ function DrawEverything(words, _) {
     d3.select("#skinnyedges")
         .on("change", cbfunc(lsfunc(1), lsfunc(function(d) { return Math.max(1, d.dy); })));
 
+    d3.select("#viewwidth")
+        .on("change", redraw);
+
     d3.select("#usecolors")
         .on("change", function() {
             if (this.checked) {
@@ -384,6 +395,20 @@ function DrawEverything(words, _) {
                 .style("fill", function(d) { return d.color; })
                 .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
         });
+   
+    d3.select("#colorgo")
+        .on("click", function() {
+            var pos = getvalue("colorpos");
+            var col = getvalue("colorcol");
+            applyColorScheme.colors[pos] = col;
+            applyColorScheme(data.nodes);
+            node.selectAll("rect")
+                .transition()
+                .style("fill", function(d) { return d.color; })
+                .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
+         
+                });
+
 
     d3.select("#searchbox")
     .on("change", function() {
@@ -423,9 +448,6 @@ function DrawEverything(words, _) {
             highlightOn();
         });
     }
-
-
-
 
     function update() {
 
@@ -497,15 +519,16 @@ function applyColorScheme(nodes) {
         }
         return mask;
     }
-    applyColorScheme.colors =
-        { "-2": "pink",
-          "-1": "red",
-          "0": "black",
-          "1": "blue",
-          "2": "lightblue",
-          "-2,-1": "orange",
-          "1,2": "green" };
-   
+    if (! applyColorScheme.colors)
+        applyColorScheme.colors =
+            { "-2": "pink",
+            "-1": "red",
+            "0": "black",
+            "1": "blue",
+            "2": "lightblue",
+            "-2,-1": "orange",
+            "1,2": "green" };
+  
     nodes.forEach(function(n) {
         var mask = getmask(n);
         n.mask = mask;
