@@ -211,9 +211,8 @@ d3.sankey = function() {
         .map(function(d) { return d.values; });
 
     initializeNodeDepth();
-
     if (customLayout) {
-        var byvalue = customSort || function(d, e) { return d.value < e.value; };
+        var byvalue = customSort || function(d, e) { return d.value < e.value ? 1 : -1; };
         nodesByBreadth.forEach(function(nodes, p) {
             var y0 = p ? 0 : 50 + nodes[0].dy; // HACK! there's a menu in the way of the first thing.
             nodes.sort(byvalue).forEach(function(node, i) {
@@ -227,7 +226,6 @@ d3.sankey = function() {
         });
         return;
     }
-
     resolveCollisions();
     for (var alpha = 1; iterations > 0; --iterations) {
       relaxRightToLeft(alpha *= .99);
