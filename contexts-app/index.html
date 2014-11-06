@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<!-- this style is for the graph -->
+<style>
+.link {
+  stroke: #ccc;
+}
+
+.node text {
+  pointer-events: all;
+  font: 10px sans-serif;
+}
+</style>
+
+
+<div class="menu">
+    <div class="graph-controls">
+        <select name="dataset" id="loadData">
+            <option selected disabled hidden value=''></option>
+            <option value="english-brown.json">english-brown</option>
+            </option>
+            <!-- TODO: add more data -->
+        </select>
+        <button type="button" id="centerGraph">Center</button>
+        <input type="text" id="searchBox"></input>
+        <ul id="selectedNodes"></ul>
+        <ul id="neighbors"></ul>
+    </div>
+    <div class="table-controls">
+        <!-- TODO -->
+    </div>
+    <div class="sankey-controls">
+        <!-- TODO -->
+    </div>
+</div>
+
+<div class="view1" style="width: 1000px; height:1000px">
+</div>
+
+<div class="view2">
+</div>
+
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="controls.js"></script>
