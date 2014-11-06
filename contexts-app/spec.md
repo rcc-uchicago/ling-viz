@@ -17,6 +17,8 @@ visualizations appear in the view areas. V1 has the graph view, and V2 can eithe
 * search box - select a node
 * list of selected nodes - populated based on searches. button next to each node for unselecting it.
 * list - the immediate neighbors of the most recently selected node
+* Button - look at table of neighbors of selected nodes
+* Button - look at sankey plot of neighbors of selected nodes
 
 # Table controls
 
