@@ -413,7 +413,8 @@ var mysankey = function() {
         skinnyEdges = 0,
         customLayout = 1,
         customSort = 1,
-        fullHeight = 0;
+        fullHeight = 0,
+        useLabels = false;
 
     mysankey.contexts = function(_) {
         if (!arguments.length) 
@@ -447,6 +448,13 @@ var mysankey = function() {
         if (!arguments.length)
             return useValues;
         useValues = _;
+        return mysankey;
+    }
+    
+    mysankey.useLabels = function(_) {
+        if (!arguments.length)
+            return useLabels;
+        useLabels = _;
         return mysankey;
     }
 
@@ -578,7 +586,7 @@ var mysankey = function() {
 
     
         
-        if (d3.select("#uselabels").node().checked)
+        if (useLabels)
             addLabels();
 
         function dragmove(d) {
