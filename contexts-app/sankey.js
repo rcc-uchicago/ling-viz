@@ -394,13 +394,11 @@ d3.sankey = function() {
 };
 
 
-var mysankey = function() {
-    var mysankey = {};
-
+function mysankey() {
+   
     var contexts = undefined,
         words = undefined,
         data = undefined,
-        view = d3.select(".view3"),
         sankey = undefined,
         node = undefined,
         link = undefined;
@@ -416,93 +414,8 @@ var mysankey = function() {
         fullHeight = 0,
         useLabels = false;
 
-    mysankey.contexts = function(_) {
-        if (!arguments.length) 
-             return contexts;
-        contexts = _;
-        return mysankey;
-    }
 
-    mysankey.words = function(_) {
-        if (!arguments.length)
-            return words;
-        words = _;
-        return mysankey;
-    }
-
-    mysankey.view = function(_) {
-        if (!arguments.length)
-            return view;
-        view = _;
-        return mysankey;
-    }
-
-    mysankey.nodeWidth = function(_) {
-        if (!arguments.length)
-            return nodeWidth;
-        nodeWidth = _;
-        return mysankey;
-    }
-
-    mysankey.useValues = function(_) {
-        if (!arguments.length)
-            return useValues;
-        useValues = _;
-        return mysankey;
-    }
-    
-    mysankey.useLabels = function(_) {
-        if (!arguments.length)
-            return useLabels;
-        useLabels = _;
-        return mysankey;
-    }
-
-    mysankey.nodePadding = function(_) {
-        if (!arguments.length)
-            return nodePadding;
-        nodePadding = _;
-        return mysankey;
-    }
-
-    mysankey.useColors = function(_) {
-        if (!arguments.length)
-            return useColors;
-        useColors = _;
-        return mysankey;
-    }
-
-    mysankey.skinnyEdges = function(_) {
-        if (!arguments.length)
-            return skinnyEdges;
-        skinnyEdges = _;
-        return mysankey;
-    }
-
-    mysankey.customLayout = function(_) {
-        if (!arguments.length)
-            return customLayout;
-        customLayout = _;
-        return mysankey;
-    }
-
-    mysankey.customSort = function(_) {
-        if (!arguments.length)
-            return customSort;
-        customSort = _;
-        return mysankey;
-    }
-    
-    mysankey.fullHeight = function(_) {
-        if (!arguments.length)
-            return fullHeight;
-        fullHeight = _;
-        return mysankey;
-    }
-
-
-
-    mysankey.draw = function() {
+    mysankey = function(view) {
         
         data = getSankeyData(words, contexts); 
    
@@ -672,6 +585,85 @@ var mysankey = function() {
         }
         return mysankey;
     }
+
+    mysankey.contexts = function(_) {
+        if (!arguments.length) 
+             return contexts;
+        contexts = _;
+        return mysankey;
+    }
+
+    mysankey.words = function(_) {
+        if (!arguments.length)
+            return words;
+        words = _;
+        return mysankey;
+    }
+
+    mysankey.nodeWidth = function(_) {
+        if (!arguments.length)
+            return nodeWidth;
+        nodeWidth = _;
+        return mysankey;
+    }
+
+    mysankey.useValues = function(_) {
+        if (!arguments.length)
+            return useValues;
+        useValues = _;
+        return mysankey;
+    }
+    
+    mysankey.useLabels = function(_) {
+        if (!arguments.length)
+            return useLabels;
+        useLabels = _;
+        return mysankey;
+    }
+
+    mysankey.nodePadding = function(_) {
+        if (!arguments.length)
+            return nodePadding;
+        nodePadding = _;
+        return mysankey;
+    }
+
+    mysankey.useColors = function(_) {
+        if (!arguments.length)
+            return useColors;
+        useColors = _;
+        return mysankey;
+    }
+
+    mysankey.skinnyEdges = function(_) {
+        if (!arguments.length)
+            return skinnyEdges;
+        skinnyEdges = _;
+        return mysankey;
+    }
+
+    mysankey.customLayout = function(_) {
+        if (!arguments.length)
+            return customLayout;
+        customLayout = _;
+        return mysankey;
+    }
+
+    mysankey.customSort = function(_) {
+        if (!arguments.length)
+            return customSort;
+        customSort = _;
+        return mysankey;
+    }
+    
+    mysankey.fullHeight = function(_) {
+        if (!arguments.length)
+            return fullHeight;
+        fullHeight = _;
+        return mysankey;
+    }
+
+
 
    /* Menu items */
 

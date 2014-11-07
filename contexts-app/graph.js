@@ -1,52 +1,20 @@
 function graph() {
     
-    var graph = {}
 
     var nodes = undefined,
         edges = undefined,
-        view = d3.select(".view1"),
         selectedNodes = [];
    
     var width = 0, height = 0, svg = undefined; // these change in draw()
 
-    graph.nodes = function(_) {
-        if (!arguments.length)
-            return nodes;
-        else
-            nodes = _;
-        return graph;
-    }
 
-    graph.edges = function(_) {
-        if (!arguments.length)
-            return edges;
-        else
-            edges = _;
-        return graph;
-    }
-
-    graph.view = function(_) {
-        if (!arguments.length)
-            return view;
-        else
-            view = _;
-        return graph;
-    }
-
-    graph.selectedNodes = function(_) {
-        if (!arguments.length)
-            return selectedNodes;
-        else
-            selectedNodes = _;
-        return graph;
-    }
 
     var zoom = d3.behavior.zoom();
     var colors = d3.scale.category20();
 
     /* Graph svg */
 
-    graph.draw = function() {
+    graph = function(view) {
         width = parseInt(view.style("width")), height = parseInt(view.style("height"));
         
         var outer = view
@@ -146,6 +114,30 @@ function graph() {
         selectedNodes.remove(x)
     }
 
+        graph.nodes = function(_) {
+        if (!arguments.length)
+            return nodes;
+        else
+            nodes = _;
+        return graph;
+    }
+
+    graph.edges = function(_) {
+        if (!arguments.length)
+            return edges;
+        else
+            edges = _;
+        return graph;
+    }
+
+
+    graph.selectedNodes = function(_) {
+        if (!arguments.length)
+            return selectedNodes;
+        else
+            selectedNodes = _;
+        return graph;
+    }
     
     function cleanName(name) {
         if (+name > 0)

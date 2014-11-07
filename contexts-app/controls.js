@@ -10,8 +10,10 @@ function main(error, json) {
 
     graph = graph()
         .nodes(json.nodes)
-        .edges(json.edges)
-        .draw()
+        .edges(json.edges);
+    
+    d3.select('.view1').call(graph);
+
     graph.contexts = json.contexts;
 }
 
@@ -138,6 +140,6 @@ d3.select("#drawSankey")
     .on("click", function() {
         mysankey = mysankey()
             .words(graph.selectedNodes())
-            .contexts(graph.contexts)
-            .draw();
+            .contexts(graph.contexts);
+        d3.select('.view3').call(mysankey)
     }) 
