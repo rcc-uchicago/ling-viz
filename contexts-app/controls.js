@@ -211,6 +211,7 @@ function selectNode(name) {
     return d3.select("#" + cleanName(name));
 }
 
+
 /* Intersect lists - must be sorted */
 function intersect(x, y) {
     var i = 0
@@ -257,5 +258,10 @@ d3.select("#searchBox")
 d3.select("#drawTable")
     .on("click", drawContextTable)
 
-
-
+d3.select("#drawSankey")
+    .on("click", function() {
+        globals.mysankey = mysankey()
+            .words(["oh", "really"])
+            .contexts(globals.contexts)
+            .draw();
+    }) 
