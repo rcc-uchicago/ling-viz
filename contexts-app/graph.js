@@ -1,4 +1,4 @@
-function graph() {
+function graphSVG() {
     
 
     var nodes = undefined,
@@ -14,8 +14,8 @@ function graph() {
 
     /* Graph svg */
 
-    graph = function(view) {
-        width = parseInt(view.style("width")), height = parseInt(view.style("height"));
+    var graph = function(view) {
+        var width = parseInt(view.style("width")), height = parseInt(view.style("height"));
         
         var outer = view
             .append("svg")
@@ -114,7 +114,7 @@ function graph() {
         selectedNodes.remove(x)
     }
 
-        graph.nodes = function(_) {
+    graph.nodes = function(_) {
         if (!arguments.length)
             return nodes;
         else

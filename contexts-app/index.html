@@ -17,7 +17,7 @@
 
 <div class="menu">
     <div class="graph-controls">
-        <select name="dataset" id="loadData">
+        <select id="loadData">
             <option selected disabled hidden value=''></option>
             <option value="english-brown.json">english-brown</option>
             </option>
@@ -29,6 +29,10 @@
         <ul id="neighbors"></ul>
         <button type="button" id="drawTable">Table</button>
         <button type="button" id="drawSankey">Sankey</button>
+        <select id="graphType">
+            <option value="svg">SVG</option>
+            <option value="canvas">Canvas</option>
+        </select>
     </div>
     <div class="table-controls">
         <!-- TODO -->
@@ -49,6 +53,7 @@
 
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="compatibility.js"></script>
-<script src="controls.js"></script>
 <script src="sankey.js"></script>
 <script src="graph.js"></script>
+<script src="graph-canvas.js"></script>
+<script src="controls.js"></script>

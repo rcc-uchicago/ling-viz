@@ -1,5 +1,8 @@
 var graph = undefined,
-    mysankey = undefined
+    mysankey = undefined,
+    contexts = undefined,
+    makeGraph = graphSVG // default graph type
+
 
 function main(error, json) {
     if (error) {
@@ -8,13 +11,13 @@ function main(error, json) {
         return;
     }
 
-    graph = graph()
+    graph =  makeGraph()
         .nodes(json.nodes)
         .edges(json.edges);
     
     d3.select('.view1').call(graph);
 
-    graph.contexts = json.contexts;
+    contexts = json.contexts;
 }
 
 
@@ -45,7 +48,7 @@ function drawContextTable() {
     view.selectAll('*').remove()
     var table = view.append("table")
     
-    var contexts = graph.contexts;
+    var contexts = contexts; // no point since this is global now, but could change.
     var selected_nodes = graph.selectedNodes();
 
     if (selected_nodes.length == 0)
@@ -140,6 +143,27 @@ d3.select("#drawSankey")
     .on("click", function() {
         mysankey = mysankey()
             .words(graph.selectedNodes())
-            .contexts(graph.contexts);
+            .contexts(contexts);
         d3.select('.view3').call(mysankey)
     }) 
+
+d3.select("#graphType")
+    .on("change", function() {
+
+        makeGraph =  (d3.event.target.value == "svg") ? graphSVG : graphCanvas
+        if (!graph)
+            return;
+        
+        var new_graph = makeGraph()
+        
+        new_graph
+            .nodes(graph.nodes())
+            .edges(graph.edges());
+   
+        var v = d3.select('.view1')
+        v.selectAll('*').remove()
+        v.call(new_graph);
+
+        graph = new_graph
+    });
+

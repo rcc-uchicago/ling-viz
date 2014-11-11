@@ -1,4 +1,4 @@
-function graph() {
+function graphCanvas() {
     
 
     var nodes = undefined,
@@ -10,11 +10,14 @@ function graph() {
 
 
     var zoom = d3.behavior.zoom();
+    function zinfo() {
+        console.log(zoom.scale());
+    }
     var colors = d3.scale.category20();
 
     /* Graph svg */
 
-    graph = function(view) {
+    var graph = function(view) {
         width = parseInt(view.style("width")), height = parseInt(view.style("height"));
         
         var canvas = view
@@ -22,9 +25,9 @@ function graph() {
             .attr("width", width)
             .attr("height", height)
             .attr("pointer-events", "all")
+            .call(zoom) //.on("zoom", zinfo))
             .node()
-            // .call(zoom.on("zoom", redraw));
-           
+
         var context =  canvas.getContext("2d")
         context.strokeStyle = "black"
 
@@ -39,13 +42,36 @@ function graph() {
             .links(edges)
             .start();
 
-        force.on("tick", function() {
+         
+        function redraw() {
+
+            context.clearRect(0,0,canvas.width,canvas.height)
+            
+            var s = zoom.scale(),
+                t = zoom.translate()
+
             nodes.forEach(function(d) {
                 context.beginPath();
-                context.arc(d.x, d.y, 8, 0, 2 * Math.PI);
-                context.stroke();
-            });        
-        });
+                context.arc(s * d.x + t[0], s * d.y + t[1], s * 8, 0, 2 * Math.PI);
+                context.fill();
+            });
+
+            /* Batch path drawing */
+            context.beginPath();
+            edges.forEach(function(d) {
+                context.moveTo(s * d.source.x + t[0], s * d.source.y + t[1])
+                context.lineTo(s * d.target.x + t[0], s * d.target.y + t[1])
+            });
+            context.stroke()
+            if (!redraw.stop)
+                window.requestAnimationFrame(redraw)
+        }
+
+        window.requestAnimationFrame(redraw)
+        
+        force.on("end", function() {
+            redraw.stop = true;
+        });  
 
         return graph;
     }
@@ -78,7 +104,7 @@ function graph() {
         selectedNodes.remove(x)
     }
 
-        graph.nodes = function(_) {
+    graph.nodes = function(_) {
         if (!arguments.length)
             return nodes;
         else
