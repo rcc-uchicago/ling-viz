@@ -394,14 +394,15 @@ d3.sankey = function() {
 };
 
 
-function mysankey() {
+function makeSankey() {
    
     var contexts = undefined,
         words = undefined,
         data = undefined,
         sankey = undefined,
         node = undefined,
-        link = undefined;
+        link = undefined,
+        path = undefined;
 
     /* configurable by menu item */
     var nodeWidth = 15,
@@ -453,7 +454,7 @@ function mysankey() {
             .customLayout(customLayout)
             .customSort(customSort ? orderByPosition : undefined);
 
-        var path = sankey.link();
+        path = sankey.link();
 
         sankey
           .nodes(data.nodes)
@@ -760,14 +761,6 @@ function mysankey() {
     */
 
     mysankey.update = function() {
-
-        var nodeWidth = getvalue("nodewidth");
-        var useValues = ischecked("usevalues");
-        var nodePadding = getvalue("nodepadding");
-        var useColors = ischecked("usecolors");
-        var skinnyEdges = ischecked("skinnyedges");
-        var customLayout = ischecked("customlayout");
-        var customSort = ischecked("customsort");
 
         sankey 
             .nodeWidth(nodeWidth)

@@ -141,7 +141,7 @@ d3.select("#drawTable")
 
 d3.select("#drawSankey")
     .on("click", function() {
-        mysankey = mysankey()
+        mysankey = makeSankey()
             .words(graph.selectedNodes())
             .contexts(contexts);
         d3.select('.view3').call(mysankey)
@@ -171,3 +171,11 @@ d3.select("#centerGraph")
     .on("click", function() {
         graph.center() // if we didn't have an extra function here, we would center the wrong graph (I think)
     });
+
+
+/* Sankey controls */
+
+d3.select("#usevalues").on("change", function() { 
+    mysankey.useValues(d3.event.target.checked);
+    mysankey.update();
+});
