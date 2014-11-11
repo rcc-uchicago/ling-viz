@@ -167,3 +167,7 @@ d3.select("#graphType")
         graph = new_graph
     });
 
+d3.select("#centerGraph")
+    .on("click", function() {
+        graph.center() // if we didn't have an extra function here, we would center the wrong graph (I think)
+    });

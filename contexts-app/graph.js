@@ -85,6 +85,10 @@ function graphSVG() {
 
         return graph;
     }
+    graph.center = function() {
+        zoom.scale(0.25);
+        zoom.translate([width/4,height/4])
+    }
 
     graph.selectNode = function(x) {
        var node = selectNode(x);

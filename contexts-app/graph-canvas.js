@@ -5,14 +5,9 @@ function graphCanvas() {
         edges = undefined,
         selectedNodes = [];
    
-    var width = 0, height = 0, svg = undefined; // these change in draw()
-
-
+    var width = 0, height = 0; // these change in draw()
 
     var zoom = d3.behavior.zoom();
-    function zinfo() {
-        console.log(zoom.scale());
-    }
     var colors = d3.scale.category20();
 
     /* Graph svg */
@@ -25,7 +20,7 @@ function graphCanvas() {
             .attr("width", width)
             .attr("height", height)
             .attr("pointer-events", "all")
-            .call(zoom) //.on("zoom", zinfo))
+            .call(zoom)
             .node()
 
         var context =  canvas.getContext("2d")
@@ -40,9 +35,11 @@ function graphCanvas() {
         force
             .nodes(nodes)
             .links(edges)
-            .start();
+            .start()
+            .on("end", function() { zoom.on("zoom", redraw) })
 
          
+
         function redraw() {
 
             context.clearRect(0,0,canvas.width,canvas.height)
@@ -63,17 +60,19 @@ function graphCanvas() {
                 context.lineTo(s * d.target.x + t[0], s * d.target.y + t[1])
             });
             context.stroke()
-            if (!redraw.stop)
+            
+            if (force.alpha())
                 window.requestAnimationFrame(redraw)
         }
 
         window.requestAnimationFrame(redraw)
         
-        force.on("end", function() {
-            redraw.stop = true;
-        });  
-
         return graph;
+    }
+
+    graph.center = function() {
+        zoom.scale(0.25);
+        zoom.translate([width/4,height/4])
     }
 
     graph.selectNode = function(x) {
