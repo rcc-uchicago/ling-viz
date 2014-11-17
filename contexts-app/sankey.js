@@ -402,7 +402,8 @@ function makeSankey() {
         sankey = undefined,
         node = undefined,
         link = undefined,
-        path = undefined;
+        path = undefined,
+        view = undefined;
 
     /* configurable by menu item */
     var nodeWidth = 15,
@@ -421,8 +422,9 @@ function makeSankey() {
     var color = d3.scale.category20();
 
 
-    mysankey = function(view) {
+    mysankey = function(_) {
         
+        view = _
         data = getSankeyData(words, contexts); 
    
         var fake_height = calcHeight(data.nodes, 10);
@@ -469,7 +471,7 @@ function makeSankey() {
         link = svg.append("g").selectAll(".link")
           .data(data.links)
             .enter().append("path")
-          .attr("class", "link")
+          .attr("class", "s_link")
           .attr("d", path)
           .style("stroke-width", function(d) { return Math.max(1, d.dy); })
           .sort(function(a, b) { return b.dy - a.dy; });
@@ -483,7 +485,7 @@ function makeSankey() {
         node = svg.append("g").selectAll(".node")
             .data(data.nodes)
             .enter().append("g")
-            .attr("class", "node")
+            .attr("class", "s_node")
             .attr("transform", function(d) { return "translate(" + d.x + "," + d.ht + ")"; }) 
             .call(d3.behavior.drag()
                 .origin(function(d) { return d; })
@@ -515,80 +517,9 @@ function makeSankey() {
             sankey.relayout();
             link.attr("d", path);
         }
-
-  
-        /* Path highlighting */
-    
-        /* Given a link, highlight the entire path. */
-        function highlightPath(lk) {
-            lk.classed("sel", true);
-            var edge = lk.datum();
-
-            function getallnodes(e) {
-                var edges = [e].concat(e.next, e.prev);
-                return edges
-                    .reduce(function(nl, edge) { return nl.concat(edge.target, edge.source); }, []);
-            }
-
-            link.each(function (d) {
-                if (edge.prev.indexOf(d) >= 0 || edge.next.indexOf(d) >= 0) {
-                    d3.select(this).classed("sel", true);
-                }
-            });
-            var nd = getallnodes(edge);
-            node.each(function(d) {
-                if (nd.indexOf(d) >= 0) { 
-                    d3.select(this).classed("unsel", false);
-                    d.selected = true;
-                }
-                else if (! d.selected) {
-                    d3.select(this).classed("unsel", true);
-                }
-            });
-
-        }
-
-        function unHighlight() {
-            var x = {"sel": false, "unsel":false};
-            link.classed(x);
-            node.classed(x);
-            node.each(function(d) { d.selected = false; });
-        }
-        
-        function highlightNode(nd) {
-            //var nd = n.datum();
-            link.each(function (d) {
-                if (d.source == nd || d.target == nd) {
-                        highlightPath(d3.select(this));
-                    }
-                }); 
-        }
-
-        var linkon = function() {
-             var lk = d3.select(d3.event.target);
-                highlightPath(lk);
-        }
-        var nodeon = function() {
-             var nd = d3.select(d3.event.target).datum();
-             highlightNode(nd);  
-        }
-       
-        var highlightOn = function() {
-            link.on("mouseover", linkon);
-            link.on("mouseout", unHighlight);
-            node.on("mouseover", nodeon);
-            node.on("mouseout", unHighlight);
-        }
+   
         highlightOn();
-
-        var highlightOff = function() {
-           link
-                .on("mouseover", undefined)
-                .on("mouseout", undefined);
-           node 
-                .on("mouseover", undefined)
-                .on("mouseout", undefined);
-        }
+ 
         return mysankey;
     }
 
@@ -669,107 +600,82 @@ function makeSankey() {
         return mysankey;
     }
 
+    /* Path highlighting */
 
+    /* Given a link, highlight the entire path. */
+    function highlightPath(lk) {
+        lk.classed("s_sel", true);
+        var edge = lk.datum();
 
+        function getallnodes(e) {
+            var edges = [e].concat(e.next, e.prev);
+            return edges
+                .reduce(function(nl, edge) { return nl.concat(edge.target, edge.source); }, []);
+        }
+
+        link.each(function (d) {
+            if (edge.prev.indexOf(d) >= 0 || edge.next.indexOf(d) >= 0) {
+                d3.select(this).classed("s_sel", true);
+            }
+        });
+        var nd = getallnodes(edge);
+        node.each(function(d) {
+            if (nd.indexOf(d) >= 0) { 
+                d3.select(this).classed("s_unsel", false);
+                d.selected = true;
+            }
+            else if (! d.selected) {
+                d3.select(this).classed("s_unsel", true);
+            }
+        });
+
+    }
+
+    function unHighlight() {
+        var x = {"s_sel": false, "s_unsel":false};
+        link.classed(x);
+        node.classed(x);
+        node.each(function(d) { d.selected = false; });
+    }
+    
+    function highlightNode(nd) {
+        //var nd = n.datum();
+        link.each(function (d) {
+            if (d.source == nd || d.target == nd) {
+                    highlightPath(d3.select(this));
+                }
+            }); 
+    }
+
+    var linkon = function() {
+         var lk = d3.select(d3.event.target);
+         highlightPath(lk);
+    }
+    var nodeon = function() {
+        var nd = d3.select(d3.event.target).datum();
+        highlightNode(nd);  
+    }
+   
+    var highlightOn = function() {
+        link.on("mouseover", linkon);
+        link.on("mouseout", unHighlight);
+        node.on("mouseover", nodeon);
+        node.on("mouseout", unHighlight);
+    }
+   
+    var highlightOff = function() {
+       link
+            .on("mouseover", undefined)
+            .on("mouseout", undefined);
+       node 
+            .on("mouseover", undefined)
+            .on("mouseout", undefined);
+    }
 
     mysankey.redrawEdges = function() {
        var linkWidth = skinnyEdges ? 1 : function(d) { return Math.max(1, d.dy) };
        link.transition().style("stroke-width", linkWidth);
     }
-
-   /* Menu items */
-
-    /*
-    function cbfunc(f1, f2) {
-        return function () { this.checked ? f1() : f2() }
-    }
-
-    d3.selectAll(".attr")
-        .on("change", update);
-    d3.select("#uselabels")
-        .on("change", cbfunc(addLabels, function() { svg.selectAll("text").remove() }));
-    function lsfunc(n) {
-        return function() {
-            link.transition().style("stroke-width", n);
-        }
-    }
-    d3.select("#skinnyedges")
-        .on("change", cbfunc(lsfunc(1), lsfunc(function(d) { return Math.max(1, d.dy); })));
-
-    d3.select("#viewwidth")
-        .on("change", redraw);
-
-    d3.select("#usecolors")
-        .on("change", function() {
-            if (this.checked) {
-                applyColorScheme(data.nodes);
-            }
-            else {
-                data.nodes.forEach(function(d) {
-                    d.color = color(d.name.replace(/ ./, "")); // put a * after period
-                });
-            }
-            node.selectAll("rect")
-                .transition()
-                .style("fill", function(d) { return d.color; })
-                .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
-        });
-   
-    d3.select("#colorgo")
-        .on("click", function() {
-            var pos = getvalue("colorpos");
-            var col = getvalue("colorcol");
-            applyColorScheme.colors[pos] = col;
-            applyColorScheme(data.nodes);
-            node.selectAll("rect")
-                .transition()
-                .style("fill", function(d) { return d.color; })
-                .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
-         
-                });
-
-
-    d3.select("#searchbox")
-    .on("change", function() {
-        var s = d3.event.target.value;
-        node.each(function(d) {
-            if (d.name == s) {
-             selectNode(this, d);            
-          }
-       });
-        setHighlightOn();
-     });
-    */
-
-    /*
-    function selectNode(that, d) {
-        highlightNode(d);  
-        var text = d3.select(that).select("title").html();
-        var g = d3.select("#chart svg")
-            .append("g")
-            .attr("transform", that.getAttribute("transform"))
-            .attr("class", "tooltip")
-
-        var lines = text.split('\n')
-        g.append("foreignObject")
-            .attr("x", 6 + sankey.nodeWidth())
-            .attr("width", 100)
-            .attr("height", lines.length * 14)
-            .attr("y", d.dy/2)
-            .attr("requiredExtensions","http://www.w3.org/1999/xhtml")
-            .html("<div class='tooltip'>" + lines.join('<br>') + "</div>")
-       highlightOff();
-    }
-
-    function setHighlightOn() {
-         d3.select("body").on("click", function() {
-            unHighlight();
-            this.onclick = null; 
-            d3.selectAll(".tooltip").remove();
-            highlightOn();
-        });
-    }
-    */
 
     mysankey.update = function() {
         sankey 
@@ -804,7 +710,7 @@ function makeSankey() {
             .attr("x", 6 + sankey.nodeWidth())
     }
 
-     mysankey.updateColors = function() {
+    mysankey.updateColors = function() {
         if (useColors) {
             applyColorScheme(data.nodes);
         }
@@ -817,9 +723,16 @@ function makeSankey() {
             .transition()
             .style("fill", function(d) { return d.color; })
             .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
+
+        return mysankey;
     }
 
-     mysankey.addLabels = function() {
+    mysankey.updateColorScheme = function(pos, col) {
+        applyColorScheme.colors[pos] = col;
+        return mysankey;
+     }
+    
+    mysankey.addLabels = function() {
         node.append("text")
             .attr("x", -6)
             .attr("y", function(d) { return d.dy / 2; })
@@ -830,27 +743,61 @@ function makeSankey() {
             .filter(function(d) { return d.x < width / 2; })
             .attr("x", 6 + nodeWidth)
             .attr("text-anchor", "start");
+        return mysankey;
      }
 
-     mysankey.removeLabels = function() {
+    mysankey.removeLabels = function() {
         node.selectAll("text").remove()
+        return mysankey;
      }
-
-     mysankey.toggleLabels = function() {
+    
+    mysankey.toggleLabels = function() {
         if (useLabels)
             mysankey.addLabels()
         else
             mysankey.removeLabels()
+        return mysankey;
      }
 
+    mysankey.selectNodeByName = function(name) {
+        node.each(function(d) {
+            if (d.name == name) {
+                mysankey.selectNode(this, d);
+            }
+        });
+    }
 
+    mysankey.selectNode = function(that, d) {
+        highlightNode(d);  
+        var text = d3.select(that).select("title").html();
+        var g = view.select("svg").append("g")
+            .attr("transform", that.getAttribute("transform"))
+
+        var lines = text.split('\n')
+        g.append("foreignObject")
+            .attr("x", 6 + nodeWidth)
+            .attr("width", 100)
+            .attr("height", lines.length * 14)
+            .attr("y", d.dy/2)
+            .attr("requiredExtensions","http://www.w3.org/1999/xhtml")
+            .html("<div class='s_tooltip'>" + lines.join('<br>') + "</div>")
+        highlightOff();
+
+        /* "setHighlightOn" in old sankey code */
+        view.on("click", function() {
+            unHighlight();
+            this.onclick = null; 
+            d3.selectAll(".s_tooltip").remove();
+            highlightOn();
+        });
+    }
+   
 
     return mysankey
 }
 
 
 function addLabels() {
-    console.log('hello')
     node.append("text")
         .attr("x", -6)
         .attr("y", function(d) { return d.dy / 2; })

@@ -213,3 +213,22 @@ d3.select("#s_skinnyedges").on("change", function() {
     mysankey.redrawEdges();
 });
 
+d3.select("#s_colorgo").on("click", function() {
+    var pos = d3.select("#s_colorpos").node().value;
+    var col = d3.select("#s_colorcol").node().value;
+    mysankey.updateColorScheme(pos, col)
+        .updateColors();
+});
+
+d3.select("#s_searchbox").on("change", function() {
+    var s = d3.event.target.value;
+    mysankey.selectNodeByName(s);
+});
+
+d3.select("#s_fullheight").on("change", function() {
+    mysankey.fullHeight(d3.event.target.checked);    
+    var view = d3.select('.view3')
+    view.selectAll('*').remove()
+    view.call(mysankey)
+}) 
+
