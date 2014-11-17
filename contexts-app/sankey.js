@@ -413,7 +413,12 @@ function makeSankey() {
         customLayout = 1,
         customSort = 1,
         fullHeight = 0,
-        useLabels = false;
+        useLabels = true,
+        width = 0,
+        height = 0;
+
+    
+    var color = d3.scale.category20();
 
 
     mysankey = function(view) {
@@ -423,8 +428,8 @@ function makeSankey() {
         var fake_height = calcHeight(data.nodes, 10);
 
         var margin = {top: 1, right: 1, bottom: 6, left: 1};
-        var width = parseInt(view.style('width')) - margin.left - margin.right;
-        var height = fullHeight ? fake_height : parseInt(view.style('height')) - margin.top - margin.bottom;  
+        width = parseInt(view.style('width')) - margin.left - margin.right;
+        height = fullHeight ? fake_height : parseInt(view.style('height')) - margin.top - margin.bottom;  
 
         var formatNumber = d3.format(",.0f"),
             format = function(d) { return formatNumber(d); },
@@ -501,7 +506,7 @@ function makeSankey() {
     
         
         if (useLabels)
-            addLabels();
+            mysankey.addLabels();
 
         function dragmove(d) {
             d.ht += d3.event.dy;
@@ -666,6 +671,12 @@ function makeSankey() {
 
 
 
+
+    mysankey.redrawEdges = function() {
+       var linkWidth = skinnyEdges ? 1 : function(d) { return Math.max(1, d.dy) };
+       link.transition().style("stroke-width", linkWidth);
+    }
+
    /* Menu items */
 
     /*
@@ -761,7 +772,6 @@ function makeSankey() {
     */
 
     mysankey.update = function() {
-
         sankey 
             .nodeWidth(nodeWidth)
             .nodePadding(nodePadding)
@@ -794,21 +804,64 @@ function makeSankey() {
             .attr("x", 6 + sankey.nodeWidth())
     }
 
+     mysankey.updateColors = function() {
+        if (useColors) {
+            applyColorScheme(data.nodes);
+        }
+        else {
+            data.nodes.forEach(function(d) {
+                d.color = color(d.name.replace(/ ./, "")); // put a * after period
+            });
+        }
+        node.selectAll("rect")
+            .transition()
+            .style("fill", function(d) { return d.color; })
+            .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
+    }
+
+     mysankey.addLabels = function() {
+        node.append("text")
+            .attr("x", -6)
+            .attr("y", function(d) { return d.dy / 2; })
+            .attr("dy", ".35em")
+            .attr("text-anchor", "end")
+            .attr("transform", null)
+            .text(function(d) { return d.name; })
+            .filter(function(d) { return d.x < width / 2; })
+            .attr("x", 6 + nodeWidth)
+            .attr("text-anchor", "start");
+     }
+
+     mysankey.removeLabels = function() {
+        node.selectAll("text").remove()
+     }
+
+     mysankey.toggleLabels = function() {
+        if (useLabels)
+            mysankey.addLabels()
+        else
+            mysankey.removeLabels()
+     }
+
+
+
     return mysankey
 }
 
+
 function addLabels() {
-            node.append("text")
-                .attr("x", -6)
-                .attr("y", function(d) { return d.dy / 2; })
-                .attr("dy", ".35em")
-                .attr("text-anchor", "end")
-                .attr("transform", null)
-                .text(function(d) { return d.name; })
-                .filter(function(d) { return d.x < width / 2; })
-                .attr("x", 6 + sankey.nodeWidth())
-                .attr("text-anchor", "start");
-        }
+    console.log('hello')
+    node.append("text")
+        .attr("x", -6)
+        .attr("y", function(d) { return d.dy / 2; })
+        .attr("dy", ".35em")
+        .attr("text-anchor", "end")
+        .attr("transform", null)
+        .text(function(d) { return d.name; })
+        .filter(function(d) { return d.x < width / 2; })
+        .attr("x", 6 + sankey.nodeWidth())
+        .attr("text-anchor", "start");
+}
 
 
 function calcHeight(nodes, nodepadding) {

@@ -6,8 +6,7 @@ function graphSVG() {
         selectedNodes = [];
    
     var width = 0, height = 0, svg = undefined; // these change in draw()
-
-
+    var force = undefined;
 
     var zoom = d3.behavior.zoom();
     var colors = d3.scale.category20();
@@ -33,7 +32,7 @@ function graphSVG() {
                 + " scale(" + d3.event.scale + ")");
         }
      
-        var force = d3.layout.force()
+        force = d3.layout.force()
             .gravity(.05)
             .distance(100)
             .charge(-100)
@@ -116,6 +115,10 @@ function graphSVG() {
     graph.unSelectNode = function(x) {
         selectNode(x).style("fill", "blue");
         selectedNodes.remove(x)
+    }
+
+    graph.stop = function() {
+        force.alpha(0);
     }
 
     graph.nodes = function(_) {

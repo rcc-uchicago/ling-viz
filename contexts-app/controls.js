@@ -172,10 +172,44 @@ d3.select("#centerGraph")
         graph.center() // if we didn't have an extra function here, we would center the wrong graph (I think)
     });
 
+d3.select("#stopGraph")
+    .on("click", function() {
+        graph.stop()
+    });
+
+
 
 /* Sankey controls */
 
-d3.select("#usevalues").on("change", function() { 
-    mysankey.useValues(d3.event.target.checked);
-    mysankey.update();
+/* "Templating" for the similar sankey controls */
+var sankeyUpdates = [
+    {"id": "s_usevalues", "change": function() { mysankey.useValues(d3.event.target.checked); } },
+    {"id": "s_nodewidth", "change": function() { mysankey.nodeWidth(+d3.event.target.value); } },
+    {"id": "s_nodepadding", "change": function() { mysankey.nodePadding(+d3.event.target.value) } },
+    {"id": "s_customlayout", "change": function() { mysankey.customLayout(d3.event.target.checked) } },
+    {"id": "s_customsort", "change": function() { mysankey.customSort(d3.event.target.checked) } }
+]
+
+sankeyUpdates.forEach(function(d) {
+    d3.select("#" + d.id).on("change", function() { 
+        d.change()
+        mysankey.update();
+    });
+})
+
+
+d3.select("#s_usecolors").on("change", function() {
+    mysankey.useColors(d3.event.target.checked);
+    mysankey.updateColors();
 });
+
+d3.select("#s_uselabels").on("change", function() { 
+    mysankey.useLabels(d3.event.target.checked);
+    mysankey.toggleLabels()
+});
+
+d3.select("#s_skinnyedges").on("change", function() {
+    mysankey.skinnyEdges(d3.event.target.checked);
+    mysankey.redrawEdges();
+});
+

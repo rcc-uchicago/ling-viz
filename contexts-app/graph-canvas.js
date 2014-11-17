@@ -3,19 +3,20 @@ function graphCanvas() {
 
     var nodes = undefined,
         edges = undefined,
-        selectedNodes = [];
+        context = undefined,
+        canvas = undefined,
+        selectedNodes = [],
+        force = undefined;
    
     var width = 0, height = 0; // these change in draw()
 
     var zoom = d3.behavior.zoom();
     var colors = d3.scale.category20();
 
-    /* Graph svg */
-
     var graph = function(view) {
         width = parseInt(view.style("width")), height = parseInt(view.style("height"));
         
-        var canvas = view
+        canvas = view
             .append("canvas")
             .attr("width", width)
             .attr("height", height)
@@ -23,10 +24,10 @@ function graphCanvas() {
             .call(zoom)
             .node()
 
-        var context =  canvas.getContext("2d")
+        context =  canvas.getContext("2d")
         context.strokeStyle = "black"
 
-        var force = d3.layout.force()
+        force = d3.layout.force()
             .gravity(.05)
             .distance(100)
             .charge(-100)
@@ -39,36 +40,42 @@ function graphCanvas() {
             .on("end", function() { zoom.on("zoom", redraw) })
 
          
-
-        function redraw() {
-
-            context.clearRect(0,0,canvas.width,canvas.height)
-            
-            var s = zoom.scale(),
-                t = zoom.translate()
-
-            nodes.forEach(function(d) {
-                context.beginPath();
-                context.arc(s * d.x + t[0], s * d.y + t[1], s * 8, 0, 2 * Math.PI);
-                context.fill();
-            });
-
-            /* Batch path drawing */
-            context.beginPath();
-            edges.forEach(function(d) {
-                context.moveTo(s * d.source.x + t[0], s * d.source.y + t[1])
-                context.lineTo(s * d.target.x + t[0], s * d.target.y + t[1])
-            });
-            context.stroke()
-            
-            if (force.alpha())
-                window.requestAnimationFrame(redraw)
-        }
-
         window.requestAnimationFrame(redraw)
         
         return graph;
     }
+
+    
+    function redraw() {
+
+        context.clearRect(0,0,canvas.width,canvas.height)
+        
+        var s = zoom.scale(),
+            t = zoom.translate()
+
+        /* Batch path drawing */
+        context.beginPath();
+        context.strokeStyle = 'lightgrey';
+        edges.forEach(function(d) {
+            context.moveTo(s * d.source.x + t[0], s * d.source.y + t[1])
+            context.lineTo(s * d.target.x + t[0], s * d.target.y + t[1])
+        });
+        context.stroke()
+
+        nodes.forEach(function(d) {
+            context.beginPath();
+            context.arc(s * d.x + t[0], s * d.y + t[1], s * 8, 0, 2 * Math.PI);
+            context.fillStyle = d.color || "black";
+            context.fill();
+        });
+
+  
+        
+        if (force.alpha())
+            window.requestAnimationFrame(redraw)
+    }
+
+
 
     graph.center = function() {
         zoom.scale(0.25);
@@ -76,31 +83,29 @@ function graphCanvas() {
     }
 
     graph.selectNode = function(x) {
-       var node = selectNode(x);
-       if (node.empty())
+        var node = nodes.find(function(d) { return d.label == x });
+        if (!node)
             return;
-
-        node.style("fill", colors(x))
-
-        /* Zooming adapted from http://stackoverflow.com/questions/13861657/automatic-zoom-on-object-in-d3-force-layout */
-        var zoomFactor = 3;
-       
-        var vec = node.node().parentNode.getAttribute("transform");
-        var trans = vec.match(/-?[0-9\.]+/g)
-
-        var transx = (-parseInt(trans[0]) * zoomFactor + width/2),
-            transy = (-parseInt(trans[1]) * zoomFactor + height/2);
-        svg.transition().attr("transform", "translate(" + transx + "," + transy + ")scale(" + zoomFactor + ")");
-        zoom.scale(zoomFactor);
-        zoom.translate([transx, transy]);
-
+        
         selectedNodes.push(x)
-
+        node.oldcolor = node.color;
+        node.color = colors(x);  
+      
+        zoom.scale(1)
+        zoom.translate([width/2 - node.x, height/2 - node.y])
+        
+        if (! force.alpha())
+            redraw();
     }
 
     graph.unSelectNode = function(x) {
-        selectNode(x).style("fill", "blue");
-        selectedNodes.remove(x)
+        var node = nodes.find(function(d) { return d.label == x });
+        if (!node)
+            return;
+        node.color = node.oldcolor;
+        selectedNodes.remove(x);
+        if (!force.alpha())
+            redraw();
     }
 
     graph.nodes = function(_) {
