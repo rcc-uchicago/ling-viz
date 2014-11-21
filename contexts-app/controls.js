@@ -48,7 +48,7 @@ function drawContextTable() {
     view.selectAll('*').remove()
     var table = view.append("table")
     
-    var contexts = contexts; // no point since this is global now, but could change.
+    
     var selected_nodes = graph.selectedNodes();
 
     if (selected_nodes.length == 0)
@@ -116,12 +116,33 @@ function intersectAll(L) {
     return x;
 }
 
+function fileSelect(evt) {
+    var file = evt.target.files[0]; // FileList object
+
+	var reader = new FileReader();
+	
+    reader.onload = (function(e) {
+	    var obj = JSON.parse(e.target.result);
+        console.log(obj)
+        main(null, obj);
+    });
+
+	reader.readAsText(file);
+}
+
 /* Add connections */
 
 d3.select("#loadData")
     .on("change", function() {
         var file = d3.event.target.value;
-        d3.json("data/" + file, main)
+        if (file == "upload") {
+            var picker = document.createElement("input")
+            picker.onchange = fileSelect
+            picker.setAttribute("type", "file")
+            picker.click()
+        }
+        else
+            d3.json("data/" + file, main)
     });
 
     
@@ -164,7 +185,7 @@ d3.select("#graphType")
         v.selectAll('*').remove()
         v.call(new_graph);
 
-        graph = new_graph
+        graph = new_graph.start()
     });
 
 d3.select("#centerGraph")
@@ -177,7 +198,15 @@ d3.select("#stopGraph")
         graph.stop()
     });
 
+d3.select("#startGraph")
+    .on("click", function() {
+        graph.start()
+    });
 
+d3.select("#drawLabels")
+    .on("change", function() {
+        graph.labels(d3.event.target.checked);
+    });
 
 /* Sankey controls */
 

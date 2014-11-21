@@ -6,7 +6,8 @@ function graphCanvas() {
         context = undefined,
         canvas = undefined,
         selectedNodes = [],
-        force = undefined;
+        force = undefined,
+        labels = false;
    
     var width = 0, height = 0; // these change in draw()
 
@@ -25,7 +26,6 @@ function graphCanvas() {
             .node()
 
         context =  canvas.getContext("2d")
-        context.strokeStyle = "black"
 
         force = d3.layout.force()
             .gravity(.05)
@@ -33,21 +33,20 @@ function graphCanvas() {
             .charge(-100)
             .size([width, height]);
 
+        return graph;
+    }
+
+    graph.start = function() {
         force
             .nodes(nodes)
             .links(edges)
             .start()
             .on("end", function() { zoom.on("zoom", redraw) })
-
-         
         window.requestAnimationFrame(redraw)
-        
         return graph;
     }
 
-    
     function redraw() {
-
         context.clearRect(0,0,canvas.width,canvas.height)
         
         var s = zoom.scale(),
@@ -65,8 +64,13 @@ function graphCanvas() {
         nodes.forEach(function(d) {
             context.beginPath();
             context.arc(s * d.x + t[0], s * d.y + t[1], s * 8, 0, 2 * Math.PI);
-            context.fillStyle = d.color || "black";
+            context.fillStyle = /*d.color || */ "black";
             context.fill();
+            if (labels) {
+                var size = 10*s;
+                context.font = size.toString() + "pt Arial"
+                context.fillText(d.label, s * (d.x + 12) + t[0], s * d.y + t[1])
+            }
         });
 
   
@@ -75,11 +79,10 @@ function graphCanvas() {
             window.requestAnimationFrame(redraw)
     }
 
-
-
     graph.center = function() {
         zoom.scale(0.25);
         zoom.translate([width/4,height/4])
+        redraw()
     }
 
     graph.selectNode = function(x) {
@@ -130,6 +133,14 @@ function graphCanvas() {
             return selectedNodes;
         else
             selectedNodes = _;
+        return graph;
+    }
+
+    graph.labels = function(_) {
+        if (!arguments.length)
+            return labels;
+        else
+            labels = _;
         return graph;
     }
     

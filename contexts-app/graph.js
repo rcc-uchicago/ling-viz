@@ -3,7 +3,8 @@ function graphSVG() {
 
     var nodes = undefined,
         edges = undefined,
-        selectedNodes = [];
+        selectedNodes = [],
+        labels = false;
    
     var width = 0, height = 0, svg = undefined; // these change in draw()
     var force = undefined;
@@ -37,7 +38,9 @@ function graphSVG() {
             .distance(100)
             .charge(-100)
             .size([width, height]);
+    }
 
+    graph.start = function() {
         force
             .nodes(nodes)
             .links(edges)
@@ -60,11 +63,13 @@ function graphSVG() {
             .attr("r", 8)
             .attr("fill", function(d) { return d.color; })
             .attr("id", function(d) { return cleanName(d.label); });
-            
-        node.append("text")
-            .attr("dx", 12)
-            .attr("dy", ".35em")
-            .text(function(d) { return d.label});
+
+        if (labels) {
+            node.append("text")
+                .attr("dx", 12)
+                .attr("dy", ".35em")
+                .text(function(d) { return d.label});
+        }
 
         var tickLimit = 10; // TODO: make configurable
         var tick = tickLimit;
@@ -84,6 +89,7 @@ function graphSVG() {
 
         return graph;
     }
+
     graph.center = function() {
         zoom.scale(0.25);
         zoom.translate([width/4,height/4])
@@ -143,6 +149,14 @@ function graphSVG() {
             return selectedNodes;
         else
             selectedNodes = _;
+        return graph;
+    }
+
+    graph.labels = function(_) {
+        if (!arguments.length)
+            return labels;
+        else
+            labels = _;
         return graph;
     }
     
