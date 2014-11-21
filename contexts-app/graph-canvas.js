@@ -46,7 +46,14 @@ function graphCanvas() {
         return graph;
     }
 
+    graph.stop = function() {
+        force.alpha(0);
+        return graph;
+    };
+
     function redraw() {
+        redraw.started = true; /* other things can redraw now */
+
         context.clearRect(0,0,canvas.width,canvas.height)
         
         var s = zoom.scale(),
@@ -63,15 +70,18 @@ function graphCanvas() {
 
         nodes.forEach(function(d) {
             context.beginPath();
-            context.arc(s * d.x + t[0], s * d.y + t[1], s * 8, 0, 2 * Math.PI);
-            context.fillStyle = /*d.color || */ "black";
+            context.arc(s * d.x + t[0], s * d.y + t[1], s * (d.size || 8), 0, 2 * Math.PI);
+            context.fillStyle = d.color ||  "black";
             context.fill();
-            if (labels) {
-                var size = 10*s;
-                context.font = size.toString() + "pt Arial"
-                context.fillText(d.label, s * (d.x + 12) + t[0], s * d.y + t[1])
-            }
         });
+
+        if (labels) {
+            context.font = (s * 10).toString() + "pt Arial"
+            context.fillStyle = "black";
+            nodes.forEach(function(d) {
+                context.fillText(d.label, s * (d.x + 8) + t[0], s * d.y + t[1])
+            });
+        }
 
   
         
@@ -90,7 +100,7 @@ function graphCanvas() {
         if (!node)
             return;
         
-        selectedNodes.push(x)
+        selectedNodes.push(node)
         node.oldcolor = node.color;
         node.color = colors(x);  
       
@@ -106,7 +116,7 @@ function graphCanvas() {
         if (!node)
             return;
         node.color = node.oldcolor;
-        selectedNodes.remove(x);
+        selectedNodes.remove(node);
         if (!force.alpha())
             redraw();
     }
@@ -141,7 +151,17 @@ function graphCanvas() {
             return labels;
         else
             labels = _;
+        if (redraw.started)
+            redraw()
         return graph;
+    }
+
+    graph.redraw = function() {
+        if (!force)
+            return
+        if (force.alpha())
+            return
+        redraw()
     }
     
     function cleanName(name) {

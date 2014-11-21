@@ -114,13 +114,14 @@ function graphSVG() {
         zoom.scale(zoomFactor);
         zoom.translate([transx, transy]);
 
-        selectedNodes.push(x)
+        selectedNodes.push(node)
 
     }
 
     graph.unSelectNode = function(x) {
-        selectNode(x).style("fill", "blue");
-        selectedNodes.remove(x)
+        var node = selectNode(x)
+        node.style("fill", "blue");
+        selectedNodes.remove(node)
     }
 
     graph.stop = function() {
@@ -158,6 +159,10 @@ function graphSVG() {
         else
             labels = _;
         return graph;
+    }
+
+    graph.redraw = function() {
+        console.log("NOT IMPLEMENTED") /* TODO */
     }
     
     function cleanName(name) {

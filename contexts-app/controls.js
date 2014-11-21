@@ -25,16 +25,39 @@ function updateList() {
     var items = d3.select("#selectedNodes")
         .selectAll("li")
         .data(graph.selectedNodes(), function(d) { return d });
-    items
+    var li = items
         .enter()
         .append("li")
-        .append("a")
+    
+    items.append("a")
         .attr("href", '#')
         .on("click", function(d) {
-            graph.unSelectNode(d)
+            graph.unSelectNode(d.label)
             updateList()
         })
-        .text(function(d) { return d; });
+        .text(function(d) { return d.label; });
+
+    items.append("input")
+          .attr("type", "text")
+          .each(function(d) { 
+              this.value = d.color
+          })
+          .on("change", function(d) { 
+              d.color = d3.event.target.value
+              graph.redraw()
+          });
+
+    items.append("input")
+        .attr("type", "number")
+        .each(function(d) {
+            this.value = d.size || "8";
+        })
+        .on("change", function(d) {
+            d.size = d3.event.target.value;
+            graph.redraw()
+        });
+
+
     items
         .exit()
         .remove();
@@ -123,7 +146,6 @@ function fileSelect(evt) {
 	
     reader.onload = (function(e) {
 	    var obj = JSON.parse(e.target.result);
-        console.log(obj)
         main(null, obj);
     });
 
@@ -163,7 +185,7 @@ d3.select("#drawTable")
 d3.select("#drawSankey")
     .on("click", function() {
         mysankey = makeSankey()
-            .words(graph.selectedNodes())
+            .words(graph.selectedNodes().map(function(d) { return d.label }))
             .contexts(contexts);
         d3.select('.view3').call(mysankey)
     }) 
@@ -185,7 +207,7 @@ d3.select("#graphType")
         v.selectAll('*').remove()
         v.call(new_graph);
 
-        graph = new_graph.start()
+        graph = new_graph
     });
 
 d3.select("#centerGraph")
