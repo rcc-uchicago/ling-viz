@@ -63,6 +63,21 @@ function updateList() {
             d.size = d3.event.target.value;
             graph.redraw()
         });
+
+    li.each(function(d) {
+        var neighbors = findNeighbors(graph.nodes(), graph.edges(), d);
+        console.log(neighbors)
+        d3.select(this).append("ul")
+            .selectAll("li")
+            .data(neighbors).enter()
+             .append("li").append("a")
+             .text(function(d) { return d.label })
+             .attr('href', '#')
+             .on('click', function(d) { 
+                 graph.selectNode(d.label);
+                 updateList();
+             });
+    });
 }
 
 
@@ -152,6 +167,21 @@ function fileSelect(evt) {
     });
 
 	reader.readAsText(file);
+}
+
+function findNeighbors(nodes, edges, node_obj) {
+    //var node_obj = nodes.find(function (n) { return n.label == name });
+    var nb_l = edges.filter(function(e) { return e.source == node_obj; })
+            .map(function (n) { return n.target; });
+    var nb_r = edges.filter(function(e) { return e.target == node_obj; })
+            .map(function (n) { return n.source; });
+    var neighbors = nb_l;
+    for (i in nb_r) {
+        if (! nb_r[i] in neighbors)
+           neighbors.push(nb_r[i]) 
+    }
+    return neighbors;
+
 }
 
 /* Add connections */
