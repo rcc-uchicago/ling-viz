@@ -51,30 +51,66 @@
 </style>
 
 <style>
-div  {
-    outline: red dotted;
-} 
+.wrapper {
+    width: 100%;
+    clear: both;
+}
+.menu {
+    width: 15%;
+    height: 90%;
+    float: left;
+    background-color: lightgrey;
+}
+.views {
+    border: solid;
+    width: 2000px;
+    height: 1500px;
+    float: left;
+}
+.menu input {
+    width: 50px;
+}
+
+.menu * {
+    font-size: 10px;
+    font-family: sans-serif;
+}
+
+.views, .views div {
+    width: 2000px;
+    float: left;
+    overflow: scroll;
+}
+
+.table-controls, .sankey-controls, .view2, .view3 {
+    display: none; /* to start with */
+}
 </style>
 
+<div class="wrapper">
 <div class="menu">
-    
-    <div class="graph-controls">
+    <div class="all-controls">
         Data: <select id="loadData">
             <option selected disabled hidden value=''></option>
             <option value="english-brown.json">english-brown</option>
             <option value="upload">Pick a local file...</option>
         </select> <br>
+        View: <select id="viewControl">
+            <option value="graph" selected>Graph</option>
+            <option value="table">Table</option>
+            <option value="sankey">Sankey</option>
+        </select> <br>
+    </div>
+    <div class="graph-controls">
         <button type="button" id="startGraph">Start</button> <br>
         <button type="button" id="stopGraph">Stop</button><br>
         <button type="button" id="centerGraph">Center</button> <br>
         Find: <input type="text" id="searchBox"></input> <br>
         <ul id="selectedNodes"></ul>
         <ul id="neighbors"></ul>
-        <button type="button" id="drawTable">Table</button> <br>
-        <button type="button" id="drawSankey">Sankey</button> <br>
         <select id="graphType">
-            <option value="svg">SVG</option>
             <option value="canvas">Canvas</option>
+            <option value="svg">SVG</option>
         </select> <br>
         <input type="checkbox" id="drawLabels">Draw labels</input>
     </div>
@@ -93,20 +129,24 @@ div  {
         <input type="checkbox" id="s_skinnyedges">Skinny edges <br>
         <input type="checkbox" id="s_customlayout" class="attr" checked>Use custom layout function <br>
         <input type="checkbox" id="s_customsort" class="attr">Order by number of positions<br>
-        <input type="checkbox" id="s_fullheight">Height can grow past bottom (TODO)<br>
+        <input type="checkbox" id="s_fullheight">Height can grow past bottom<br>
         <!-- TODO: Width of view: <input type="number" id="s_viewwidth"><br> -->
         Pos: <input type="text" class="smalltext" id="s_colorpos"> Color: <input type="text" id="s_colorcol"> <button type='button' id="s_colorgo">Go</button><br> 
         Find word: <input type="text" id="s_searchbox"><br>
     </div>
 </div>
 
-<div class="view1" style="width: 2000px; height: 1000px">
-</div>
+<div class="views">
+    <div class="view1" style="width: 2000px; height: 1500px">
+    </div>
 
-<div class="view2">
-</div>
+    <div class="view2">
+    </div>
 
-<div class="view3" style="width: 2000px; height: 1000px">
+    <div class="view3" style="width: 2000px; height: 1500px;">
+    </div>
+    </div>
+
 </div>
 
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>

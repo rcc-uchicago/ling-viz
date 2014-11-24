@@ -1,7 +1,7 @@
 var graph = undefined,
     mysankey = undefined,
     contexts = undefined,
-    makeGraph = graphSVG // default graph type
+    makeGraph = graphCanvas // default graph type
 
 
 function main(error, json) {
@@ -72,7 +72,7 @@ function drawContextTable() {
     var table = view.append("table")
     
     
-    var selected_nodes = graph.selectedNodes();
+    var selected_nodes = graph.selectedNodes().map(function(d) { return d.label });
 
     if (selected_nodes.length == 0)
         return;
@@ -153,6 +153,41 @@ function fileSelect(evt) {
 }
 
 /* Add connections */
+
+d3.select("#viewControl")
+    .on("change", function() {
+        var sel = d3.event.target.value;
+        d3.selectAll(".graph-controls, .table-controls, .sankey-controls, .view1, .view2, .view3").style("display", "none")
+
+        if (sel == "graph") {
+            d3.selectAll(".graph-controls, .view1").style("display", "block")
+        }
+        else if (sel == "table") {
+            if (graph.selectedNodes().length == 0) {
+                alert("Select some nodes!")
+                return;
+            }
+            else {
+                d3.selectAll(".table-controls, .view2").style("display", "block")
+                drawContextTable()
+            }
+        }
+        else if (sel == "sankey") {
+            if (graph.selectedNodes().length == 0) {
+                this.value = "graph"
+                alert("Select some nodes!")
+                return;
+            }
+            else {
+                d3.selectAll(".sankey-controls, .view3").style("display", "block")
+                mysankey = makeSankey()
+                    .words(graph.selectedNodes().map(function(d) { return d.label }))
+                    .contexts(contexts);
+                d3.select('.view3').call(mysankey)
+            }
+        }
+
+    });
 
 d3.select("#loadData")
     .on("change", function() {
