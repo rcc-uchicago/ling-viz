@@ -22,14 +22,21 @@ function main(error, json) {
 
 
 function updateList() {
-    var items = d3.select("#selectedNodes")
-        .selectAll("li")
-        .data(graph.selectedNodes(), function(d) { return d });
+   
+    d3.select("#selectedNodes").selectAll("li").remove()
+
+    var data = graph.selectedNodes()
+
+    var items = d3.select("#selectedNodes").selectAll("li")
+        .data(data);
+
+    items.exit().remove()
+    
     var li = items
         .enter()
         .append("li")
-    
-    items.append("a")
+   
+    li.append("a")
         .attr("href", '#')
         .on("click", function(d) {
             graph.unSelectNode(d.label)
@@ -37,7 +44,7 @@ function updateList() {
         })
         .text(function(d) { return d.label; });
 
-    items.append("input")
+    li.append("input")
           .attr("type", "text")
           .each(function(d) { 
               this.value = d.color
@@ -47,7 +54,7 @@ function updateList() {
               graph.redraw()
           });
 
-    items.append("input")
+    li.append("input")
         .attr("type", "number")
         .each(function(d) {
             this.value = d.size || "8";
@@ -56,11 +63,6 @@ function updateList() {
             d.size = d3.event.target.value;
             graph.redraw()
         });
-
-
-    items
-        .exit()
-        .remove();
 }
 
 
@@ -236,12 +238,15 @@ d3.select("#graphType")
         
         new_graph
             .nodes(graph.nodes())
-            .edges(graph.edges());
+            .edges(graph.edges())
+            .force(graph.force());
    
         var v = d3.select('.view1')
         v.selectAll('*').remove()
         v.call(new_graph);
-
+        
+        new_graph.redraw()
+        
         graph = new_graph
     });
 

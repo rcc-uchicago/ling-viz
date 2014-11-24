@@ -33,11 +33,14 @@ function graphSVG() {
                 + " scale(" + d3.event.scale + ")");
         }
      
-        force = d3.layout.force()
-            .gravity(.05)
-            .distance(100)
-            .charge(-100)
-            .size([width, height]);
+        
+        if (!force)
+            force = d3.layout.force()
+                .gravity(.05)
+                .distance(100)
+                .charge(-100)
+                .size([width, height]);
+            
     }
 
     graph.start = function() {
@@ -58,8 +61,8 @@ function graphSVG() {
             .call(force.drag);
 
         node.append("circle")
-            .attr("x", -8)
-            .attr("y", -8)
+            .attr("x", function(d) { return d.x }) // -8)
+            .attr("y", function(d) { return d.y }) //-8)
             .attr("r", 8)
             .attr("fill", function(d) { return d.color; })
             .attr("id", function(d) { return cleanName(d.label); });
@@ -82,6 +85,9 @@ function graphSVG() {
 
                 node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
                 tick = 0;
+
+                if (graph.registerstop)
+                    force.alpha(0)
             }
             else
                 tick++;
@@ -161,8 +167,19 @@ function graphSVG() {
         return graph;
     }
 
+    graph.force = function(_) {
+        if (!arguments.length)
+            return force;
+        else
+            force = _;
+        return graph;
+    }
+
+
+
     graph.redraw = function() {
-        console.log("NOT IMPLEMENTED") /* TODO */
+        graph.start()
+        //graph.registerstop = true
     }
     
     function cleanName(name) {

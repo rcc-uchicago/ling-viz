@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 
-
 <!-- this style is for the graph -->
 <style>
 .link {
@@ -60,12 +59,7 @@
     height: 90%;
     float: left;
     background-color: lightgrey;
-}
-.views {
-    border: solid;
-    width: 2000px;
-    height: 1500px;
-    float: left;
+    position: absolute;
 }
 .menu input {
     width: 50px;
@@ -76,15 +70,27 @@
     font-family: sans-serif;
 }
 
-.views, .views div {
-    width: 2000px;
-    float: left;
-    overflow: scroll;
-}
-
 .table-controls, .sankey-controls, .view2, .view3 {
     display: none; /* to start with */
 }
+
+
+.views {
+    border: solid;
+    width: 80%;
+    height: 90%;
+    left: 16%;
+    float: left;
+    position:absolute;
+}
+.views div {
+    width: 100%;
+    height: 100%;
+    float: left;
+    overflow: scroll;
+    position:absolute;
+}
+
 </style>
 
 <div class="wrapper">
@@ -137,13 +143,13 @@
 </div>
 
 <div class="views">
-    <div class="view1" style="width: 2000px; height: 1500px">
+    <div class="view1">
     </div>
 
     <div class="view2">
     </div>
 
-    <div class="view3" style="width: 2000px; height: 1500px;">
+    <div class="view3">
     </div>
     </div>
 

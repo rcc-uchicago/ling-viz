@@ -27,11 +27,12 @@ function graphCanvas() {
 
         context =  canvas.getContext("2d")
 
-        force = d3.layout.force()
-            .gravity(.05)
-            .distance(100)
-            .charge(-100)
-            .size([width, height]);
+        if (!force)
+            force = d3.layout.force()
+                .gravity(.05)
+                .distance(100)
+                .charge(-100)
+                .size([width, height]);
 
         return graph;
     }
@@ -40,8 +41,9 @@ function graphCanvas() {
         force
             .nodes(nodes)
             .links(edges)
-            .start()
             .on("end", function() { zoom.on("zoom", redraw) })
+            .on("start", function() { zoom.on("zoom", undefined) })
+            .start()
         window.requestAnimationFrame(redraw)
         return graph;
     }
@@ -81,9 +83,7 @@ function graphCanvas() {
             nodes.forEach(function(d) {
                 context.fillText(d.label, s * (d.x + 8) + t[0], s * d.y + t[1])
             });
-        }
-
-  
+        } 
         
         if (force.alpha())
             window.requestAnimationFrame(redraw)
@@ -163,6 +163,16 @@ function graphCanvas() {
             return
         redraw()
     }
+
+    graph.force = function(_) {
+        if (!arguments.length)
+            return force;
+        else
+            force = _;
+        return graph;
+    }
+
+
     
     function cleanName(name) {
         if (+name > 0)
