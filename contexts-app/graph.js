@@ -65,7 +65,22 @@ function graphSVG() {
             .attr("y", function(d) { return d.y }) //-8)
             .attr("r", 8)
             .attr("fill", function(d) { return d.color; })
-            .attr("id", function(d) { return cleanName(d.label); });
+            .attr("id", function(d) { return cleanName(d.label); })
+            .on("mouseover", function(d, i) { 
+                d3.selectAll(".node")
+                    .selectAll("circle")
+                    .attr("fill-opacity", "0.3");
+                selectNode(d.label).attr("fill-opacity", "1.0");
+                if (!d.neighbors)
+                    d.neighbors = findNeighbors(nodes, edges, d); 
+                d.neighbors.forEach(function (n) {
+                    selectNode(n.label).attr("fill-opacity", "1.0")
+                });
+            })
+            .on("mouseout", function() { d3.selectAll(".node")
+                                        .selectAll("circle")
+                                        .attr("fill-opacity", "1.0") })
+            .append("title").text(function(d) { return d.label; });
 
         if (labels) {
             node.append("text")

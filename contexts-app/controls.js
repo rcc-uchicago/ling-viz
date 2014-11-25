@@ -76,9 +76,8 @@ function updateList() {
              .text(function(d) { return d.label })
              .attr('href', '#')
              .on('click', function(d) { 
-                 alert("hi")
-                 //graph.selectNode(d);
-                 //updateList();
+                 graph.selectNode(d);
+                 updateList();
              });
     });
 }
