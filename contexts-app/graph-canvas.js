@@ -12,7 +12,18 @@ function graphCanvas() {
     var width = 0, height = 0; // these change in draw()
 
     var zoom = d3.behavior.zoom();
-    var colors = d3.scale.category20();
+
+    var colors = (function() {
+        var i = 0;
+        var col = ["red", "orange", "yellow", "green", "brown", "purple"]
+        function nextColor() {
+            var c = col[i]
+            i = (i + 1) % col.length
+            return c;
+        }
+        return nextColor
+    })()
+
 
     var graph = function(view) {
         width = parseInt(view.style("width")), height = parseInt(view.style("height"));
@@ -95,14 +106,19 @@ function graphCanvas() {
         redraw()
     }
 
-    graph.selectNode = function(x) {
-        var node = nodes.find(function(d) { return d.label == x });
-        if (!node)
-            return;
+    graph.selectNode = function(node) {
         
         selectedNodes.push(node)
         node.oldcolor = node.color;
-        node.color = colors(x);  
+        node.color = d3.hsl(colors());
+
+        if (!node.neighbors)
+            node.neighbors = findNeighbors(nodes, edges, node)
+
+        node.neighbors.forEach(function(d) {
+            d.oldcolor = d.color
+            d.color = node.color.brighter(1.2)
+        })
       
         zoom.scale(1)
         zoom.translate([width/2 - node.x, height/2 - node.y])
@@ -111,10 +127,7 @@ function graphCanvas() {
             redraw();
     }
 
-    graph.unSelectNode = function(x) {
-        var node = nodes.find(function(d) { return d.label == x });
-        if (!node)
-            return;
+    graph.unSelectNode = function(node) {
         node.color = node.oldcolor;
         selectedNodes.remove(node);
         if (!force.alpha())

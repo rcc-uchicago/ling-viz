@@ -38,6 +38,7 @@ function updateList() {
    
     li.append("a")
         .attr("href", '#')
+        .style("color", "red")
         .on("click", function(d) {
             graph.unSelectNode(d.label)
             updateList()
@@ -65,17 +66,19 @@ function updateList() {
         });
 
     li.each(function(d) {
-        var neighbors = findNeighbors(graph.nodes(), graph.edges(), d);
-        console.log(neighbors)
+        if (!d.neighbors)
+            d.neighbors = findNeighbors(graph.nodes(), graph.edges(), d);
         d3.select(this).append("ul")
             .selectAll("li")
-            .data(neighbors).enter()
+            .data(d.neighbors).enter()
              .append("li").append("a")
+             .style("color", "green")
              .text(function(d) { return d.label })
              .attr('href', '#')
              .on('click', function(d) { 
-                 graph.selectNode(d.label);
-                 updateList();
+                 alert("hi")
+                 //graph.selectNode(d);
+                 //updateList();
              });
     });
 }
@@ -237,7 +240,11 @@ d3.select("#loadData")
     
 d3.select("#searchBox")
     .on("change", function() {
-        var node = d3.event.target.value;
+        var x = d3.event.target.value;
+        var node = graph.nodes().find(function(d) { return d.label == x });
+        if (!node)
+            return;
+
         if (graph.selectedNodes().indexOf(node) > 0)
             graph.unSelectNode(node)
         else
@@ -269,13 +276,14 @@ d3.select("#graphType")
         new_graph
             .nodes(graph.nodes())
             .edges(graph.edges())
-            .force(graph.force());
+            .selectedNodes(graph.selectedNodes())
+            .force(graph.force())
    
         var v = d3.select('.view1')
         v.selectAll('*').remove()
         v.call(new_graph);
         
-        new_graph.redraw()
+        //new_graph.redraw()
         
         graph = new_graph
     });

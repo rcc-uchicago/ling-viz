@@ -101,12 +101,11 @@ function graphSVG() {
         zoom.translate([width/4,height/4])
     }
 
-    graph.selectNode = function(x) {
-       var node = selectNode(x);
-       if (node.empty())
-            return;
+    graph.selectNode = function(d) {
 
-        node.style("fill", colors(x))
+        var node = selectNode(d.label);
+
+        node.style("fill", colors(d.label))
 
         /* Zooming adapted from http://stackoverflow.com/questions/13861657/automatic-zoom-on-object-in-d3-force-layout */
         var zoomFactor = 3;
@@ -120,12 +119,11 @@ function graphSVG() {
         zoom.scale(zoomFactor);
         zoom.translate([transx, transy]);
 
-        selectedNodes.push(node)
+        selectedNodes.push(d)
 
     }
 
-    graph.unSelectNode = function(x) {
-        var node = selectNode(x)
+    graph.unSelectNode = function(node) {
         node.style("fill", "blue");
         selectedNodes.remove(node)
     }
