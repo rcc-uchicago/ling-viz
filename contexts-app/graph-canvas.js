@@ -129,6 +129,9 @@ function graphCanvas() {
 
     graph.unSelectNode = function(node) {
         node.color = node.oldcolor;
+        node.neighbors.forEach(function(d) {
+            d.color = d.oldcolor;
+        });
         selectedNodes.remove(node);
         if (!force.alpha())
             redraw();

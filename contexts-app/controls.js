@@ -40,7 +40,7 @@ function updateList() {
         .attr("href", '#')
         .style("color", "red")
         .on("click", function(d) {
-            graph.unSelectNode(d.label)
+            graph.unSelectNode(d)
             updateList()
         })
         .text(function(d) { return d.label; });
