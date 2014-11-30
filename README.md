@@ -1,13 +1,1 @@
-This is where we will work on visualization and user interface for [John Goldsmith](https://github.com/JohnAGoldsmith)'s [Linguistica](http://linguistica.uchicago.edu/publications.html) project.
-
-
-## Demo Visualization
-
-See the `webui` directory for an initial visualization displaying word relations:
-- [`index.html`](webui/index.html) is a webapp with a prototype of the graph visualization software 
-- [`graphutils.js`](webui/graphutils.js) contains JS logic for the webapp
-- `d3.js` is a copy of the [D3](http://d3js.org/) source. Included in full for inspection or changes.
-- [`package.json`](webui/package.json) is a manifest for node-webkit packaging.
-- the [`Makefile`](webui/Makefile) contains some helpful shortcuts for publishing as a webpage or a node-webkit program. Must be edited for your local environment.
-
-
+These are some demo visualizations / user interfaces for [John Goldsmith](https://github.com/JohnAGoldsmith)'s [Linguistica](http://linguistica.uchicago.edu/publications.html) project. [graph-contexts](graph-contexts) and [webui](webui) are some older demos of graph, sankey, and hive plots. [contexts-app](contexts-app) contains the most up-to-date software, and is intended to be a more full-featured software package that will allow for interactive data visualization of linguistic data.
