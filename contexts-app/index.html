@@ -70,7 +70,7 @@
     font-family: sans-serif;
 }
 
-.table-controls, .sankey-controls, .view2, .view3 {
+.table-controls, .sankey-controls, .partial-controls, .view2, .view3 .view4 {
     display: none; /* to start with */
 }
 
@@ -95,7 +95,7 @@
 
 <div class="wrapper">
 <div class="menu">
-    <div class="all-controls">
+    <div class="all-controls menu">
         Data: <select id="loadData">
             <option selected disabled hidden value=''></option>
             <option value="english-brown.json">english-brown</option>
@@ -105,9 +105,10 @@
             <option value="graph" selected>Graph</option>
             <option value="table">Table</option>
             <option value="sankey">Sankey</option>
+            <option value="partial">Partial graph</option>
         </select> <br>
     </div>
-    <div class="graph-controls">
+    <div class="graph-controls menu">
         <button type="button" id="startGraph">Start</button> <br>
         <button type="button" id="stopGraph">Stop</button><br>
         <button type="button" id="centerGraph">Center</button> <br>
@@ -121,12 +122,12 @@
         <ul id="neighbors"></ul>
     </div>
     
-    <div class="table-controls">
+    <div class="table-controls menu">
         <!-- TODO -->
         <button type="button">Sample table control</button>
     </div>
 
-    <div class="sankey-controls">
+    <div class="sankey-controls menu">
         <input type="checkbox" class="attr" id="s_usevalues" checked>Node thickness depends on value<br>
         <input type="checkbox" id="s_usecolors" checked>Use custom color scheme<br>
         <input type="checkbox" id="s_uselabels" checked>Display labels of nodes<br>
@@ -140,18 +141,27 @@
         Pos: <input type="text" class="smalltext" id="s_colorpos"> Color: <input type="text" id="s_colorcol"> <button type='button' id="s_colorgo">Go</button><br> 
         Find word: <input type="text" id="s_searchbox"><br>
     </div>
+
+    <div class="partial-controls menu">
+        Seed word: <input type="text" id="p_seedword"> <br>
+        # neighbors: <input type="number" id="p_nNeighbors"> <br>
+        # generstions: <input type="number" id="p_nGenerations"> <br>
+    </div>
 </div>
 
 <div class="views">
-    <div class="view1">
+    <div class="view view1">
     </div>
 
-    <div class="view2">
+    <div class="view view2">
     </div>
 
-    <div class="view3">
+    <div class="view view3">
     </div>
+
+    <div class="view view4">
     </div>
+</div>
 
 </div>
 
@@ -160,4 +170,5 @@
 <script src="sankey.js"></script>
 <script src="graph.js"></script>
 <script src="graph-canvas.js"></script>
+<script src="partial-graph.js"></script>
 <script src="controls.js"></script>
