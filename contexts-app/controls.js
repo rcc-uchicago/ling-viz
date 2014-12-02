@@ -222,7 +222,11 @@ d3.select("#viewControl")
         }
         else if (sel == "partial") {
             d3.selectAll(".partial-controls, .view4").style("display", "block")
-            makePartialGraph("language",4,1);
+            d3.select("#p_seedword").node().value = "language"
+            d3.select("#p_nNeighbors").node().value = 4
+            d3.select("#p_nGenerations").node().value = 1
+            
+            d3.select("#p_seedword").on("change")() /* trigger change event */
         }
 
     });
@@ -366,11 +370,11 @@ d3.select("#s_fullheight").on("change", function() {
 
 /* Partial graph controls */
 
-d3.selectAll(".partial_controls input").on("change", function() {
+d3.selectAll("#p_seedword, #p_nNeighbors, #p_nGenerations").on("change", function() {
     var seed = d3.select("#p_seedword").node().value
-    var nNeighbors = d3.select("#p_nNeighbors").node().value
-    var nGenerations = d3.select("#p_nGenerations").node().value
-    makePartialGraph(word, nNeighbors, nGenerations);
+    var n = d3.select("#p_nNeighbors").node().value
+    var g = d3.select("#p_nGenerations").node().value
+    makePartialGraph(seed, n, g);
 });
 
 function makePartialGraph(word, nNeighbors, nGenerations) {
@@ -400,8 +404,6 @@ function makePartialGraph(word, nNeighbors, nGenerations) {
         }); 
 
     }
-    console.log(nodes)
-        console.log(links)
     var partial = partialGraph()
         .nodes(nodes)
         .links(links)
