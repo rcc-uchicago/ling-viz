@@ -1,0 +1,116 @@
+/* Style for graph */
+.link {
+  stroke: #ccc;
+}
+
+.node text {
+  pointer-events: all;
+  font: 10px sans-serif;
+}
+
+/* Style for sankey plot */
+.s_node rect {
+  cursor: move;
+  fill-opacity: .9;
+  shape-rendering: crispEdges;
+}
+
+.s_node text {
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff;
+}
+
+.s_link {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .2;
+}
+
+.s_sel {
+  stroke-opacity: .5;
+}
+
+.s_unsel {
+  stroke-opacity: .1;
+  opacity: .1;
+}
+
+.s_tooltip {
+    background: lemonchiffon;
+    box-shadow: 2px 2px 5px #888888; 
+    font: 12px sans-serif;
+}
+
+
+/* Style for partial graph */
+.p_node circle {
+  stroke: white;
+  stroke-width: 1.5px;
+  opacity: 1.0;
+}
+
+.p_path {
+    fill: none;
+    stroke: black;
+    stroke-width: 1.5px;
+    stroke-opacity: 1.0;
+}
+
+
+text.partial {
+    font: 10px sans-serif;
+    pointer-events: none;
+}
+
+text.partial.shadow {
+    stroke: #fff;
+    stroke-width: 3px;
+    stroke-opacity: 0.8;
+}
+
+
+
+
+/* Style for app */
+.wrapper {
+    width: 100%;
+    clear: both;
+}
+.menu {
+    width: 15%;
+    height: 90%;
+    float: left;
+    background-color: lightgrey;
+    position: absolute;
+}
+.menu input {
+    width: 50px;
+}
+
+.menu * {
+    font-size: 10px;
+    font-family: sans-serif;
+}
+
+.table-controls, .sankey-controls, .partial-controls, .view2, .view3 .view4 {
+    display: none; /* to start with */
+}
+
+
+.views {
+    border: solid;
+    width: 80%;
+    height: 90%;
+    left: 16%;
+    float: left;
+    position:absolute;
+}
+.views div {
+    width: 100%;
+    height: 100%;
+    float: left;
+    overflow: scroll;
+    position:absolute;
+}
+
+
