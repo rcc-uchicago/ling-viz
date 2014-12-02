@@ -29,7 +29,7 @@ function partialGraph() {
 
         linkedByIndex = {};
         links.forEach(function(d, i) {
-          d.linknum = i
+          d.linknum = i + 1
           linkedByIndex[d.source.index + "," + d.target.index] = true;
         });
 
