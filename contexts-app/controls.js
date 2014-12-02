@@ -222,7 +222,7 @@ d3.select("#viewControl")
         }
         else if (sel == "partial") {
             d3.selectAll(".partial-controls, .view4").style("display", "block")
-            makePartialGraph("language",4,2);
+            makePartialGraph("language",4,1);
         }
 
     });
@@ -379,14 +379,18 @@ function makePartialGraph(word, nNeighbors, nGenerations) {
             continue;
 
         var neighbors = findNeighbors(allNodes, allEdges, d.node)
+        neighbors = neighbors.slice(0, nNeighbors)
         neighbors.forEach(function(x) {
-            var tar = queue.push({"node": x, "ngens": d.ngens - 1}) - 1
+            var tar = nodes.findIndex(function(d) { return d.label == x.label })
+            if (tar == -1)
+                tar = queue.push({"node": x, "ngens": d.ngens - 1}) - 1
             links.push({"source": src, "target":tar})
         }); 
 
         src++;
     }
-
+    console.log(nodes)
+        console.log(links)
     var partial = partialGraph()
         .nodes(nodes)
         .links(links)
