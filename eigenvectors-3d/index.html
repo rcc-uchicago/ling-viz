@@ -112,7 +112,7 @@ d3.json("tagged-vectors.json", function(error, data) {
         .call(circle)
         .each(function(d) {
             this.onclick = function() {
-                selected.text(d.word)
+                selected.text(d.name)
                 selected.style("color", col(d))
                 eigencoords.text(JSON.stringify(d.vector))
             }
