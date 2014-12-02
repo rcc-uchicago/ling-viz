@@ -88,7 +88,7 @@ d3.json("tagged-vectors.json", function(error, data) {
       .style("fill", function(d) {
             return d.category ? color(d.category) : "grey";
       })
-      .append("title").text(function(d) { return d.word });
+      .append("title").text(function(d) { return d.name });
 
   var legend = svg.selectAll(".legend")
       .data(color.domain())
