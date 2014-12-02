@@ -52,11 +52,9 @@ var svg = d3.select("body").append("svg")
 
 var color = d3.scale.category10()
 
-d3.json('categories.json', function(e, pos) {
-d3.json("words.json", function(err, words) {
-d3.json("eigen.json", function(error, data) {
-  x.domain(d3.extent(data, function(d) { return d[0]; })).nice();
-  y.domain(d3.extent(data, function(d) { return d[1]; })).nice();
+d3.json("tagged-vectors.json", function(error, data) {
+  x.domain(d3.extent(data, function(d) { return d.vector[0]; })).nice();
+  y.domain(d3.extent(data, function(d) { return d.vector[1]; })).nice();
 
   svg.append("g")
       .attr("class", "x axis")
@@ -85,16 +83,12 @@ d3.json("eigen.json", function(error, data) {
     .enter().append("circle")
       .attr("class", "dot")
       .attr("r", 3.5)
-      .attr("cx", function(d) { return x(d[0]); })
-      .attr("cy", function(d) { return y(d[1]); })
-      .style("fill", function(_, i) {
-            var x = pos[words[i]]
-            if (x)
-                return color(x)
-            else
-                return "grey"
+      .attr("cx", function(d) { return x(d.vector[0]); })
+      .attr("cy", function(d) { return y(d.vector[1]); })
+      .style("fill", function(d) {
+            return d.category ? color(d.category) : "grey";
       })
-      .append("title").text(function(_, i) { return words[i] });
+      .append("title").text(function(d) { return d.word });
 
   var legend = svg.selectAll(".legend")
       .data(color.domain())
@@ -125,13 +119,11 @@ d3.json("eigen.json", function(error, data) {
    // Zoom into data (.dot)
    function zoom() {
         svg.selectAll(".dot")
-            .attr("cx", function(d) { return x(d[0]); })
-            .attr("cy", function(d) { return y(d[1]); });
+            .attr("cx", function(d) { return x(d.vector[0]); })
+            .attr("cy", function(d) { return y(d.vector[1]); });
         d3.select('.x.axis').call(xAxis);
         d3.select('.y.axis').call(yAxis);
    }
 
 });
-})
-})
 </script>
