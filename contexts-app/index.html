@@ -1,101 +1,11 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 
-<!-- this style is for the graph -->
-<style>
-.link {
-  stroke: #ccc;
-}
-
-.node text {
-  pointer-events: all;
-  font: 10px sans-serif;
-}
-</style>
-
-<!-- Style for sankey plot -->
-<style>
-.s_node rect {
-  cursor: move;
-  fill-opacity: .9;
-  shape-rendering: crispEdges;
-}
-
-.s_node text {
-  pointer-events: none;
-  text-shadow: 0 1px 0 #fff;
-}
-
-.s_link {
-  fill: none;
-  stroke: #000;
-  stroke-opacity: .2;
-}
-
-.s_sel {
-  stroke-opacity: .5;
-}
-
-.s_unsel {
-  stroke-opacity: .1;
-  opacity: .1;
-}
-
-.s_tooltip {
-    background: lemonchiffon;
-    box-shadow: 2px 2px 5px #888888; 
-    font: 12px sans-serif;
-}
-
-</style>
-
-<style>
-.wrapper {
-    width: 100%;
-    clear: both;
-}
-.menu {
-    width: 15%;
-    height: 90%;
-    float: left;
-    background-color: lightgrey;
-    position: absolute;
-}
-.menu input {
-    width: 50px;
-}
-
-.menu * {
-    font-size: 10px;
-    font-family: sans-serif;
-}
-
-.table-controls, .sankey-controls, .partial-controls, .view2, .view3 .view4 {
-    display: none; /* to start with */
-}
-
-
-.views {
-    border: solid;
-    width: 80%;
-    height: 90%;
-    left: 16%;
-    float: left;
-    position:absolute;
-}
-.views div {
-    width: 100%;
-    height: 100%;
-    float: left;
-    overflow: scroll;
-    position:absolute;
-}
-
-</style>
+<link rel="stylesheet" type="text/css" href="style.css">
 
 <div class="wrapper">
 <div class="menu">
-    <div class="all-controls menu">
+    <div class="all-controls menu0">
         Data: <select id="loadData">
             <option selected disabled hidden value=''></option>
             <option value="english-brown.json">english-brown</option>
@@ -108,7 +18,7 @@
             <option value="partial">Partial graph</option>
         </select> <br>
     </div>
-    <div class="graph-controls menu">
+    <div class="graph-controls menu1">
         <button type="button" id="startGraph">Start</button> <br>
         <button type="button" id="stopGraph">Stop</button><br>
         <button type="button" id="centerGraph">Center</button> <br>
@@ -122,12 +32,12 @@
         <ul id="neighbors"></ul>
     </div>
     
-    <div class="table-controls menu">
+    <div class="table-controls menu2">
         <!-- TODO -->
         <button type="button">Sample table control</button>
     </div>
 
-    <div class="sankey-controls menu">
+    <div class="sankey-controls menu3">
         <input type="checkbox" class="attr" id="s_usevalues" checked>Node thickness depends on value<br>
         <input type="checkbox" id="s_usecolors" checked>Use custom color scheme<br>
         <input type="checkbox" id="s_uselabels" checked>Display labels of nodes<br>
@@ -142,7 +52,7 @@
         Find word: <input type="text" id="s_searchbox"><br>
     </div>
 
-    <div class="partial-controls menu">
+    <div class="partial-controls menu4">
         Seed word: <input type="text" id="p_seedword"> <br>
         # neighbors: <input type="number" id="p_nNeighbors"> <br>
         # generstions: <input type="number" id="p_nGenerations"> <br>
