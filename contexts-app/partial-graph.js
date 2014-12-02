@@ -4,12 +4,17 @@ function partialGraph() {
 
     var nodes, links;
 
-    var node_radius = 8;
-
+   	function node_radius(d) {
+        var x = Math.pow(40.0 * d.size, 1/3);
+        if (isNaN(x)) {
+            console.log(d)
+                console.log(x)
+                think()
+        }
+        return x
+    }
+ 
     var graph = function(view) {
-
-        console.log(nodes)
-        console.log(links)
 
        var width = parseInt(view.style("width")), height = parseInt(view.style("height"));
 
@@ -35,11 +40,12 @@ function partialGraph() {
         link = svg.selectAll("path")
                       .data(links)
                     .enter().append("path")
+                    .attr("class", "p_path")
 
         node = svg.selectAll(".node")
                       .data(nodes)
                     .enter().append("g")
-                      .attr("class", "node")
+                      .attr("class", "p_node")
                       .call(force.drag);
 
         node
@@ -52,10 +58,11 @@ function partialGraph() {
         node.append("text")
             .attr("x", 12)
             .attr("dy", ".35em")
-            .attr("class", "shadow")
+            .classed({"partial": true, "shadow":true})
             .text(function(d) { return d.label; });
 
         node.append("text")
+            .classed("partial", true)
             .attr("x", 12)
             .attr("dy", ".35em")
             .text(function(d) { return d.label; });
@@ -191,7 +198,7 @@ function partialGraph() {
         });
 
         node
-        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+            .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
     }
 
     return graph;

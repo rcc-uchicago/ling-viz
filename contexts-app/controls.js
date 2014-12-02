@@ -191,7 +191,7 @@ function findNeighbors(nodes, edges, node_obj) {
 d3.select("#viewControl")
     .on("change", function() {
         var sel = d3.event.target.value;
-        d3.selectAll(".menu, .view").style("display", "none")
+        d3.selectAll(".menu1, .menu2, .menu3, .view").style("display", "none")
 
         if (sel == "graph") {
             d3.selectAll(".graph-controls, .view1").style("display", "block")
@@ -368,25 +368,23 @@ function makePartialGraph(word, nNeighbors, nGenerations) {
     var allNodes = graph.nodes()
     var allEdges = graph.edges()
     var x = allNodes.find(function(d) { return d.label == word; });
-    var queue = [x]
+    var queue = [{"node":x, "ngens":nGenerations}]
     var nodes = [], links = []
     var src = 0
     while (queue.length > 0) {
-        var node = queue.pop()
-        nodes.push({"label": node.label, "id": src})
-        var neighbors = findNeighbors(allNodes, allEdges, node)
-        console.log(neighbors)
-        neighbors.forEach(function(d) {
-            var tar = nodes.push(d) - 1
+        var d = queue.pop()
+        nodes.push({"label": d.node.label, "id": src, "size":1000})
+        
+        if (d.ngens == 0)
+            continue;
+
+        var neighbors = findNeighbors(allNodes, allEdges, d.node)
+        neighbors.forEach(function(x) {
+            var tar = queue.push({"node": x, "ngens": d.ngens - 1}) - 1
             links.push({"source": src, "target":tar})
-        });
-        if (nGenerations > 0)
-            neighbors.forEach(function(d) {
-                queue.push(d);
-            });
+        }); 
 
         src++;
-        nGenerations--;
     }
 
     var partial = partialGraph()
