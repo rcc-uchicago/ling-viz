@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<!-- based on http://bl.ocks.org/mbostock/3887118 -->
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.dot {
+  stroke: #000;
+}
+
+</style>
+<body>
+
+<x3d class="x3d" width="800px" height="500px">
+    <scene  width="800px" height="500px"></scene>
+</x3d>
+
+<svg id="legend" width='500px' height='500px' />
+
+<div id="info">
+    Selected: <span id="selected"></span> <br>
+    Eigenspace coordinates: <span id="eigencoords"></span> <br>
+</div>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="d3.layout.force3d.js"></script>
+<script src="http://x3dom.org/x3dom/example/x3dom.js"></script>
+<script src="d3.x3dom.js"></script>
+<script>
+
+
+
+var depth = 5;
+
+var x = d3.scale.linear()
+    .range([0, depth]);
+
+var y = d3.scale.linear()
+    .range([0, depth]);
+
+var z = d3.scale.linear()
+    .range([0, depth]);
+
+
+var scene = d3.select("body").select("scene")
+
+var color = d3.scale.category10()
+
+
+var line = d3.x3dom.line()
+
+var xaxis = scene.append('shape')
+    .call(line, 0, 0, 0, depth, 0, 0)    
+var yaxis = scene.append('shape')
+    .call(line, 0, 0, 0, 0, depth, 0)
+var zaxis = scene.append('shape')
+    .call(line, 0, 0, 0, 0, 0, depth)
+
+
+var label = d3.x3dom.shape()
+    .type("text")
+    .attr("string", function(d) { return d.name })
+
+var labels = [{name:"eigenvector 1", x:5},
+    {name: "eigenvector 2", y:5},
+    {name: "eigenvector 3", z:5}];
+
+scene.selectAll(".label")
+   .data(labels).enter()
+    .append("transform")
+    .attr("class", "label")
+    .attr("scale", "0.3,0.3,0.3")
+    .call(label)
+
+
+d3.json("tagged-vectors.json", function(error, data) {
+    x.domain(d3.extent(data, function(d) { return d.vector[0]; })).nice();
+    y.domain(d3.extent(data, function(d) { return d.vector[1]; })).nice();
+    z.domain(d3.extent(data, function(d) { return d.vector[2]; })).nice();
+ 
+    var col = function(d, i) {
+        return d.category ? color(d.category) : "grey";
+    }
+
+    var translation = function(d) {
+        return [x(d.vector[0]), y(d.vector[1]), z(d.vector[2])]
+    }
+
+    var circle = d3.x3dom.shape()
+        .type("sphere")
+        .attr("radius", 0.02)
+        .color(col)
+        .translation(translation)
+
+    var selected = d3.select("#selected")
+    var eigencoords = d3.select("#eigencoords")
+
+    scene.selectAll('.dot')
+       .data(data).enter()
+        .append("transform")
+        .attr("class", "dot")
+        .call(circle)
+        .each(function(d) {
+            this.onclick = function() {
+                selected.text(d.word)
+                selected.style("color", col(d))
+                eigencoords.text(JSON.stringify(d.vector))
+            }
+         });
+
+
+  var legend = d3.select("svg").selectAll(".legend")
+      .data(color.domain())
+    .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+  legend.append("rect")
+      .attr("x", 0)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", color);
+
+  legend.append("text")
+      .attr("x", 30)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "end")
+      .text(function(d) { return d; });
+      
+
+});
+</script>
