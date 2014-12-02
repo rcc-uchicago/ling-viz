@@ -222,7 +222,11 @@ d3.select("#viewControl")
         }
         else if (sel == "partial") {
             d3.selectAll(".partial-controls, .view4").style("display", "block")
-            makePartialGraph("language",4,2);
+            d3.select("#p_seedword").node().value = "language"
+            d3.select("#p_nNeighbors").node().value = 4
+            d3.select("#p_nGenerations").node().value = 1
+            
+            d3.select("#p_seedword").on("change")() /* trigger change event */
         }
 
     });
@@ -364,32 +368,46 @@ d3.select("#s_fullheight").on("change", function() {
     view.call(mysankey)
 }) 
 
+/* Partial graph controls */
+
+d3.selectAll("#p_seedword, #p_nNeighbors, #p_nGenerations").on("change", function() {
+    var seed = d3.select("#p_seedword").node().value
+    var n = d3.select("#p_nNeighbors").node().value
+    var g = d3.select("#p_nGenerations").node().value
+    makePartialGraph(seed, n, g);
+});
+
 function makePartialGraph(word, nNeighbors, nGenerations) {
     var allNodes = graph.nodes()
     var allEdges = graph.edges()
     var x = allNodes.find(function(d) { return d.label == word; });
-    var queue = [{"node":x, "ngens":nGenerations}]
+    var queue = [{"node":x, "ngens":nGenerations, "id": 0}]
     var nodes = [], links = []
-    var src = 0
+    var id = 0
     while (queue.length > 0) {
         var d = queue.pop()
-        nodes.push({"label": d.node.label, "id": src, "size":1000})
+        nodes.push({"label": d.node.label, "id": d.id, "size":500})
         
         if (d.ngens == 0)
             continue;
 
         var neighbors = findNeighbors(allNodes, allEdges, d.node)
+        neighbors = neighbors.slice(0, nNeighbors)
         neighbors.forEach(function(x) {
-            var tar = queue.push({"node": x, "ngens": d.ngens - 1}) - 1
-            links.push({"source": src, "target":tar})
+            var tar = nodes.findIndex(function(d) { return d.label == x.label })
+            if (tar == -1) {
+                id++
+                queue.push({"node": x, "ngens": d.ngens - 1, "id": id})
+                tar = id
+            }
+            links.push({"source": d.id, "target":tar})
         }); 
 
-        src++;
     }
-
     var partial = partialGraph()
         .nodes(nodes)
         .links(links)
 
+   d3.selectAll(".view4 *").remove()
    d3.select(".view4").call(partial);
 }

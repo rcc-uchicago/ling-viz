@@ -8,8 +8,8 @@ function partialGraph() {
         var x = Math.pow(40.0 * d.size, 1/3);
         if (isNaN(x)) {
             console.log(d)
-                console.log(x)
-                think()
+            console.log(x)
+            thunk()
         }
         return x
     }
@@ -28,7 +28,8 @@ function partialGraph() {
                       .start();
 
         linkedByIndex = {};
-        links.forEach(function(d) {
+        links.forEach(function(d, i) {
+          d.linknum = i + 1
           linkedByIndex[d.source.index + "," + d.target.index] = true;
         });
 
@@ -194,7 +195,7 @@ function partialGraph() {
                 dy = d.target.y - d.source.y,
                 dr = 75/d.linknum;
             return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
-            //return "M" + d.source.x + "," + d.source.y + "S" + d.target.x + "," + d.target.y + " " + 2 + "," + 3;
+           // return "M" + d.source.x + "," + d.source.y + "S" + d.target.x + "," + d.target.y + " " + 2 + "," + 3;
         });
 
         node
