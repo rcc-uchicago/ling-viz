@@ -5,7 +5,7 @@ function partialGraph() {
     var nodes, links;
 
    	function node_radius(d) {
-        var x = Math.pow(40.0 * d.size, 1/3);
+        var x = Math.pow(20.0 * d.size, 1/3);
         if (isNaN(x)) {
             console.log(d)
             console.log(x)
@@ -29,7 +29,6 @@ function partialGraph() {
 
         linkedByIndex = {};
         links.forEach(function(d, i) {
-          d.linknum = i + 1
           linkedByIndex[d.source.index + "," + d.target.index] = true;
         });
 

@@ -386,7 +386,7 @@ function makePartialGraph(word, nNeighbors, nGenerations) {
     var id = 0
     while (queue.length > 0) {
         var d = queue.pop()
-        nodes.push({"label": d.node.label, "id": d.id, "size":500})
+        nodes.push({"label": d.node.label, "id": d.id, "size":(d.ngens+1)*10})
         
         if (d.ngens == 0)
             continue;
@@ -394,13 +394,15 @@ function makePartialGraph(word, nNeighbors, nGenerations) {
         var neighbors = findNeighbors(allNodes, allEdges, d.node)
         neighbors = neighbors.slice(0, nNeighbors)
         neighbors.forEach(function(x) {
+            var linknum = 1;
             var tar = nodes.findIndex(function(d) { return d.label == x.label })
             if (tar == -1) {
                 id++
                 queue.push({"node": x, "ngens": d.ngens - 1, "id": id})
                 tar = id
             }
-            links.push({"source": d.id, "target":tar})
+            links.push({"source": d.id, "target":tar, "linknum":linknum})
+            linknum++;
         }); 
 
     }
