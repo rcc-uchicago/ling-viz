@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+#content {
+    width: 80%;
+    height: 80%;
+    position:absolute;
+    border: dotted;
+}
+
+
+.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
+
+</style>
+<body>
+<div id="menu">
+    Number of iterations: <span id="nIterations">0</span> <br>
+    Number of groups: <span id="nGroups">0</span> </br>
+    <input type="checkbox" id="animateTicks"> Animate ticks <br>
+    <input type="button" id="runWhispers" value="Run whispers">
+    <input type="button" id="stopWhispers" value="Stop whispers">
+</div>
+<div id="content"></div>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="graph.js"></script>
+<script src="chinese-whispers.js"></script>
+<script>
+
+var color = d3.scale.category20();
+var whispers = makeWhispers()
+var graph = graphSVG()
+
+
+d3.select("#runWhispers")
+    .on("click", function() {
+            graph.stop()
+            whispers.start()
+    });
+
+d3.select("#animateTicks").on("change", function() { whispers.animateTicks(d3.event.target.checked); });
+
+d3.select("#stopWhispers").on("click", whispers.end)
+
+d3.text("english-brown_100_9_nearest_neighbors.txt", "text/plain", function(text) {
+   
+    var data = adjListToGraph(text.split('\n'))
+
+    graph
+       .nodes(data.nodes)
+        .edges(data.edges)
+
+    d3.select("#content").call(graph);
+
+    graph.start()
+
+    var node = d3.selectAll(".node")
+
+    var i = 0;
+
+    whispers
+        .nodes(data.nodes)
+        .edges(data.edges)
+        .on("tick", function(evt) {
+            node.style("fill", function(d) { return color(d.group); })
+        })
+        .on("step", function(evt) {
+            d3.select("#nIterations").text(String(i))
+            d3.select("#nGroups").text(String(lengthNonNull(evt.groups)));
+            node.style("fill", function(d) { return color(d.group); })
+            i++;
+         })
+        .on("end.g", function(evt) { i = 0; makeGroupList(data.nodes) })
+
+});
+
+function adjListToGraph(adj) {
+    var nodes = [],
+        edges = []
+
+    var node_dict = {}
+    var nNodes = 0
+    
+    function addNode(w) {
+        var i = node_dict[w]
+        if (i != undefined)
+            return nodes[i];
+        i = nNodes;
+        node_dict[w] = i;
+        nNodes ++;
+        nodes.push({"label": w})
+        return nodes[i];
+    }
+    
+    adj.forEach(function(line) {
+        if (line[0] == "#")
+            return
+        words = line.split(' ')
+        var weight = 10; /* arbitrary init weight */
+        var src = addNode(words[0])
+        for (var i = 1; i < words.length; i++) {
+            var tar = addNode(words[i])
+            edges.push({"source": src, "target": tar, "value": weight})
+            weight -= 1;
+        }
+    });
+
+    return {nodes: nodes, edges: edges}
+}
+
+function findNeighbors(nodes, edges, node_obj) {
+    var nb_l = edges.filter(function(e) { return e.source == node_obj; })
+            .map(function (n) { return n.target; });
+    var nb_r = edges.filter(function(e) { return e.target == node_obj; })
+            .map(function (n) { return n.source; });
+    var neighbors = nb_l;
+    for (i in nb_r) {
+        if (! nb_r[i] in neighbors)
+           neighbors.push(nb_r[i]) 
+    }
+    return neighbors;
+
+}
+
+function lengthNonNull(a) {
+    return a.filter(function(d) { return d != 0 }).length
+}
+
+function makeGroupList(nodes) {
+    var nodesByGroup = {}
+    nodes.forEach(function(d) {
+        g = d.group.toString()
+        if (nodesByGroup[g] == undefined)
+            nodesByGroup[g] = []
+        nodesByGroup[g].push(d.label) 
+    })
+   
+    d3.selectAll("#content ul").remove()
+
+    d3.select("#content").append("ul")
+        .selectAll("li")
+        .data(d3.entries(nodesByGroup)).enter()
+        .append("li")
+        .text(function(d) { return d.key + ": " + d.value.join(", ") })
+}
+
+</script>
