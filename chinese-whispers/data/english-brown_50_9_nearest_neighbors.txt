@@ -1,0 +1,55 @@
+# language: english 
+# corpus: english-brown 
+# Number of words analyzed 50 
+# Number of neighbors identified 9 
+
+the a an their his this one all that as
+, . -- ; ( ) and of as that
+. , ( ; -- ) and of is was
+of in for with by from at on as to
+and or as of , for but with that ;
+to for by at from of in on with all
+a the an this their one his all that as
+in of at from on by for with to as
+that which all as there this one ) it for
+is was are were as with and by , for
+was is were are as and with , all by
+he she i they it there and we that (
+for with by from of in on at as that
+it there that this one ) all him which she
+with for from by of in on at as that
+as for that and with by or but which of
+his their the her a and with for that or
+on from at by in for with of all as
+be been as ( an have all with their --
+at on by from in for of with all to
+by from at on for in with of as all
+i they we he she you and as it one
+this one there an that all it a which the
+had has have with at all by their for one
+not all you we to as an been one for
+are were is was been as and all by with
+but or as and which for that with by of
+from by on at in for with of as to
+or but and as for with which their of that
+have had has be with by all for as (
+an a one this the all that at by (
+they i we you he she and one all as
+which that as there all this it but for and
+-- ; ( ) , that . all as one
+one this all an there that ) it at by
+you we they i not to him all ( )
+were are is was been all one an by there
+her him his their it you with for from on
+all one that this there by ) an as at
+she he i they it there and with at by
+; ( -- , ) . and as that all
+there it one that this all which ) on at
+would to we you all was they an one is
+their his the a with and her for by as
+we they i you not to and all one (
+him her it you all there ) on that his
+been be all one an as are by were from
+) -- ( ; that one all , it there
+has had have with at that for by this there
+( ; -- ) , . as an and that
