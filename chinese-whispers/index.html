@@ -23,6 +23,12 @@
 </style>
 <body>
 <div id="menu">
+    <select id="dataFile">
+        <option selected disabled hidden value=''></option>
+        <option>english-brown_50_9_nearest_neighbors.txt</option>
+        <option>english-brown_100_9_nearest_neighbors.txt</option>
+        <option>english-brown_1000_9_nearest_neighbors.txt</option>
+    </select> <br>
     Number of iterations: <span id="nIterations">0</span> <br>
     Number of groups: <span id="nGroups">0</span> </br>
     <input type="checkbox" id="animateTicks"> Animate ticks <br>
@@ -34,6 +40,13 @@
 <script src="graph.js"></script>
 <script src="chinese-whispers.js"></script>
 <script>
+
+
+d3.select("#dataFile").on("change", function() {
+    d3.select("#content").selectAll("*").remove();
+    var file = "data/" + d3.event.target.value
+    d3.text(file, "text/plain", plot);
+});
 
 var color = d3.scale.category20();
 var whispers = makeWhispers()
@@ -50,8 +63,9 @@ d3.select("#animateTicks").on("change", function() { whispers.animateTicks(d3.ev
 
 d3.select("#stopWhispers").on("click", whispers.end)
 
-d3.text("english-brown_100_9_nearest_neighbors.txt", "text/plain", function(text) {
-   
+//d3.text("english-brown_100_9_nearest_neighbors.txt", "text/plain", function(text) {
+var plot = function(text) {
+
     var data = adjListToGraph(text.split('\n'))
 
     graph
@@ -80,7 +94,7 @@ d3.text("english-brown_100_9_nearest_neighbors.txt", "text/plain", function(text
          })
         .on("end.g", function(evt) { i = 0; makeGroupList(data.nodes) })
 
-});
+}
 
 function adjListToGraph(adj) {
     var nodes = [],
