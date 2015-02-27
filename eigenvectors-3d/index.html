@@ -3,33 +3,45 @@
 <meta charset="utf-8">
 <style>
 
+
 body {
-  font: 10px sans-serif;
+  font: 12px sans-serif;
+  background: none repeat scroll 0% 0% #F2F2F2;
+  margin: 10%;
 }
 
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+.dimension {
+	width: 50px;
 }
 
-.dot {
-  stroke: #000;
-}
 
 </style>
 <body>
 
-<x3d class="x3d" width="800px" height="500px">
+<h1>
+	Eigenvectors visualization in 3D
+</h1>
+
+<div id="viz">
+
+<x3d class="x3d" width="800px" height="800px">
     <scene  width="800px" height="500px"></scene>
 </x3d>
 
-<svg id="legend" width='500px' height='500px' />
+<svg id="legend" width='50px' height='800px' />
+
+</div>
 
 <div id="info">
     Selected: <span id="selected"></span> <br>
     Eigenspace coordinates: <span id="eigencoords"></span> <br>
+</div>
+
+<div id="controls">
+	X=<input type="number" class="dimension" id="dimX" value="0"></input>
+	Y=<input type="number" class="dimension" id="dimY" value="1"></input>
+	Z=<input type="number" class="dimension" id="dimZ" value="2"></input>
+	<input type="button" id="changepos" value="Go"></input>
 </div>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -37,8 +49,6 @@ body {
 <script src="http://x3dom.org/x3dom/example/x3dom.js"></script>
 <script src="d3.x3dom.js"></script>
 <script>
-
-
 
 var depth = 5;
 
@@ -67,33 +77,21 @@ var zaxis = scene.append('shape')
     .call(line, 0, 0, 0, 0, 0, depth)
 
 
-var label = d3.x3dom.shape()
-    .type("text")
-    .attr("string", function(d) { return d.name })
-
-var labels = [{name:"eigenvector 1", x:5},
-    {name: "eigenvector 2", y:5},
-    {name: "eigenvector 3", z:5}];
-
-scene.selectAll(".label")
-   .data(labels).enter()
-    .append("transform")
-    .attr("class", "label")
-    .attr("scale", "0.3,0.3,0.3")
-    .call(label)
-
-
 d3.json("tagged-vectors.json", function(error, data) {
-    x.domain(d3.extent(data, function(d) { return d.vector[0]; })).nice();
-    y.domain(d3.extent(data, function(d) { return d.vector[1]; })).nice();
-    z.domain(d3.extent(data, function(d) { return d.vector[2]; })).nice();
+	plot(data, 0,1, 2);
+});
+
+function plot(data, xi, yi, zi) {
+    x.domain(d3.extent(data, function(d) { return d.vector[xi]; })).nice();
+    y.domain(d3.extent(data, function(d) { return d.vector[yi]; })).nice();
+    z.domain(d3.extent(data, function(d) { return d.vector[zi]; })).nice();
  
     var col = function(d, i) {
-        return d.category ? color(d.category) : "grey";
+        return d.category ? color(d.category) : "black";
     }
 
     var translation = function(d) {
-        return [x(d.vector[0]), y(d.vector[1]), z(d.vector[2])]
+        return [x(d.vector[xi]), y(d.vector[yi]), z(d.vector[zi])]
     }
 
     var circle = d3.x3dom.shape()
@@ -105,7 +103,7 @@ d3.json("tagged-vectors.json", function(error, data) {
     var selected = d3.select("#selected")
     var eigencoords = d3.select("#eigencoords")
 
-    scene.selectAll('.dot')
+    var dot = scene.selectAll('.dot')
        .data(data).enter()
         .append("transform")
         .attr("class", "dot")
@@ -137,7 +135,42 @@ d3.json("tagged-vectors.json", function(error, data) {
       .attr("dy", ".35em")
       .style("text-anchor", "end")
       .text(function(d) { return d; });
-      
 
-});
+  var label = d3.x3dom.shape()
+    .type("text")
+    .attr("string", function(d) { return d.name })
+
+  var labels = [{name:"eigenvector "+xi, x:5},
+        {name: "eigenvector " + yi, y:5},
+        {name: "eigenvector " + zi, z:5}];
+
+  var axislabel = scene.selectAll(".label")
+   .data(labels).enter()
+    .append("transform")
+    .attr("class", "label")
+    .attr("scale", "0.3,0.3,0.3")
+    .call(label)
+		
+	/* Change eigenvector feature */
+	var dimensions = data[0].vector.length
+	d3.selectAll(".dimension")
+		.attr("min", 0)
+		.attr("max", dimensions-1)
+		 
+	d3.select("#changepos").on("click", function() {
+		xi = +d3.select("#dimX").node().value;
+		yi = +d3.select("#dimY").node().value;
+		zi = +d3.select("#dimZ").node().value;
+		x.domain(d3.extent(data, function(d) { return d.vector[xi]; })).nice();
+		y.domain(d3.extent(data, function(d) { return d.vector[yi]; })).nice();
+		z.domain(d3.extent(data, function(d) { return d.vector[zi]; })).nice();
+		dot.call(circle.reposition)
+		
+		labels[0].name = "eigenvector "+xi
+		labels[1].name = "eigenvector "+yi
+		labels[2].name = "eigenvector "+zi
+		axislabel.call(label.reattr);
+	});
+}
+
 </script>
