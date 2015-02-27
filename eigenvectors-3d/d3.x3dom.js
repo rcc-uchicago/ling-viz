@@ -26,6 +26,15 @@ d3.x3dom.shape = function() {
       sh.append(type)
         .attr(attributes);
     }
+	
+	shape.reposition = function(node) {
+		node.transition().attr("translation", translation)
+	}
+	
+	shape.reattr = function(node) {
+		node.select("shape").select(type)
+			.attr(attributes);
+	}
 
     shape.type = function (_) {
         if (!_)
