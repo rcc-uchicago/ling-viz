@@ -45,9 +45,11 @@ d3.json("sharedcontexts.json", function(matrix) {
 		var numWords = d3.select("#numWords").node().value;
 		var sourceName = d3.select("#sourceName").node().value;
 		var constant = d3.select("#forceConstant").node().value;
+		data.forEach(function(d) { d.isSource = false; })
+		
 		var source = dataByName[sourceName]
-		if (!source) {
-			alert("source not found!");
+		if (!source || source.index >= numWords) {
+			alert("source not in selection!");
 			return;
 		}
 		source.isSource = true;
@@ -81,13 +83,13 @@ function main(data, sunMass, sunRad, planMass, planRad, strength) {
 
   var particles = [], source = null;
   data.forEach(function(d) {
-	  if (d.isSource) {
-		  source = d;
+	  if (d.isSource == true) {
 		  var p = physics.makeParticle(sunMass, canvas.width/2, canvas.height/2);
 		  p.color = "red";
 		  particles.push(p);
 		  p.radius = sunRad;
 		  p.data = d;
+		  source = p;
 	  }
 	  else {
 	  	var x = Math.random() * canvas.width;
@@ -105,8 +107,6 @@ function main(data, sunMass, sunRad, planMass, planRad, strength) {
   var minDistance = canvas.width;
 
   // Make the attraction and add it to physics
-  var source = particles[0];
-  source.color = "red";
   particles.forEach(function(p, i) {
   	var attraction = physics.makeAttraction(p, source, strength(p.data), minDistance);
   });
