@@ -1,9 +1,11 @@
+
 /* 
  * This is an implementation of the Chinese Whispers algorithm adapted for use with D3.
  * The algorithm's specification is here:
  * http://wortschatz.uni-leipzig.de/~cbiemann/pub/2006/BiemannTextGraph06.pdf
  * We change terminology and use "group" instead of "class", to avoid confusion with CSS classes or Javascript classes.
  */
+
 
 var makeWhispers = function () {
     var whispers = {}, nodes, edges, animateTicks, dispatch = d3.dispatch("start", "tick", "step", "end");

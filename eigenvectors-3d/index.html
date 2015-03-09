@@ -109,7 +109,8 @@ function plot(data, xi, yi, zi) {
         .attr("class", "dot")
         .call(circle)
         .each(function(d) {
-            this.onclick = function() {
+			var that = d3.select(this).select("shape").node()
+            that.onclick = function() {
                 selected.text(d.name)
                 selected.style("color", col(d))
                 eigencoords.text(JSON.stringify(d.vector))
