@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<body>
+
+<div class="controls">
+	Mass of planets: <input type="number" value="5" id="planMass"></input> <br>
+	Radius of planets: <input type="number" value="1" id="planRad"></input> <br>
+	Number of words for simulation: <input type="number" value="25" id="numWords"></input> <br>
+	Planets are attracted to each other according to the equation F=G*m1*m2/(r^2), where G = k * (number of shared contexts beteen planet and sun), and k = <input type="number" id="forceConstant" value="5"></input><br>
+	<input type="button" value="go" id="startSimulation"> <input type="button" value="stop" id="stopSimulation">
+</div>
+
+<canvas width="500px" height="500px" id="attraction-example">
+</canvas>
+	
+<script src='physics.min.js'></script>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+<script>
+
+// Adapted from example 2: http://jonobr1.github.io/Physics/
+
+d3.json("words.json", function(words) {
+d3.json("sharedcontexts.json", function(matrix) {
+	
+	var data = [], dataByName = {}
+	words.forEach(function(w, i) {
+		var d = {"name": w, "index": i}
+		dataByName[w] = d
+		data.push(d);
+	});
+	
+	var physics = undefined;
+	d3.select("#startSimulation").on("click", function() {
+		if (physics)
+			physics.pause();
+		
+		var planMass  = d3.select("#planMass").node().value;
+		var planRad = d3.select("#planRad").node().value;
+		var numWords = d3.select("#numWords").node().value;
+		var constant = d3.select("#forceConstant").node().value;
+		
+		var strength = function(q, p) { return constant*matrix[q.index][p.index]; }
+		
+		physics = main(data.slice(0, numWords), planMass, planRad, strength);
+		physics.play();
+		
+		d3.select("#stopSimulation").node().onclick = function() { physics.pause() }
+	});
+	
+});
+
+});
+
+/* Let's say words are attracted to the source (word 0) by a force proportional to how many contexts they share */
+
+function main(data, planMass, planRad, strength) {
+
+  var canvas = document.getElementById('attraction-example');
+  var ctx = canvas.getContext('2d');
+
+  if (!ctx) {
+    return;
+  }
+
+  ctx.fillStyle = '#333';
+
+  var physics = new Physics();
+
+  var particles = [], source = null;
+  data.forEach(function(d) { 
+	 var x = Math.random() * canvas.width;
+	 var y = Math.random() * canvas.height;
+	 var p = physics.makeParticle(planMass, x, y);
+	 p.radius = planRad;
+	 p.data = d;
+	 particles.push(p);
+  })
+
+  // Create an attraction between the particles.
+
+  // The proximity at which the attraction will be enabled.
+  var minDistance = canvas.width;
+
+  // Make the attraction and add it to physics
+  particles.forEach(function(q, i) {
+    particles.forEach(function(p, i) {
+  	  var attraction = physics.makeAttraction(p, q, strength(p.data, q.data), minDistance);
+    });
+  });
+
+  var render = function() {
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+	particles.forEach(function(p) {
+		var x = p.position.x;
+		var y = p.position.y;
+		ctx.fillStyle = p.color || "black";
+		ctx.beginPath();
+	    ctx.arc(x, y, p.radius, 0, Math.PI * 2, false);
+	    ctx.fill();
+		
+		ctx.fillText(p.data.name, x+10, y);
+	})
+
+  };
+
+  // Bind the render function to when physics updates.
+  physics.onUpdate(render);
+
+  // Render a posterframe.
+  render();
+
+  // Bind canvas click to toggle.
+  canvas.onclick = function(e) {
+    physics.toggle(); // Toggle between play and paused states.
+  };
+  
+  // store our physics object on the canvas so we can access it later
+  canvas.physics = physics;
+
+  return physics;
+}
+
+</script>
+
+</body>
