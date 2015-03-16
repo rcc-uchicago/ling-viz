@@ -124,6 +124,10 @@ function makeForce(p, q) {
 	var distexp = Math.pow(distsq, exp/2)
 	var fx = sgn(dx) * G*(p.mass+q.mass)/distexp;
 	var fy = sgn(dy) * G*(p.mass+q.mass)/distexp;
+	if (fx == NaN || fy == NaN) {
+		console.log('error')
+		thunk()
+	}
 	var force  = {"x": fx, "y": fy}
 	return force
 }

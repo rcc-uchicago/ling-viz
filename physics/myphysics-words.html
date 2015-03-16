@@ -1,7 +1,5 @@
-
-<!-- <canvas id="viewport" width="1000px" height="1000px"></canvas> -->
-
-<svg width="1000px" height="1000px" style="border:solid;"></svg>
+<button type="button"  id='stopbutton'>Stop</button> <br>
+<canvas id="viewport" width="1000px" height="1000px" style="border:solid;"></canvas>
 
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="physicsjs-full.min.js"></script>
@@ -16,66 +14,68 @@ function getParameterByName(name) {
 var width= 1000, height = 1000;
 
 d3.json("words.json", function(words) {
-	var strength;
-	var G = getParameterByName("gravity") || 500;
-	d3.json("sharedcontexts.json", function(contexts) {
-		strength = function(p, q) { return G*matrix[p.index][q.index]; }
-	});
+	d3.json("sharedcontexts.json", function(matrix) {
+		
+		var G = getParameterByName("gravity") || 500;
+	    var strength = function(p, q) { return G*matrix[p.index][q.index]; }
 	
-	var particles = []
-	words.forEach(function(w) {
-		var x = Math.random() * width,
-		y = Math.random() * height;
-		var p = {
-			pos: {x: x, y: y},
-			vel: {x: 0, y:0},
-			acc: {x: 0, y:0},
-			forces:[],
-			radius: 5,
-			mass: 10
-		}
-		particles.push(p);
-	});
-
-	var circle = d3.select("svg")
-	    .selectAll(".particle")
-	  .data(particles).enter()
-		.append("circle")
-		.attr("class", "particle")
-		.attr("cx", function(d) { return d.pos.x})
-		.attr("cy", function(d) { return d.pos.y})
-		.attr("r", function(d) { return d.radius })
-		.attr("fill", "black");
-
-	var G = getParameterByName("gravity") || 500;
-	var exp = getParameterByName("exp") || 2;
-	function sgn(n) { return (n < 0) ? -1 : 1; } //n/Math.abs(n); }
-	function makeForce(p, q) {
-		var dx = q.pos.x - p.pos.x;
-		var dy = q.pos.y - p.pos.y;
-
-		var distsq = (dx*dx) + (dy*dy)
-		var distexp = Math.pow(distsq, exp/2)
-		var fx = sgn(dx) * G*(p.mass+q.mass)/distexp;
-		var fy = sgn(dy) * G*(p.mass+q.mass)/distexp;
-		var force  = {"x": fx, "y": fy}
-		return force
-	}
-	var reposition = makeReposition(particles, makeForce);
-	var svg = d3.select("svg");
-	svg.on("click", function() {
-	d3.timer(function() {
-		reposition();
-		//render(particles);
-	
-		circle
-			.attr("cx", function(d) { return d.pos.x})
-			.attr("cy", function(d) { return d.pos.y}); 
+		var particles = []
+		words.forEach(function(w, i) {
+			if (i > 100)
+				return;
+		
+			var x = Math.random() * width,
+			y = Math.random() * height;
+		
+			var mass = 0;
+			for (var j = 0; j < words.length; j++)
+				mass += matrix[i][j]
 			
-		return 0;
-	});
-	});
+			var p = {
+				pos: {x: x, y: y},
+				vel: {x: 0, y:0},
+				acc: {x: 0, y:0},
+				forces:[],
+				radius: mass/50000,
+				mass: mass,
+				name: w,
+				index: i
+			}
+			particles.push(p);
+		});
+
+		render(particles);
 	
+		var exp = getParameterByName("exp") || 2;
+		function sgn(n) { return (n < 0) ? -1 : 1; }
+		function makeForce(p, q) {
+			var dx = q.pos.x - p.pos.x;
+			var dy = q.pos.y - p.pos.y;
+
+			var distsq = (dx*dx) + (dy*dy)
+			var distexp = Math.pow(distsq, exp/2)
+			var fx = sgn(dx) * strength(p, q)*(p.mass+q.mass)/distexp;
+			var fy = sgn(dy) * strength(p, q)*(p.mass+q.mass)/distexp;
+			var force  = {"x": fx, "y": fy}
+			return force
+		}
+		var reposition = makeReposition(particles, makeForce);
+	
+		var stop = false;
+		d3.select("#stopbutton").on("click", function() {
+			stop = true;
+		});
+		d3.select("canvas").on("click", function() {
+			stop = false;
+			d3.timer(function() {
+				reposition();
+				render(particles);
+	
+				return stop;
+			});
+		});
+	
+	});
 })
 
 
@@ -138,7 +138,25 @@ var makeReposition = function(particles, makeForce) {
 	return f;
 }
 
-
+function render(particles) {
+    
+	var canvas = d3.select("#viewport").node(),
+		ctx = canvas.getContext("2d");
+		
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+	
+  	particles.forEach(function(p) {
+  		var x = p.pos.x
+  		var y = p.pos.y
+  		ctx.fillStyle = p.color || "black";
+  		ctx.beginPath();
+  	    ctx.arc(x, y, p.radius, 0, Math.PI * 2, false);
+  	    ctx.fill();
+		
+  		ctx.fillText(p.name, x+10, y);
+  	});
+	
+}
 
 
 </script>
