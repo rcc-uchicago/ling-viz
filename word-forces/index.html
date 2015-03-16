@@ -54,7 +54,7 @@ d3.json("sharedcontexts.json", function(matrix) {
 		}
 		source.isSource = true;
 		
-		var strength = function(p) { return constant*matrix[source.index][p.index] + 1; }
+		var strength = function(p) { return constant*matrix[source.index][p.index]; }
 		
 		physics = main(data.slice(0, numWords), sunMass, sunRad, planMass, planRad, strength);
 		physics.play();
@@ -90,6 +90,7 @@ function main(data, sunMass, sunRad, planMass, planRad, strength) {
 		  p.radius = sunRad;
 		  p.data = d;
 		  source = p;
+		  p.fixed = true;
 	  }
 	  else {
 	  	var x = Math.random() * canvas.width;
