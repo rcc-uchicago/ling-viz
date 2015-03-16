@@ -27,13 +27,16 @@ d3.json("words.json", function(words) {
 			var x = Math.random() * width,
 			y = Math.random() * height;
 		
+			var theta = Math.random() * 2*Math.PI;
+			var vx = Math.cos(theta), vy = Math.sin(theta);
+		
 			var mass = 0;
 			for (var j = 0; j < words.length; j++)
 				mass += matrix[i][j]
 			
 			var p = {
 				pos: {x: x, y: y},
-				vel: {x: 0, y:0},
+				vel: {x: vx, y:vy},
 				acc: {x: 0, y:0},
 				forces:[],
 				radius: mass/50000,
@@ -54,8 +57,11 @@ d3.json("words.json", function(words) {
 
 			var distsq = (dx*dx) + (dy*dy)
 			var distexp = Math.pow(distsq, exp/2)
-			var fx = sgn(dx) * strength(p, q)*(p.mass+q.mass)/distexp;
-			var fy = sgn(dy) * strength(p, q)*(p.mass+q.mass)/distexp;
+			if (distsq < 25)
+				return {x: 0, y:0};
+			
+			var fx = sgn(dx) * strength(p, q)/distexp;
+			var fy = sgn(dy) * strength(p, q)/distexp;
 			var force  = {"x": fx, "y": fy}
 			return force
 		}
@@ -112,12 +118,15 @@ var makeReposition = function(particles, makeForce) {
 			var dvx = fx / p.mass,
 			dvy = fy / p.mass;
 		 
-		 	p.vel.x += dvx;
-			p.vel.y += dvy;
-		 
 			p.pos.x += p.vel.x,
 			p.pos.y += p.vel.y;
 			
+			var norm = Math.sqrt(p.vel.x*p.vel.x + p.vel.y*p.vel.y)
+		 	p.vel.x = (p.vel.x + dvx) / norm;
+			p.vel.y = (p.vel.y + dvy) / norm;
+			
+			//console.log(p.vel.x)
+			//thunk()
 			
 			/* boundary detection */
 			if (p.pos.x > 1000 || p.pos.x < 0) {

@@ -84,11 +84,11 @@ var makeReposition = function(particles, makeForce) {
 			var dvx = fx / p.mass,
 			dvy = fy / p.mass;
 		 
-		 	p.vel.x += dvx;
-			p.vel.y += dvy;
-		 
 			p.pos.x += p.vel.x,
 			p.pos.y += p.vel.y;
+			
+		 	p.vel.x += dvx;
+			p.vel.y += dvy;
 			
 			
 			/* boundary detection */
