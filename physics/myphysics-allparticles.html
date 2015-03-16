@@ -1,7 +1,7 @@
 
 <!-- <canvas id="viewport" width="1000px" height="1000px"></canvas> -->
 
-<svg width="1000px" height="1000px"></svg>
+<svg width="1000px" height="1000px" style="border:solid;"></svg>
 
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="physicsjs-full.min.js"></script>
@@ -72,9 +72,7 @@ var makeReposition = function(particles, G, exp) {
 		
 		/* update forces */
 		particles.forEach(function(p, i) {
-			
-			//if (p.isSource) /* check */
-			//	return;
+		
 			
 			p.forces = []
 			var cx = p.pos.x, cy = p.pos.y;
@@ -87,30 +85,12 @@ var makeReposition = function(particles, G, exp) {
 				var dy = q.pos.y - cy;
 		
 				var distsq = (dx*dx) + (dy*dy)
-				var distexp = Math.exp(distsq, exp/2)
-				var fx = sgn(dx) * G*(p.mass+q.mass)/distsq;
-				var fy = sgn(dy) * G*(p.mass+q.mass)/distsq;
+				var distexp = Math.pow(distsq, exp/2)
+				var fx = sgn(dx) * G*(p.mass+q.mass)/distexp;
+				var fy = sgn(dy) * G*(p.mass+q.mass)/distexp;
 				p.forces.push({"x": fx, "y": fy});
 			})
-			
-			/*
-			root.visit(function(d, x1, y1, x2, y2) { 
-		    	var m = pointRectDist(cx, cy, x1, y1, x2-x1, y2-y1);
-		     	var insquare = cx > x1 && cx < x2 && cy > y1 && cy < y2;
-		      	if (d.leaf && m < minDist) {
-					var q = d.point;
-					console.log(q);
-					var dx = q.pos.x - cx;
-					var dy = q.pos.y - cy;
-			
-					var distsq = (dx*dx) + (dy*dy)
-					var fx = -sgn(dx) * G*(p.mass+q.mass)/distsq;
-					var fy = -sgn(dy) * G*(p.mass+q.mass)/distsq;
-					p.forces.push({"x": fx, "y": fy});
-		      	}
-		      	return !insquare && m >= minDist;
-		    });
-			*/
+		
 			
 		})
 		
