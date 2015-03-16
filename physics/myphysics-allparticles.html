@@ -54,41 +54,21 @@ var circle = d3.select("svg")
 
 
 
-var makeReposition = function(particles, G, exp) {
-	
-	var minDist = 100;
-  	var quadtree = d3.geom.quadtree()
-		.x(function(d) { return d.pos.x })
-		.y(function(d) { return d.pos.y });
-	
-	var root = quadtree(particles);
-	
-	//var cx = 500, cy = 500;
-	
+var makeReposition = function(particles, makeForce) {
 	
 	var f = function() {
 		
-		function sgn(n) { return (n < 0) ? -1 : 1; } //n/Math.abs(n); }
+		
 		
 		/* update forces */
 		particles.forEach(function(p, i) {
-		
 			
 			p.forces = []
-			var cx = p.pos.x, cy = p.pos.y;
 			
 			particles.forEach(function(q) {
 				if (p == q)
 					return;
-				
-				var dx = q.pos.x - cx;
-				var dy = q.pos.y - cy;
-		
-				var distsq = (dx*dx) + (dy*dy)
-				var distexp = Math.pow(distsq, exp/2)
-				var fx = sgn(dx) * G*(p.mass+q.mass)/distexp;
-				var fy = sgn(dy) * G*(p.mass+q.mass)/distexp;
-				p.forces.push({"x": fx, "y": fy});
+				p.forces.push(makeForce(p,q));
 			})
 		
 			
@@ -137,7 +117,19 @@ var makeReposition = function(particles, G, exp) {
 
 var G = getParameterByName("gravity") || 500;
 var exp = getParameterByName("exp") || 2;
-var reposition = makeReposition(particles, G, exp);
+function sgn(n) { return (n < 0) ? -1 : 1; } //n/Math.abs(n); }
+function makeForce(p, q) {
+	var dx = q.pos.x - p.pos.x;
+	var dy = q.pos.y - p.pos.y;
+
+	var distsq = (dx*dx) + (dy*dy)
+	var distexp = Math.pow(distsq, exp/2)
+	var fx = sgn(dx) * G*(p.mass+q.mass)/distexp;
+	var fy = sgn(dy) * G*(p.mass+q.mass)/distexp;
+	var force  = {"x": fx, "y": fy}
+	return force
+}
+var reposition = makeReposition(particles, makeForce);
 var svg = d3.select("svg");
 svg.on("click", function() {
 d3.timer(function() {
