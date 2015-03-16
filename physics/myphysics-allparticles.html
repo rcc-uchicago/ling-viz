@@ -22,15 +22,13 @@ for (var i = 0; i < n; i++) {
 	var x = Math.random() * width,
 	    y = Math.random() * height;
 	var p = {
-		pos: {},
+		pos: {x: x, y: y},
 		vel: {x: 0, y:0},
 		acc: {x: 0, y:0},
 		forces:[],
 		radius: 5,
 		mass: 10
 	}
-	p.pos.x = x;
-	p.pos.y = y;
 	particles.push(p);
 }
 
