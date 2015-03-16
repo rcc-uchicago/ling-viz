@@ -1,0 +1,236 @@
+
+<!-- <canvas id="viewport" width="1000px" height="1000px"></canvas> -->
+
+<svg width="1000px" height="1000px"></svg>
+
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="physicsjs-full.min.js"></script>
+<script>
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+var width= 1000, height = 1000;
+
+
+var data = n = getParameterByName("number") || 2;
+var particles = []
+for (var i = 0; i < n; i++) {
+	var x = Math.random() * width,
+	    y = Math.random() * height;
+	var p = {
+		pos: {},
+		vel: {x: 0, y:0},
+		acc: {x: 0, y:0},
+		forces:[],
+		radius: 5,
+		mass: 10
+	}
+	p.pos.x = x;
+	p.pos.y = y;
+	particles.push(p);
+}
+
+var source = particles[0];
+source.isSource = true;
+source.pos.x = 500, source.pos.y = 500;
+source.mass = +(getParameterByName("sunMass")) || 100;
+source.radius = 8;
+
+
+var circle = d3.select("svg")
+    .selectAll(".particle")
+  .data(particles).enter()
+	.append("circle")
+	.attr("class", "particle")
+	.attr("cx", function(d) { return d.pos.x})
+	.attr("cy", function(d) { return d.pos.y})
+	.attr("r", function(d) { return d.radius })
+	.attr("fill", "black");
+
+
+
+
+var makeReposition = function(particles, G, exp) {
+	
+	var minDist = 100;
+  	var quadtree = d3.geom.quadtree()
+		.x(function(d) { return d.pos.x })
+		.y(function(d) { return d.pos.y });
+	
+	var root = quadtree(particles);
+	
+	//var cx = 500, cy = 500;
+	
+	
+	var f = function() {
+		
+		function sgn(n) { return (n < 0) ? -1 : 1; } //n/Math.abs(n); }
+		
+		/* update forces */
+		particles.forEach(function(p, i) {
+			
+			//if (p.isSource) /* check */
+			//	return;
+			
+			p.forces = []
+			var cx = p.pos.x, cy = p.pos.y;
+			
+			particles.forEach(function(q) {
+				if (p == q)
+					return;
+				
+				var dx = q.pos.x - cx;
+				var dy = q.pos.y - cy;
+		
+				var distsq = (dx*dx) + (dy*dy)
+				var distexp = Math.exp(distsq, exp/2)
+				var fx = sgn(dx) * G*(p.mass+q.mass)/distsq;
+				var fy = sgn(dy) * G*(p.mass+q.mass)/distsq;
+				p.forces.push({"x": fx, "y": fy});
+			})
+			
+			/*
+			root.visit(function(d, x1, y1, x2, y2) { 
+		    	var m = pointRectDist(cx, cy, x1, y1, x2-x1, y2-y1);
+		     	var insquare = cx > x1 && cx < x2 && cy > y1 && cy < y2;
+		      	if (d.leaf && m < minDist) {
+					var q = d.point;
+					console.log(q);
+					var dx = q.pos.x - cx;
+					var dy = q.pos.y - cy;
+			
+					var distsq = (dx*dx) + (dy*dy)
+					var fx = -sgn(dx) * G*(p.mass+q.mass)/distsq;
+					var fy = -sgn(dy) * G*(p.mass+q.mass)/distsq;
+					p.forces.push({"x": fx, "y": fy});
+		      	}
+		      	return !insquare && m >= minDist;
+		    });
+			*/
+			
+		})
+		
+		/* update positions */
+		particles.forEach(function(p) {
+			var fx = 0, fy = 0;
+			p.forces.forEach(function(f) {
+				fx += f.x;
+				fy += f.y;
+			}); 
+		
+			// a = F/m = dv/dt. dt = 1. so dv = F/m. //
+			var dvx = fx / p.mass,
+			dvy = fy / p.mass;
+		 
+		 	p.vel.x += dvx;
+			p.vel.y += dvy;
+		 
+			p.pos.x += p.vel.x,
+			p.pos.y += p.vel.y;
+			
+			
+			/* boundary detection */
+			if (p.pos.x > 1000 || p.pos.x < 0) {
+				var bdd = (p.pos.x < 0) ? 0 : 1000;
+				p.pos.x = bdd;
+				p.vel.x = -0.5 * p.vel.x;
+			}
+			if (p.pos.y > 1000 || p.pos.y < 0) {
+				var bdd = (p.pos.y < 0) ? 0 : 1000;
+				p.pos.y = bdd;
+				p.vel.y = -0.5 * p.vel.y;
+			}
+			
+		})
+	    
+	}
+	
+	return f;
+}
+
+
+/* ~Behavior~ Add a gravitation force towards the center.  */
+
+var G = getParameterByName("gravity") || 500;
+var exp = getParameterByName("exp") || 4;
+var reposition = makeReposition(particles, G, exp);
+var svg = d3.select("svg");
+svg.on("click", function() {
+d3.timer(function() {
+	reposition();
+	//render(particles);
+	
+	circle
+		.attr("cx", function(d) { return d.pos.x})
+		.attr("cy", function(d) { return d.pos.y}); 
+	return 0;
+});
+});
+
+
+
+var render = function(particles) {
+	console.log("hi")
+	var canvas = d3.select("#viewport").node(),
+	ctx = canvas.getContext("2d");
+
+
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+
+	particles.forEach(function(p) {
+		var x = p.pos.x
+		var y = p.pos.y
+		ctx.fillStyle = p.color || "black";
+		ctx.beginPath();
+		ctx.arc(x, y, p.radius, 0, Math.PI * 2, false);
+		ctx.fill();
+	
+		ctx.fillText(p.data.name, x+10, y);
+	})
+}
+
+function pointRectDist (px, py, rx, ry, rwidth, rheight)
+{
+  var cx = Math.max(Math.min(px, rx+rwidth ), rx);
+  var cy = Math.max(Math.min(py, ry+rheight), ry);
+  //return haversine(cx, cy, px, py);
+  var dx = cx - px;
+  var dy = cy - py;
+  return Math.sqrt(dx*dx + dy*dy);
+}
+
+
+/*
+	    root.visit(function(d, x1, y1, x2, y2) { 
+	      var m = pointRectDist(cx, cy, x1, y1, x2-x1, y2-y1);
+	      var insquare = cx > x1 && cx < x2 && cy > y1 && cy < y2;
+	      if (d.leaf && m < minDist) {
+			 var p = d.point;
+			 
+			 var fx = 0, fy = 0;
+			 p.forces.forEach(function(x, y) {
+				 fx += x;
+				 fy += y;
+			 }); 
+			
+			 // a = F/m = dv/dt. dt = 1. so dv = F/m.
+			 var dvx = fx / p.mass,
+			 	dvy = fy / p.mass;
+			 
+			 p.vel.x += dvx;
+			 p.vel.y += dvy;
+			 
+			 p.pos.x += p.vel.x,
+			 p.pos.y += p.vel.y;
+			
+			 
+	      }
+	      return !insquare && m >= minDist;
+	    });
+*/
+</script>
