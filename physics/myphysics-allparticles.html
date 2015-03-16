@@ -136,7 +136,7 @@ var makeReposition = function(particles, G, exp) {
 /* ~Behavior~ Add a gravitation force towards the center.  */
 
 var G = getParameterByName("gravity") || 500;
-var exp = getParameterByName("exp") || 4;
+var exp = getParameterByName("exp") || 2;
 var reposition = makeReposition(particles, G, exp);
 var svg = d3.select("svg");
 svg.on("click", function() {
@@ -151,66 +151,4 @@ d3.timer(function() {
 });
 });
 
-
-
-var render = function(particles) {
-	console.log("hi")
-	var canvas = d3.select("#viewport").node(),
-	ctx = canvas.getContext("2d");
-
-
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-
-	particles.forEach(function(p) {
-		var x = p.pos.x
-		var y = p.pos.y
-		ctx.fillStyle = p.color || "black";
-		ctx.beginPath();
-		ctx.arc(x, y, p.radius, 0, Math.PI * 2, false);
-		ctx.fill();
-	
-		ctx.fillText(p.data.name, x+10, y);
-	})
-}
-
-function pointRectDist (px, py, rx, ry, rwidth, rheight)
-{
-  var cx = Math.max(Math.min(px, rx+rwidth ), rx);
-  var cy = Math.max(Math.min(py, ry+rheight), ry);
-  //return haversine(cx, cy, px, py);
-  var dx = cx - px;
-  var dy = cy - py;
-  return Math.sqrt(dx*dx + dy*dy);
-}
-
-
-/*
-	    root.visit(function(d, x1, y1, x2, y2) { 
-	      var m = pointRectDist(cx, cy, x1, y1, x2-x1, y2-y1);
-	      var insquare = cx > x1 && cx < x2 && cy > y1 && cy < y2;
-	      if (d.leaf && m < minDist) {
-			 var p = d.point;
-			 
-			 var fx = 0, fy = 0;
-			 p.forces.forEach(function(x, y) {
-				 fx += x;
-				 fy += y;
-			 }); 
-			
-			 // a = F/m = dv/dt. dt = 1. so dv = F/m.
-			 var dvx = fx / p.mass,
-			 	dvy = fy / p.mass;
-			 
-			 p.vel.x += dvx;
-			 p.vel.y += dvy;
-			 
-			 p.pos.x += p.vel.x,
-			 p.pos.y += p.vel.y;
-			
-			 
-	      }
-	      return !insquare && m >= minDist;
-	    });
-*/
 </script>
