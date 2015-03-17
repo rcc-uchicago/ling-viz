@@ -1,12 +1,22 @@
 <style>
+
+#viz {
+	width: 1020;
+	height: 1010;
+}
+
 canvas, svg {
-	position: relative;
 	width: 1000px;
 	height: 1000px;
 }
 
 svg {
 	top: -1000;
+	position: relative;
+}
+
+div {
+	float: left;
 }
 
 #brush .extent {
@@ -15,15 +25,25 @@ svg {
   shape-rendering: crispEdges;
 }
 
+#brush .background {
+	fill-opacity: 0;
+}
 </style>
 
-<button type="button"  id='stopbutton'>Stop</button> 
-<input type="checkbox" id='brushtoggle'>Selector<br>
-<br>
-
-<div>
+<div id="viz">
 <canvas id="viewport" width="1000" height="1000" style="border:solid;"></canvas>
-<svg id="brush" class="off"></svg>
+<svg id="brush"></svg>
+</div>
+
+
+<div id="controls">
+<button type="button"  id='startbutton'>Start</button> 
+<button type="button"  id='stopbutton'>Stop</button> 
+<input type="checkbox" id='brushtoggle'>Selector
+<br><br>
+<b> Words </b>
+<table id="wordtable">
+</table>
 </div>
 
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
@@ -61,7 +81,7 @@ d3.json("words.json", function(words) {
 			
 			var p = {
 				pos: {x: x, y: y},
-				vel: {x: vx, y:vy},
+				vel: {x: vx, y: vy},
 				acc: {x: 0, y:0},
 				forces:[],
 				radius: mass/50000,
@@ -96,7 +116,7 @@ d3.json("words.json", function(words) {
 		d3.select("#stopbutton").on("click", function() {
 			stop = true;
 		});
-		d3.select("canvas").on("click", function() {
+		d3.select("#startbutton").on("click", function() {
 			stop = false;
 			d3.timer(function() {
 				reposition();
@@ -109,8 +129,7 @@ d3.json("words.json", function(words) {
 		var quadtree = d3.geom.quadtree()
 		    .extent([[-1, -1], [width + 1, height + 1]])
 			.x(function(d) { return d.pos.x })
-			.y(function(d) { return d.pos.y })
-		    (particles);
+			.y(function(d) { return d.pos.y });
 
 		var brush = d3.svg.brush()
 		    .x(d3.scale.identity().domain([0, width]))
@@ -122,19 +141,30 @@ d3.json("words.json", function(words) {
 		var toggle = d3.select("#brushtoggle")
 		
 		toggle.on("change", function() {
-			var brushoff = toggle.node().value;
-			
-			if (brushoff)
+			var brushoff = toggle.node().checked;
+			if (brushoff) {
 				svg.call(brush);
-			else
+				brushed()
+			}
+			else {
 				svg.selectAll("*").remove();
+			}
 		});
 		
 		function brushed() {
+		  var root = quadtree(particles);
 		  var extent = brush.extent();
 		  particles.forEach(function(d) { d.scanned = d.selected = false; });
-		  search(quadtree, extent[0][0], extent[0][1], extent[1][0], extent[1][1]);
-		  render();
+		  search(root, extent[0][0], extent[0][1], extent[1][0], extent[1][1]);
+		  render(particles);
+		  
+		  var myparticles = particles.filter(function(d) { return d.selected });
+		  var table = d3.select("#wordtable")
+		  table.selectAll("*").remove();
+		  table.selectAll("tr")
+		  	.data(myparticles).enter()
+		  	.append("tr")
+		  	.text(function(d) { return d.name })
 		}
 		
 		
@@ -208,7 +238,7 @@ function render(particles) {
   	particles.forEach(function(p) {
   		var x = p.pos.x
   		var y = p.pos.y
-  		ctx.fillStyle = p.color || "black";
+  		ctx.fillStyle = p.selected ? "blue" : "black";
   		ctx.beginPath();
   	    ctx.arc(x, y, p.radius, 0, Math.PI * 2, false);
   	    ctx.fill();
@@ -234,7 +264,7 @@ function search(quadtree, x0, y0, x3, y3) {
     var p = node.point;
     if (p) {
       p.scanned = true;
-      p.selected = (p[0] >= x0) && (p[0] < x3) && (p[1] >= y0) && (p[1] < y3);
+      p.selected = (p.pos.x >= x0) && (p.pos.x < x3) && (p.pos.y >= y0) && (p.pos.y < y3);
     }
     return x1 >= x3 || y1 >= y3 || x2 < x0 || y2 < y0;
   });
