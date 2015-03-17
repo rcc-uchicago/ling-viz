@@ -1,5 +1,30 @@
-<button type="button"  id='stopbutton'>Stop</button> <br>
-<canvas id="viewport" width="1000px" height="1000px" style="border:solid;"></canvas>
+<style>
+canvas, svg {
+	position: relative;
+	width: 1000px;
+	height: 1000px;
+}
+
+svg {
+	top: -1000;
+}
+
+#brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+</style>
+
+<button type="button"  id='stopbutton'>Stop</button> 
+<input type="checkbox" id='brushtoggle'>Selector<br>
+<br>
+
+<div>
+<canvas id="viewport" width="1000" height="1000" style="border:solid;"></canvas>
+<svg id="brush" class="off"></svg>
+</div>
 
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="physicsjs-full.min.js"></script>
@@ -76,10 +101,43 @@ d3.json("words.json", function(words) {
 			d3.timer(function() {
 				reposition();
 				render(particles);
-	
 				return stop;
 			});
 		});
+	
+		/* brush tool adapted from http://bl.ocks.org/mbostock/4343214 */
+		var quadtree = d3.geom.quadtree()
+		    .extent([[-1, -1], [width + 1, height + 1]])
+			.x(function(d) { return d.pos.x })
+			.y(function(d) { return d.pos.y })
+		    (particles);
+
+		var brush = d3.svg.brush()
+		    .x(d3.scale.identity().domain([0, width]))
+		    .y(d3.scale.identity().domain([0, height]))
+		    .extent([[100, 100], [200, 200]])
+		    .on("brush", brushed);
+		
+		var svg = d3.select("#brush");
+		var toggle = d3.select("#brushtoggle")
+		
+		toggle.on("change", function() {
+			var brushoff = toggle.node().value;
+			
+			if (brushoff)
+				svg.call(brush);
+			else
+				svg.selectAll("*").remove();
+		});
+		
+		function brushed() {
+		  var extent = brush.extent();
+		  particles.forEach(function(d) { d.scanned = d.selected = false; });
+		  search(quadtree, extent[0][0], extent[0][1], extent[1][0], extent[1][1]);
+		  render();
+		}
+		
+		
 	
 	});
 })
@@ -89,9 +147,7 @@ d3.json("words.json", function(words) {
 var makeReposition = function(particles, makeForce) {
 	
 	var f = function() {
-		
-		
-		
+
 		/* update forces */
 		particles.forEach(function(p, i) {
 			
@@ -101,9 +157,7 @@ var makeReposition = function(particles, makeForce) {
 				if (p == q)
 					return;
 				p.forces.push(makeForce(p,q));
-			})
-		
-			
+			})	
 		})
 		
 		/* update positions */
@@ -125,19 +179,16 @@ var makeReposition = function(particles, makeForce) {
 		 	p.vel.x = (p.vel.x + dvx) / norm;
 			p.vel.y = (p.vel.y + dvy) / norm;
 			
-			//console.log(p.vel.x)
-			//thunk()
-			
 			/* boundary detection */
 			if (p.pos.x > 1000 || p.pos.x < 0) {
 				var bdd = (p.pos.x < 0) ? 0 : 1000;
 				p.pos.x = bdd;
-				p.vel.x = -0.5 * p.vel.x;
+				p.vel.x = -p.vel.x;
 			}
 			if (p.pos.y > 1000 || p.pos.y < 0) {
 				var bdd = (p.pos.y < 0) ? 0 : 1000;
 				p.pos.y = bdd;
-				p.vel.y = -0.5 * p.vel.y;
+				p.vel.y = -p.vel.y;
 			}
 			
 		})
@@ -164,8 +215,29 @@ function render(particles) {
 		
   		ctx.fillText(p.name, x+10, y);
   	});
-	
 }
 
+/* Helper functions for brush tool, taken from bl.ocks verbatim */
+
+// Collapse the quadtree into an array of rectangles.
+function nodes(quadtree) {
+  var nodes = [];
+  quadtree.visit(function(node, x1, y1, x2, y2) {
+    nodes.push({x: x1, y: y1, width: x2 - x1, height: y2 - y1});
+  });
+  return nodes;
+}
+
+// Find the nodes within the specified rectangle.
+function search(quadtree, x0, y0, x3, y3) {
+  quadtree.visit(function(node, x1, y1, x2, y2) {
+    var p = node.point;
+    if (p) {
+      p.scanned = true;
+      p.selected = (p[0] >= x0) && (p[0] < x3) && (p[1] >= y0) && (p[1] < y3);
+    }
+    return x1 >= x3 || y1 >= y3 || x2 < x0 || y2 < y0;
+  });
+}
 
 </script>
