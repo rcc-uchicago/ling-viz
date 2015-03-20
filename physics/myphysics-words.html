@@ -60,14 +60,15 @@ var width= 1000, height = 1000;
 
 d3.json("words.json", function(words) {
 	d3.json("sharedcontexts.json", function(matrix) {
+		var G = +getParameterByName("gravity") || 500;
+		var nwords = +getParameterByName("numwords") || 100;
 		
-		var G = getParameterByName("gravity") || 500;
 	    var strength = function(p, q) { return G*matrix[p.index][q.index]; }
 	
 		var particles = []
 		words.forEach(function(w, i) {
-			if (i > 100)
-				return;
+			if (i > nwords-1)
+				return
 		
 			var x = Math.random() * width,
 			y = Math.random() * height;
@@ -91,10 +92,10 @@ d3.json("words.json", function(words) {
 			}
 			particles.push(p);
 		});
-
+		
 		render(particles);
 	
-		var exp = getParameterByName("exp") || 2;
+		var exp = +getParameterByName("exp") || 2;
 		function sgn(n) { return (n < 0) ? -1 : 1; }
 		function makeForce(p, q) {
 			var dx = q.pos.x - p.pos.x;
@@ -110,7 +111,8 @@ d3.json("words.json", function(words) {
 			var force  = {"x": fx, "y": fy}
 			return force
 		}
-		var reposition = makeReposition(particles, makeForce);
+		var mindist = +getParameterByName("mindist") || 500;
+		var reposition = makeReposition(particles, makeForce, mindist);
 	
 		var stop = false;
 		d3.select("#stopbutton").on("click", function() {
@@ -174,16 +176,40 @@ d3.json("words.json", function(words) {
 
 
 
-var makeReposition = function(particles, makeForce) {
+var makeReposition = function(particles, makeForce, minDist) {
+	
+	/* this is a *different* quadtree than we use for selector tool. This is sort of inefficient. */
+	var quadtree = d3.geom.quadtree()
+    	.extent([[-1, -1], [width + 1, height + 1]])
+		.x(function(d) { return d.pos.x })
+		.y(function(d) { return d.pos.y });
+	
 	
 	var f = function() {
 
 		/* update forces */
+		var root = quadtree(particles);
+		
+		// set up quadtree data structure in reverse
+		root.visit(function(d, x1, y1, x2, y2) {
+			if(d.point)
+				d.point.node = d;
+			if (d.nodes)
+				d.nodes.forEach(function(n) {
+					n.parent = d;
+				})
+			var dx = x2 - x1;
+			var dy = y2 - y1;
+			d.distance = Math.sqrt(dx*dx + dy*dy);	
+		})
+		
 		particles.forEach(function(p, i) {
 			
-			p.forces = []
+			var neighbors = getneighbors(p, minDist);
 			
-			particles.forEach(function(q) {
+			p.forces = []
+
+			neighbors.forEach(function(q) {
 				if (p == q)
 					return;
 				p.forces.push(makeForce(p,q));
@@ -268,6 +294,33 @@ function search(quadtree, x0, y0, x3, y3) {
     }
     return x1 >= x3 || y1 >= y3 || x2 < x0 || y2 < y0;
   });
+}
+
+
+function getneighbors(p, minDist) {
+	
+	var square = p.node;
+	while(square.distance < minDist) {
+		square = square.parent;
+	}
+	
+	var neighbors = []
+	
+	function addnode(d) {
+		if (d.point) {
+			var dx = d.point.pos.x - p.pos.x
+			var dy = d.point.pos.y - p.pos.y
+			var distance = Math.sqrt(dx*dx + dy*dy);
+			if (distance < minDist)
+				neighbors.push(d.point);
+		}
+		d.nodes.forEach(addnode);
+	}
+	addnode(square);
+	
+	
+	return neighbors;
+	
 }
 
 </script>
